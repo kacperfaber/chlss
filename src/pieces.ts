@@ -10,7 +10,8 @@ interface IPieces {
     BlackQueen: string,
     BlackPawn: string,
     BlackBishop: string,
-    BlackKnight: string
+    BlackKnight: string,
+    Empty: string
 }
 
 const Pieces: IPieces = {
@@ -25,7 +26,8 @@ const Pieces: IPieces = {
     BlackQueen: 'q',
     BlackPawn: 'p',
     BlackBishop: 'b',
-    BlackKnight: 'n'
+    BlackKnight: 'n',
+    Empty: 'e'
 }
 
 export default Pieces;

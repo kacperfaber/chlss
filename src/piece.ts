@@ -12,4 +12,5 @@ export type Piece =
     typeof Pieces.BlackKnight |
     typeof Pieces.WhiteKnight |
     typeof Pieces.WhiteRook |
-    typeof Pieces.BlackRook;
+    typeof Pieces.BlackRook |
+    typeof Pieces.Empty;
