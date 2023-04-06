@@ -28,6 +28,12 @@ interface IPiece {
     allBlack: Array<Piece>;
     isEnemy(piece: Piece, colour: Colour): Promise<boolean>;
     isEnemyOrEmpty(piece: Piece, colour: Colour): Promise<boolean>;
+    isRook(piece: Piece): boolean;
+    isPawn(piece: Piece): boolean;
+    isQueen(piece: Piece): boolean;
+    isBishop(piece: Piece): boolean;
+    isKnight(piece: Piece): boolean;
+    isKing(piece: Piece): boolean;
 }
 
 export const Piece: IPiece = {
@@ -67,6 +73,31 @@ export const Piece: IPiece = {
     async compareColour(colour1: Colour, colour2: Colour): Promise<boolean> {
         return colour1 == colour2;
     },
+
+    isRook(piece: Piece): boolean {
+        return piece == Pieces.WhiteRook || piece == Pieces.BlackRook;
+    },
+
+    isBishop(piece: Piece): boolean {
+        return piece == Pieces.WhiteBishop || piece == Pieces.BlackBishop;
+    },
+
+    isKing(piece: Piece): boolean {
+        return piece == Pieces.WhiteKing || piece == Pieces.BlackKing;
+    },
+
+    isKnight(piece: Piece): boolean {
+        return piece == Pieces.WhiteKnight || piece == Pieces.BlackKnight;
+    },
+
+    isPawn(piece: Piece): boolean {
+        return piece == Pieces.WhitePawn || piece == Pieces.BlackPawn;
+    },
+
+    isQueen(piece: Piece): boolean {
+        return piece == Pieces.WhiteQueen || piece == Pieces.BlackQueen;
+    },
+
 
     allWhite: [
         Pieces.WhiteRook,
