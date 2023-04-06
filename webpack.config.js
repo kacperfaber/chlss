@@ -1,5 +1,7 @@
 import path from "path";
 
+// TODO: There's an error with the import. I can't use import/from instead of require.
+
 // noinspection WebpackConfigHighlighting
 module.exports = {
     mode: "development",
