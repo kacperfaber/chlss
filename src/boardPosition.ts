@@ -24,5 +24,13 @@ export const BoardPosition= {
 
     async setPiece(boardPosition: BoardPosition, square: SquareIndex, piece: Piece) {
         boardPosition[square] = piece;
+    },
+
+    async getPiece(boardPosition: BoardPosition, square: SquareIndex): Promise<Piece> {
+        return boardPosition[square];
+    },
+
+    async getPieceOrNull(boardPosition: BoardPosition, square: SquareIndex): Promise<Piece | null> {
+        return await this.getPiece(boardPosition, square) ?? null;
     }
 }
