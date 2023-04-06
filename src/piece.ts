@@ -23,17 +23,31 @@ interface IPiece {
     isEmpty(piece: Piece): Promise<boolean>;
     isColour(piece: Piece, colour: Colour): Promise<boolean>;
     compareColour(colour1: Colour, colour2: Colour): Promise<boolean>;
+    isEnemy(piece: Piece, colour: Colour): Promise<boolean>;
     allWhite: Array<Piece>;
     allBlack: Array<Piece>;
+    isEnemy(piece: Piece, colour: Colour): Promise<boolean>;
+    isEnemyOrEmpty(piece: Piece, colour: Colour): Promise<boolean>;
 }
 
 export const Piece: IPiece = {
     async getColour(piece: Piece): Promise<Colour | null> {
-        if (this.allWhite.includes(piece)) return Colours.White;
-        if (this.allBlack.includes(piece)) return Colours.Black;
+        if (this.allWhite.includes(piece)) return Colours.white;
+        if (this.allBlack.includes(piece)) return Colours.black;
         return null;
     },
-    
+
+    async isEnemy(piece: Piece, colour: Colour): Promise<boolean> {
+        const pieceColour = await this.getColour(piece);
+        return pieceColour == Colours.inverseColour(colour);
+    },
+
+    async isEnemyOrEmpty(piece: Piece, colour: Colour): Promise<boolean> {
+        if (await Piece.isEmpty(piece)) return true;
+        return await this.isEnemy(piece, colour);
+    },
+
+
     async isWhite(piece: Piece): Promise<boolean> {
         return this.allWhite.includes(piece);
     },

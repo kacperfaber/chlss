@@ -1,27 +1,23 @@
 import {SquareIndex} from "./square";
 
-export type X = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
-
-export type Y = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
-
 interface ICoords {
-    toSquareIndex(x: X, y: Y): SquareIndex;
+    toSquareIndex(x: number, y: number): SquareIndex;
 
-    toX(squareIndex: SquareIndex): X;
+    toX(squareIndex: SquareIndex): number;
 
-    toY(squareIndex: SquareIndex): Y;
+    toY(squareIndex: SquareIndex): number;
 }
 
 export const Coords: ICoords = {
-    toSquareIndex(x: X, y: Y): SquareIndex {
+    toSquareIndex(x: number, y: number): SquareIndex {
         return ((y * 8) + x) as SquareIndex;
     },
 
-    toX(squareIndex: SquareIndex): X {
-        return Math.floor(squareIndex % 8) as X;
+    toX(squareIndex: SquareIndex): number {
+        return Math.floor(squareIndex % 8);
     },
 
-    toY(squareIndex: SquareIndex): Y {
-        return Math.floor(squareIndex / 8) as Y;
+    toY(squareIndex: SquareIndex): number {
+        return Math.floor(squareIndex / 8);
     }
 }

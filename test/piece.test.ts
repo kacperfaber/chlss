@@ -14,13 +14,13 @@ describe("piece.ts", function () {
 
         Piece.allBlack.forEach(function (piece: Piece) {
             test(`returns Black if piece is '${piece}'`, async function () {
-                expect(await Piece.getColour(piece)).toBe(Colours.Black);
+                expect(await Piece.getColour(piece)).toBe(Colours.black);
             });
         });
 
         Piece.allWhite.forEach(function (piece: Piece) {
             test(`returns White if piece is '${piece}'`, async function () {
-                expect(await Piece.getColour(piece)).toBe(Colours.White);
+                expect(await Piece.getColour(piece)).toBe(Colours.white);
             });
         });
     });
