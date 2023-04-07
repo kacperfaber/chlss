@@ -1,4 +1,4 @@
-import {IBoard} from "../src/board";
+import {Board, IBoard} from "../src/board";
 import {BoardPosition} from "../src/boardPosition";
 import {Colours} from "../src/colour";
 import {FEN} from "../src/fen";
@@ -9,6 +9,13 @@ import Pieces from "../src/pieces";
 // TODO: FEN it's very important and complicated system and it needs to be tested good.
 
 describe('fen.ts', function () {
+    describe('applyFEN', function () {
+        test(`does not throw`, async function () {
+            const board = Board.createEmpty();
+            await FEN.applyFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", board);
+        });
+    });
+
     describe('writeFEN', function () {
         test(`does not throw `, async function () {
             const board: IBoard ={

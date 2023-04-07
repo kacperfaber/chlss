@@ -20,6 +20,10 @@ export const BoardPosition = {
         return this.createEmptySynchronously();
     },
 
+    setEmpty(boardPosition: BoardPosition, square: number) {
+        boardPosition[square] = Pieces.Empty;
+    },
+
     createEmptySynchronously(): BoardPosition {
         let boardArray = new Array<Piece>();
         for (let x = 0; x < 64; x++) {
