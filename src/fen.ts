@@ -229,7 +229,7 @@ export const FEN: IForsythEdwardsNotation = {
         return stringBuilder.build();
     },
 
-    regExp: new RegExp(/([rnbqkRQNBKPp12345678/]+) ([wb]) ([KQkq]+) (.+) (\d+) (\d+)/),
+    regExp: new RegExp(/([rnbqkRQNBKPp12345678/]+) ([wb]) ([KQkq-]+) (.+) (\d+) (\d+)/),
 
     async loadFEN(fen: string, board: IBoard): Promise<void> {
         const match = this.regExp.exec(fen);

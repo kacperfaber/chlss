@@ -39,7 +39,7 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
             if (!(await BoardPosition.isSquaresEmpty(board.position, 62 as SquareIndex, 61 as SquareIndex))) return;
 
             const enemyMoves: Array<IMove> = [];
-            await MoveGenerator.generatePseudoLegalMoves(board, Colours.inverseColour(colour), enemyMoves);
+            await MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves);
 
             if (!(await BoardPosition.isSquaresNotUnderAttack(enemyMoves, 60 as SquareIndex, 62 as SquareIndex, 61 as SquareIndex)))
                 return;
@@ -56,7 +56,7 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
             if (!(await BoardPosition.isSquaresEmpty(board.position, 5 as SquareIndex, 6 as SquareIndex))) return;
 
             const enemyMoves: Array<IMove> = [];
-            await MoveGenerator.generatePseudoLegalMoves(board, Colours.inverseColour(colour), enemyMoves);
+            await MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves);
 
             if (!(await BoardPosition.isSquaresNotUnderAttack(enemyMoves, 5 as SquareIndex, 6 as SquareIndex, 4 as SquareIndex)))
                 return;
@@ -78,7 +78,7 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
             if (!(await BoardPosition.isSquaresEmpty(board.position, 59 as SquareIndex, 58 as SquareIndex, 57 as SquareIndex))) return;
 
             const enemyMoves: Array<IMove> = [];
-            await MoveGenerator.generatePseudoLegalMoves(board, Colours.inverseColour(colour), enemyMoves);
+            await MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves);
 
             if (!(await BoardPosition.isSquaresNotUnderAttack(enemyMoves, 59 as SquareIndex, 58 as SquareIndex, 57 as SquareIndex, 60 as SquareIndex)))
                 return;
@@ -95,7 +95,7 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
             if (!(await BoardPosition.isSquaresEmpty(board.position, 1 as SquareIndex, 2 as SquareIndex, 3 as SquareIndex))) return;
 
             const enemyMoves: Array<IMove> = [];
-            await MoveGenerator.generatePseudoLegalMoves(board, Colours.inverseColour(colour), enemyMoves);
+            await MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves);
 
             if (!(await BoardPosition.isSquaresNotUnderAttack(enemyMoves, 1 as SquareIndex, 2 as SquareIndex, 3 as SquareIndex, 4 as SquareIndex)))
                 return;

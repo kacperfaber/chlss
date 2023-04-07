@@ -27,11 +27,13 @@ export const KnightMoveGenerator: IKnightMoveGenerator = {
         {x: 2, y: 1},
     ],
 
-    async generateKnightMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>) {
+    async generateKnightMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): Promise<void> {
 
-        await Promise.all(this.offsets.map(function ({x, y}) {
-            this.addMoveAsync(boardPosition, piece, colour, index, posX, posY, moveList, x, y);
-        }));
+        await Promise.all(
+            this.offsets.map((
+                ({x, y}) => this.addMoveAsync(boardPosition, piece, colour, index, posX, posY, moveList, x, y))
+            )
+        );
 
     },
 
@@ -45,6 +47,8 @@ export const KnightMoveGenerator: IKnightMoveGenerator = {
 
         const tPiece = await BoardPosition.getPieceOrNull(boardPosition, targetIndex);
 
+        if (tPiece==null) return;
+
         if (await Piece.isEnemyOrEmpty(tPiece, colour)) {
             moveList.push(
                 {
@@ -53,7 +57,7 @@ export const KnightMoveGenerator: IKnightMoveGenerator = {
                     piece: piece,
                     targetPiece: tPiece
                 }
-            )
+            );
         }
     }
 };

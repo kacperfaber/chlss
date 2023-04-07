@@ -35,6 +35,8 @@ export const KingMoveGenerator: IKingMoveGenerator = {
 
         const tPiece = await BoardPosition.getPieceOrNull(boardPosition, targetIndex);
 
+        if (tPiece==null) return;
+
         if (await Piece.isEnemyOrEmpty(tPiece, colour)) {
             moveList.push(
                 {
@@ -48,8 +50,8 @@ export const KingMoveGenerator: IKingMoveGenerator = {
     },
 
     async generateKingMoves(boardPosition: BoardPosition, index: SquareIndex,  piece: Piece, colour: Colour, posX: number, posY: number, moveList: Array<IMove>): Promise<void> {
-        await Promise.all(this.offsets.map(function ({x, y}) {
-            this.addMoveAsync(boardPosition, index, piece, colour, posX, posY, moveList, x, y);
+        await Promise.all(this.offsets.map(({x, y}) => {
+            return this.addMoveAsync(boardPosition, index, piece, colour, posX, posY, moveList, x, y);
         }));
     }
 }

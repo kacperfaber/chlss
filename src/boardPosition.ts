@@ -20,6 +20,29 @@ export const BoardPosition = {
         return this.createEmptySynchronously();
     },
 
+    async copyAsync(boardPosition: BoardPosition): Promise<BoardPosition> {
+        const copy = await BoardPosition.createEmpty();
+        for (let index = 0; index < 64; index++) {
+            const squareIndex = index as SquareIndex;
+            await BoardPosition.setPiece(copy, squareIndex, await BoardPosition.getPiece(boardPosition, squareIndex));
+        }
+        return copy;
+    },
+
+    async makeMoveAsync(boardPosition: BoardPosition, move: IMove) {
+        await BoardPosition.setPiece(boardPosition, move.to, move.piece);
+        BoardPosition.setEmpty(boardPosition, move.from);
+
+        // TODO: Missing execution of castle-move.
+    },
+
+    async undoMoveAsync(boardPosition: BoardPosition, move: IMove) {
+        await BoardPosition.setPiece(boardPosition, move.from, move.piece);
+        await BoardPosition.setPiece(boardPosition, move.to, move.targetPiece);
+
+        // TODO: Missing execution of castle-move.
+    },
+
     setEmpty(boardPosition: BoardPosition, square: number) {
         boardPosition[square] = Pieces.Empty;
     },
@@ -66,6 +89,8 @@ export const BoardPosition = {
     async setPiece(boardPosition: BoardPosition, square: SquareIndex, piece: Piece) {
         boardPosition[square] = piece;
     },
+
+
 
     async getPiece(boardPosition: BoardPosition, square: SquareIndex): Promise<Piece> {
         return boardPosition[square];

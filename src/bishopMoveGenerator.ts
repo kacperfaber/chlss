@@ -6,7 +6,7 @@ import {IMove} from "./move";
 import {LineMoveGenerator} from "./lineMoveGenerator";
 
 interface IBishopMoveGenerator {
-    generateBishopMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>);
+    generateBishopMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): Promise<void>;
 }
 
 export const BishopMoveGenerator: IBishopMoveGenerator = {

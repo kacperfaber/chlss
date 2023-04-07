@@ -6,7 +6,7 @@ import {LineMoveGenerator} from "./lineMoveGenerator";
 import {Colour} from "./colour";
 
 interface IRookMoveGenerator {
-    generateRookMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>);
+    generateRookMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): Promise<void>;
 }
 
 export const RookMoveGenerator: IRookMoveGenerator = {
