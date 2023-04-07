@@ -14,13 +14,25 @@ export type BoardPosition = [
     Piece, Piece, Piece, Piece, Piece, Piece, Piece, Piece
 ];
 
-export const BoardPosition= {
+export const BoardPosition = {
     async createEmpty(): Promise<BoardPosition> {
         let boardArray = new Array<Piece>();
         for (let x = 0; x < 64; x++) {
             boardArray.push(Pieces.Empty);
         }
         return boardArray as BoardPosition;
+    },
+
+    async createDefault(): Promise<BoardPosition> {
+        return [Pieces.BlackRook, Pieces.BlackKnight, Pieces.BlackBishop, Pieces.BlackQueen, Pieces.BlackKing, Pieces.BlackBishop, Pieces.BlackKnight, Pieces.BlackRook,
+            Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn,
+            Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty,
+            Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty,
+            Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty,
+            Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty,
+            Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn,
+            Pieces.WhiteRook, Pieces.WhiteKnight, Pieces.WhiteBishop, Pieces.WhiteQueen, Pieces.WhiteKing, Pieces.WhiteBishop, Pieces.WhiteKnight, Pieces.WhiteRook
+        ];
     },
 
     async isEmpty(boardPosition: BoardPosition, x: number, y: number): Promise<boolean> {
@@ -53,5 +65,7 @@ export const BoardPosition= {
 
     async isIndexInBoard(index: number): Promise<boolean> {
         return index >= 0 && index <= 63;
-    }
-}
+    },
+
+
+};
