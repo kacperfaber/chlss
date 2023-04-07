@@ -9,10 +9,10 @@ import Pieces from "../src/pieces";
 // TODO: FEN it's very important and complicated system and it needs to be tested good.
 
 describe('fen.ts', function () {
-    describe('applyFEN', function () {
+    describe('loadFEN', function () {
         test(`does not throw`, async function () {
             const board = Board.createEmpty();
-            await FEN.applyFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", board);
+            await FEN.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", board);
         });
     });
 

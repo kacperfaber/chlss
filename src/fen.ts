@@ -9,7 +9,7 @@ import {Colour, Colours} from "./colour";
 
 interface IForsythEdwardsNotation {
     writeFEN(board: IBoard): Promise<string>;
-    applyFEN(fen: string, board: IBoard): Promise<void>;
+    loadFEN(fen: string, board: IBoard): Promise<void>;
     regExp: RegExp;
 }
 
@@ -231,7 +231,7 @@ export const FEN: IForsythEdwardsNotation = {
 
     regExp: new RegExp(/([rnbqkRQNBKPp12345678/]+) ([wb]) ([KQkq]+) (.+) (\d+) (\d+)/),
 
-    async applyFEN(fen: string, board: IBoard): Promise<void> {
+    async loadFEN(fen: string, board: IBoard): Promise<void> {
         const match = this.regExp.exec(fen);
         if (match == null) throw new Error("invalid fen");
         await parseFENPosition(match[1], board.position);
