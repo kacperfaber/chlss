@@ -11,12 +11,20 @@ import {BishopMoveGenerator} from "./bishopMoveGenerator";
 import {RookMoveGenerator} from "./rookMoveGenerator";
 import {KnightMoveGenerator} from "./knightMoveGenerator";
 import {KingMoveGenerator} from "./kingMoveGenerator";
+import {CastlingMoveGenerator} from "./castlingMoveGenerator";
 
 interface IMoveGenerator {
-    generatePseudoLegalMoves(board: IBoard, colourToMove: Colour, moveList: Array<IMove>);
+    generatePseudoLegalMoves(board: IBoard, colourToMove: Colour, moveList: Array<IMove>): Promise<void>;
+    generateLegalMoves(board: IBoard, colourToMove: Colour, moveList: Array<IMove>): Promise<void>;
 }
 
 export const MoveGenerator: IMoveGenerator = {
+    async generateLegalMoves(board: IBoard, colourToMove: Colour) {
+        const moveList: Array<IMove> = [];
+        await this.generatePseudoLegalMoves(board, colourToMove, moveList);
+        await CastlingMoveGenerator.generateCastlingMoves(board, colourToMove, moveList);
+    },
+
     async generatePseudoLegalMoves(board: IBoard, colourToMove: Colour, moveList: Array<IMove>) {
         /*
         * When all data is reached, and we have to use some generator [KingMoveGenerator etc.] to generate moves

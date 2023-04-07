@@ -2,6 +2,7 @@ import {Piece} from "./piece";
 import Pieces from "./pieces";
 import {SquareIndex} from "./square";
 import {Coords} from "./coords";
+import {IMove} from "./move";
 
 export type BoardPosition = [
     Piece, Piece, Piece, Piece, Piece, Piece, Piece, Piece,
@@ -43,6 +44,13 @@ export const BoardPosition = {
         return (await this.getPieceOrNull(boardPosition, square)) == null;
     },
 
+    async isSquaresEmpty(boardPosition: BoardPosition, ...squares: Array<SquareIndex>): Promise<boolean> {
+        for (let index of squares) {
+            if (!(await this.isSquareEmpty(boardPosition, index))) return false;
+        }
+        return true;
+    },
+
     async setPiece(boardPosition: BoardPosition, square: SquareIndex, piece: Piece) {
         boardPosition[square] = piece;
     },
@@ -67,5 +75,19 @@ export const BoardPosition = {
         return index >= 0 && index <= 63;
     },
 
+    async isSquareUnderAttack(squareIndex: SquareIndex, moveList: Array<IMove>): Promise<boolean> {
+        return moveList.filter(function (move: IMove) {
+            return move.to == squareIndex;
+        }).length > 0;
+    },
 
+    async isSquaresNotUnderAttack(moveList: Array<IMove>, ...squareIndexes: Array<SquareIndex>): Promise<boolean> {
+        moveList.forEach(function (move: IMove) {
+            for (let squareIndex of squareIndexes) {
+                if (squareIndex == move.to) return false;
+            }
+        });
+
+        return true;
+    }
 };
