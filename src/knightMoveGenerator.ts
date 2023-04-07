@@ -4,7 +4,6 @@ import {SquareIndex} from "./square";
 import {Piece} from "./piece";
 import {Colour} from "./colour";
 import {Coords} from "./coords";
-import Pieces from "./pieces";
 
 type KnightOffset = { x: number, y: number };
 

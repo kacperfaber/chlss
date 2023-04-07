@@ -17,6 +17,10 @@ export type BoardPosition = [
 
 export const BoardPosition = {
     async createEmpty(): Promise<BoardPosition> {
+        return this.createEmptySynchronously();
+    },
+
+    createEmptySynchronously(): BoardPosition {
         let boardArray = new Array<Piece>();
         for (let x = 0; x < 64; x++) {
             boardArray.push(Pieces.Empty);
@@ -25,6 +29,10 @@ export const BoardPosition = {
     },
 
     async createDefault(): Promise<BoardPosition> {
+        return this.createDefaultSynchronously();
+    },
+
+    createDefaultSynchronously(): BoardPosition {
         return [Pieces.BlackRook, Pieces.BlackKnight, Pieces.BlackBishop, Pieces.BlackQueen, Pieces.BlackKing, Pieces.BlackBishop, Pieces.BlackKnight, Pieces.BlackRook,
             Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn,
             Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty,
