@@ -28,6 +28,7 @@ interface IPiece {
     allBlack: Array<Piece>;
     isEnemy(piece: Piece, colour: Colour): Promise<boolean>;
     isEnemyOrEmpty(piece: Piece, colour: Colour): Promise<boolean>;
+    isEnemyOrNull(piece: Piece, colour: Colour): Promise<boolean>;
     isRook(piece: Piece): boolean;
     isPawn(piece: Piece): boolean;
     isQueen(piece: Piece): boolean;
@@ -37,6 +38,12 @@ interface IPiece {
 }
 
 export const Piece: IPiece = {
+    async isEnemyOrNull(piece: Piece | null, colour: Colour): Promise<boolean> {
+        if (piece == null) return true;
+        const pieceColour = (await Piece.getColour(piece))!!;
+        return !(await Piece.compareColour(pieceColour, colour));
+    },
+
     async getColour(piece: Piece): Promise<Colour | null> {
         if (this.allWhite.includes(piece)) return Colours.white;
         if (this.allBlack.includes(piece)) return Colours.black;

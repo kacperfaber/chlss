@@ -24,7 +24,7 @@ export const MoveGenerator: IMoveGenerator = {
     async filterIllegalMoves(moveList: Array<IMove>, colourToMove: Colour, boardPosition: BoardPosition): Promise<void> {
         const position = await BoardPosition.copyAsync(boardPosition);
 
-        for (let moveIndex=0; moveIndex<moveList.length; moveIndex++) {
+        for (let moveIndex= 0; moveIndex<moveList.length; moveIndex++) {
             const iMove = moveList[moveIndex];
             await BoardPosition.makeMoveAsync(position, iMove);
             const enemyMoves: Array<IMove> = [];

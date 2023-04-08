@@ -4,6 +4,7 @@ import {SquareIndex} from "./square";
 import {Piece} from "./piece";
 import {Colour} from "./colour";
 import {Coords} from "./coords";
+import Pieces from "./pieces";
 
 type KnightOffset = { x: number, y: number };
 
@@ -47,17 +48,30 @@ export const KnightMoveGenerator: IKnightMoveGenerator = {
 
         const tPiece = await BoardPosition.getPieceOrNull(boardPosition, targetIndex);
 
-        if (tPiece==null) return;
-
-        if (await Piece.isEnemyOrEmpty(tPiece, colour)) {
+        if (tPiece == null) {
             moveList.push(
                 {
                     from: index,
                     to: targetIndex,
                     piece: piece,
-                    targetPiece: tPiece
+                    targetPiece: Pieces.Empty
                 }
             );
+        }
+        else {
+            const tColour = await Piece.getColour(tPiece);
+            if (tColour==null)return;
+            if (!await Piece.compareColour(tColour, colour)) {
+                moveList.push(
+                    {
+                        from: index,
+                        to: targetIndex,
+                        piece: piece,
+                        targetPiece: tPiece
+                    }
+                );
+            }
+
         }
     }
 };

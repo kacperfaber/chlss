@@ -72,11 +72,11 @@ export const BoardPosition = {
     },
 
     async isEmpty(boardPosition: BoardPosition, x: number, y: number): Promise<boolean> {
-        return await this.getPieceOrNull(boardPosition, Coords.toSquareIndex(x, y)) == null;
+        return await this.isSquareEmpty(boardPosition, Coords.toSquareIndex(x, y));
     },
 
     async isSquareEmpty(boardPosition: BoardPosition, square: SquareIndex): Promise<boolean> {
-        return (await this.getPieceOrNull(boardPosition, square)) == null;
+        return await Piece.isEmpty(await this.getPiece(boardPosition, square));
     },
 
     async isSquaresEmpty(boardPosition: BoardPosition, ...squares: Array<SquareIndex>): Promise<boolean> {
@@ -101,7 +101,8 @@ export const BoardPosition = {
     },
 
     async getPieceOrNull(boardPosition: BoardPosition, square: SquareIndex): Promise<Piece | null> {
-        return await this.getPiece(boardPosition, square) ?? null;
+        const piece = await this.getPiece(boardPosition, square);
+        return piece == Pieces.Empty ? null : piece;
     },
 
     async isInBoard(x: number, y: number): Promise<boolean> {

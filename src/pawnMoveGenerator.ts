@@ -27,9 +27,9 @@ interface IPawnMoveGenerator {
 export const PawnMoveGenerator: IPawnMoveGenerator = {
     async generatePawnMoves(boardPosition: BoardPosition, piece: Piece, index: SquareIndex, posX: number, posY: number, colour: Colour, moveList: Array<IMove>) {
         const yDir = this.getYDir(colour);
-        const oneSquareAheadEmpty = await this.isOneSquareAheadEmpty(boardPosition, yDir, posX, posY);
-
         const oneMoveTargetY = posY + yDir;
+
+        const oneSquareAheadEmpty = await BoardPosition.isEmpty(boardPosition, posX, oneMoveTargetY);
 
         if (oneSquareAheadEmpty) {
             await this.tryAddTwoSquareMoveIfLegalAndOneSquareIsEmpty(piece, boardPosition, colour, yDir, posX, posY, index, moveList);
@@ -47,7 +47,7 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
         const targetI = Coords.toSquareIndex(posX, posY);
         const targetPiece = await BoardPosition.getPiece(boardPosition, targetI);
         if (await Piece.isEmpty(targetPiece)) return;
-        if (await Piece.isEnemy(targetPiece, colour)) return;
+        if (!(await Piece.isEnemy(targetPiece, colour))) return;
         this.addMove(piece, index, targetI, targetPiece, moveList);
     },
 

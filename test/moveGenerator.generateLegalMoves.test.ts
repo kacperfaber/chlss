@@ -14,7 +14,7 @@ const Tests: Array<Test> = [
     {
         fen: "8/8/8/8/8/8/PP6/8 w - - 0 1",
         colour: Colours.white,
-        expectedMoveLength: 3
+        expectedMoveLength: 4
     },
 
     {
@@ -39,6 +39,12 @@ const Tests: Array<Test> = [
         fen: "R2R4/8/8/8/8/8/8/8 w - - 0 1",
         colour: Colours.white,
         expectedMoveLength: 22
+    },
+
+    {
+        fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        colour: Colours.white,
+        expectedMoveLength: 20
     }
 ]
 
@@ -54,13 +60,12 @@ describe('moveGenerator.ts', function () {
 
         Tests.forEach(function (t: Test) {
             test(`FEN: '${t.fen}' COLOUR: '${t.colour}'`, async function () {
-                const board = await fromFEN("k7/8/8/8/8/8/8/K7 w - - 0 1");
+                const board = await fromFEN(t.fen);
 
                 const moves = await MoveGenerator.generateLegalMoves(board, Colours.white);
                 expect(moves.length).toBe(t.expectedMoveLength);
             });
         });
-
     });
 
 });

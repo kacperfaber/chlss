@@ -4,6 +4,7 @@ import {Colour} from "./colour";
 import {IMove} from "./move";
 import {Coords} from "./coords";
 import {SquareIndex} from "./square";
+import Pieces from "./pieces";
 
 type KingMoveOffset = {x: number, y: number};
 
@@ -35,18 +36,32 @@ export const KingMoveGenerator: IKingMoveGenerator = {
 
         const tPiece = await BoardPosition.getPieceOrNull(boardPosition, targetIndex);
 
-        if (tPiece==null) return;
-
-        if (await Piece.isEnemyOrEmpty(tPiece, colour)) {
+        if (tPiece == null) {
             moveList.push(
                 {
                     from: index,
                     to: targetIndex,
                     piece: piece,
-                    targetPiece: tPiece
+                    targetPiece: Pieces.Empty
                 }
-            )
+            );
         }
+        else {
+            const tColour = await Piece.getColour(tPiece);
+            if (tColour==null)return;
+            if (!await Piece.compareColour(tColour, colour)) {
+                moveList.push(
+                    {
+                        from: index,
+                        to: targetIndex,
+                        piece: piece,
+                        targetPiece: tPiece
+                    }
+                );
+            }
+
+        }
+
     },
 
     async generateKingMoves(boardPosition: BoardPosition, index: SquareIndex,  piece: Piece, colour: Colour, posX: number, posY: number, moveList: Array<IMove>): Promise<void> {
