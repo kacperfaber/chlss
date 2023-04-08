@@ -36,9 +36,14 @@ interface IPiece {
     isKnight(piece: Piece): boolean;
     isKing(piece: Piece): boolean;
     isColourEnemyOrNull(tColour: Colour | null, colour: Colour): Promise<boolean>
+    getKing(colour: Colour): Piece;
 }
 
 export const Piece: IPiece = {
+    getKing(colour: Colour): Piece {
+        return colour == Colours.white ? Pieces.WhiteKing : Pieces.BlackKing;
+    },
+
     async isEnemyOrNull(piece: Piece | null, colour: Colour): Promise<boolean> {
         if (piece == null) return true;
         const pieceColour = (await Piece.getColour(piece))!!;

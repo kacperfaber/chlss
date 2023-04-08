@@ -2,7 +2,7 @@ import {fromFEN} from "./utils/boardUtils";
 import {MoveGenerator} from "../src/moveGenerator";
 import {Colour, Colours} from "../src/colour";
 
-type Test = {fen: string, colour: Colour, expectedMoveLength: number};
+type Test = { fen: string, colour: Colour, expectedMoveLength: number };
 
 const Tests: Array<Test> = [
     {
@@ -45,14 +45,34 @@ const Tests: Array<Test> = [
         fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
         colour: Colours.white,
         expectedMoveLength: 20
-    }
-]
+    },
+
+    {
+        fen: "7k/8/8/8/3r4/3Q4/3K4/8 w - - 0 1",
+        colour: Colours.white,
+        expectedMoveLength: 8
+    },
+
+    {
+        fen: "6rk/8/8/8/8/8/8/R7 w - - 0 1",
+        colour: Colours.white,
+        expectedMoveLength: 14
+    },
+
+    {
+        fen: "6rk/8/8/8/8/8/8/Q7 w - - 0 1",
+        colour: Colours.white,
+        expectedMoveLength: 21
+    },
+
+    {fen: "7k/8/8/8/3r4/3R4/3K4/8 w - - 0 1", colour: Colours.white, expectedMoveLength: 8}
+];
 
 describe('moveGenerator.ts', function () {
 
     describe('generateLegalMoves', function () {
 
-        test(`does not throw`, async function() {
+        test(`does not throw`, async function () {
             const board = await fromFEN("k7/8/8/8/8/8/8/K7 w - - 0 1");
 
             await MoveGenerator.generateLegalMoves(board, Colours.white);
@@ -65,6 +85,13 @@ describe('moveGenerator.ts', function () {
                 const moves = await MoveGenerator.generateLegalMoves(board, Colours.white);
                 expect(moves.length).toBe(t.expectedMoveLength);
             });
+        });
+
+        test(`illegal moves`, async function () {
+            const board = await fromFEN("7k/8/8/8/3r4/3R4/3K4/8 w - - 0 1");
+
+            const moves = await MoveGenerator.generateLegalMoves(board, Colours.white);
+            expect(moves.length).toBe(8);
         });
     });
 

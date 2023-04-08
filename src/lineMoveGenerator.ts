@@ -55,6 +55,8 @@ export const LineMoveGenerator: ILineMoveGenerator = {
                     targetPiece: targetPiece
                 }
             );
+
+            if (!await Piece.isEmpty(targetPiece)) break;
         }
     },
 

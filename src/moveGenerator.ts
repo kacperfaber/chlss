@@ -1,5 +1,5 @@
 import {IMove} from "./move";
-import {IBoard} from "./board";
+import {Board, IBoard} from "./board";
 import {Colour, Colours} from "./colour";
 import {Piece} from "./piece";
 import {BoardPosition} from "./boardPosition";
@@ -12,7 +12,6 @@ import {RookMoveGenerator} from "./rookMoveGenerator";
 import {KnightMoveGenerator} from "./knightMoveGenerator";
 import {KingMoveGenerator} from "./kingMoveGenerator";
 import {CastlingMoveGenerator} from "./castlingMoveGenerator";
-import Pieces from "./pieces";
 
 interface IMoveGenerator {
     generatePseudoLegalMoves(boardPosition: BoardPosition, colourToMove: Colour, moveList: Array<IMove>): Promise<void>;
@@ -24,18 +23,22 @@ export const MoveGenerator: IMoveGenerator = {
     async filterIllegalMoves(moveList: Array<IMove>, colourToMove: Colour, boardPosition: BoardPosition): Promise<void> {
         const position = await BoardPosition.copyAsync(boardPosition);
 
+
         for (let moveIndex= 0; moveIndex<moveList.length; moveIndex++) {
             const iMove = moveList[moveIndex];
             await BoardPosition.makeMoveAsync(position, iMove);
+
             const enemyMoves: Array<IMove> = [];
             await MoveGenerator.generatePseudoLegalMoves(position, Colours.inverseColour(colourToMove), enemyMoves);
 
+            const ourKingPiece = Piece.getKing(colourToMove);
+
             const canKillKing = enemyMoves.some(function (m: IMove) {
-                return m.targetPiece == Pieces.WhiteKing || m.targetPiece == Pieces.BlackKing;
+                return m.targetPiece == ourKingPiece;
             });
 
             if (canKillKing) {
-                delete moveList[moveIndex];
+                moveList.splice(moveIndex, 1);
             }
 
             await BoardPosition.undoMoveAsync(position, iMove);
