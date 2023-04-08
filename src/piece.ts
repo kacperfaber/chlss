@@ -35,6 +35,7 @@ interface IPiece {
     isBishop(piece: Piece): boolean;
     isKnight(piece: Piece): boolean;
     isKing(piece: Piece): boolean;
+    isColourEnemyOrNull(tColour: Colour | null, colour: Colour): Promise<boolean>
 }
 
 export const Piece: IPiece = {
@@ -60,6 +61,10 @@ export const Piece: IPiece = {
         return await this.isEnemy(piece, colour);
     },
 
+    async isColourEnemyOrNull(tColour: Colour | null, colour: Colour): Promise<boolean> {
+        if (tColour==null) return true;
+        return ! await Piece.compareColour(tColour, colour);
+    },
 
     async isWhite(piece: Piece): Promise<boolean> {
         return this.allWhite.includes(piece);

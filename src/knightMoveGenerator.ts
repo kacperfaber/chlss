@@ -3,16 +3,10 @@ import {IMove} from "./move";
 import {SquareIndex} from "./square";
 import {Piece} from "./piece";
 import {Colour} from "./colour";
-import {Coords} from "./coords";
-import Pieces from "./pieces";
-
-type KnightOffset = { x: number, y: number };
+import {MoveOffset, OffsetMoveGenerator} from "./offsetMoveGenerator";
 
 interface IKnightMoveGenerator {
-    offsets: Array<KnightOffset>;
-
-    addMoveAsync(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>, offX: number, offY: number): Promise<void>;
-
+    offsets: Array<MoveOffset>;
     generateKnightMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): Promise<void>;
 }
 
@@ -29,49 +23,6 @@ export const KnightMoveGenerator: IKnightMoveGenerator = {
     ],
 
     async generateKnightMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): Promise<void> {
-
-        await Promise.all(
-            this.offsets.map((
-                ({x, y}) => this.addMoveAsync(boardPosition, piece, colour, index, posX, posY, moveList, x, y))
-            )
-        );
-
-    },
-
-    async addMoveAsync(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>, offX: number, offY: number): Promise<void> {
-        const tX = posX + offX;
-        const tY = posY + offY;
-
-        if (!(await BoardPosition.isInBoard(tX, tY))) return;
-
-        const targetIndex = Coords.toSquareIndex(tX, tY);
-
-        const tPiece = await BoardPosition.getPieceOrNull(boardPosition, targetIndex);
-
-        if (tPiece == null) {
-            moveList.push(
-                {
-                    from: index,
-                    to: targetIndex,
-                    piece: piece,
-                    targetPiece: Pieces.Empty
-                }
-            );
-        }
-        else {
-            const tColour = await Piece.getColour(tPiece);
-            if (tColour==null)return;
-            if (!await Piece.compareColour(tColour, colour)) {
-                moveList.push(
-                    {
-                        from: index,
-                        to: targetIndex,
-                        piece: piece,
-                        targetPiece: tPiece
-                    }
-                );
-            }
-
-        }
+        await OffsetMoveGenerator.generateOffsets(boardPosition, piece, colour, index, posX, posY, this.offsets, moveList);
     }
 };
