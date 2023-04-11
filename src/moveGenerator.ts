@@ -21,11 +21,8 @@ interface IMoveGenerator {
 
 export const MoveGenerator: IMoveGenerator = {
     async filterIllegalMoves(moveList: Array<IMove>, colourToMove: Colour, boardPosition: BoardPosition): Promise<void> {
-        const position = await BoardPosition.copyAsync(boardPosition);
-
-
-        for (let moveIndex= 0; moveIndex<moveList.length; moveIndex++) {
-            const iMove = moveList[moveIndex];
+        for (const iMove of [...moveList].reverse()) {
+            const position = await BoardPosition.copyAsync(boardPosition);
             await BoardPosition.makeMoveAsync(position, iMove);
 
             const enemyMoves: Array<IMove> = [];
@@ -34,14 +31,12 @@ export const MoveGenerator: IMoveGenerator = {
             const ourKingPiece = Piece.getKing(colourToMove);
 
             const canKillKing = enemyMoves.some(function (m: IMove) {
-                return m.targetPiece == ourKingPiece;
+                return m.targetPiece === ourKingPiece;
             });
 
             if (canKillKing) {
-                moveList.splice(moveIndex, 1);
+                moveList.splice(moveList.indexOf(iMove), 1);
             }
-
-            await BoardPosition.undoMoveAsync(position, iMove);
         }
     },
 
