@@ -65,7 +65,11 @@ const Tests: Array<Test> = [
         expectedMoveLength: 21
     },
 
-    {fen: "7k/8/8/8/3r4/3R4/3K4/8 w - - 0 1", colour: Colours.white, expectedMoveLength: 8}
+    {fen: "7k/8/8/8/3r4/3R4/3K4/8 w - - 0 1", colour: Colours.white, expectedMoveLength: 8},
+    {fen: "1q6/8/8/8/8/8/K7/8 w - - 0 1", colour: Colours.white, expectedMoveLength: 2},
+    {fen: "2q5/8/8/8/8/8/K7/8 w - - 0 1", colour: Colours.white, expectedMoveLength: 5},
+    {fen: "1q6/8/8/8/8/4r3/K7/4r3 w - - 0 1", colour: Colours.white, expectedMoveLength: 0},
+    {fen: "1q6/8/8/8/8/r7/K7/4r3 w - - 0 1", colour: Colours.white, expectedMoveLength: 1},
 ];
 
 describe('moveGenerator.ts', function () {
@@ -88,10 +92,10 @@ describe('moveGenerator.ts', function () {
         });
 
         test(`illegal moves`, async function () {
-            const board = await fromFEN("7k/8/8/8/3r4/3R4/3K4/8 w - - 0 1");
+            const board = await fromFEN("8/8/r7/R7/K7/8/8/8 w - - 0 1");
 
             const moves = await MoveGenerator.generateLegalMoves(board, Colours.white);
-            expect(moves.length).toBe(8);
+            expect(moves.length).toBe(0);
         });
     });
 
