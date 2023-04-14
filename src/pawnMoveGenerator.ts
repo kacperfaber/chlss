@@ -7,7 +7,7 @@ import {Coords} from "./coords";
 import Pieces from "./pieces";
 
 interface IPawnMoveGenerator {
-    generatePawnMoves(boardPosition: BoardPosition, piece: Piece, index: SquareIndex, posX: number, posY: number, colour: Colour, moveList: Array<IMove>): Promise<void>;
+    generatePawnMoves(boardPosition: BoardPosition, piece: Piece, index: SquareIndex, posX: number, posY: number, colour: Colour, moveList: Array<IMove>, enPassant: SquareIndex | null): Promise<void>;
 
     validateYPositionToMoveTwoSquare(posY: number, colour: Colour): boolean;
 
@@ -22,10 +22,12 @@ interface IPawnMoveGenerator {
     addCaptureMove(boardPosition: BoardPosition, piece: Piece, index: SquareIndex, posX: number, posY: number, colour: Colour, moveList: Array<IMove>): Promise<void>;
 
     addOneMoveIfOneSquareAheadIsEmpty(piece: Piece, index: SquareIndex, targetIndex: SquareIndex, moveList: Array<IMove>): void;
+
+    tryAddEnPassant(piece: Piece, colour: Colour, index: SquareIndex, enPassant: SquareIndex | null, yDir: number, posX: number, posY: number, moveList: Array<IMove>): void;
 }
 
 export const PawnMoveGenerator: IPawnMoveGenerator = {
-    async generatePawnMoves(boardPosition: BoardPosition, piece: Piece, index: SquareIndex, posX: number, posY: number, colour: Colour, moveList: Array<IMove>) {
+    async generatePawnMoves(boardPosition: BoardPosition, piece: Piece, index: SquareIndex, posX: number, posY: number, colour: Colour, moveList: Array<IMove>, enPassant: SquareIndex | null) {
         const yDir = this.getYDir(colour);
         const oneMoveTargetY = posY + yDir;
 
@@ -82,5 +84,26 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
 
     async isOneSquareAheadEmpty(boardPosition: BoardPosition, yDir: number, posX: number, posY: number): Promise<boolean> {
         return await BoardPosition.isEmpty(boardPosition, posX, posY + yDir);
+    },
+
+    async tryAddEnPassant(piece: Piece, colour: Colour, index: SquareIndex, enPassant: SquareIndex | null, yDir: number, posX: number, posY: number, moveList: Array<IMove>): Promise<void> {
+        if (enPassant == null) return;
+
+        function validateIsEnPassantSquareReachable(posX: number, posY: number, enPassantPosX: number, enPassantPosY: number, yDir: number): boolean {
+            const expectedY = posY + yDir;
+            return (expectedY == enPassantPosY) && (posX + 1 == enPassantPosX || posX - 1 == enPassantPosX);
+        }
+
+        const enPassantX = Coords.toX(enPassant);
+        const enPassantY = Coords.toY(enPassant);
+
+        if (!validateIsEnPassantSquareReachable(posX, posY, enPassantX, enPassantY, yDir)) return;
+
+        moveList.push({
+            from: index,
+            to: Coords.toSquareIndex(enPassantX, enPassantY),
+            piece: piece,
+            targetPiece: Piece.getPawn(Colours.inverseColour(colour))
+        });
     }
 };

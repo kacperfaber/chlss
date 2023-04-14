@@ -37,9 +37,14 @@ interface IPiece {
     isKing(piece: Piece): boolean;
     isColourEnemyOrNull(tColour: Colour | null, colour: Colour): Promise<boolean>
     getKing(colour: Colour): Piece;
+    getPawn(colour: Colour): Piece;
 }
 
 export const Piece: IPiece = {
+    getPawn(colour: Colour): Piece {
+        return colour == Colours.white ? Pieces.WhitePawn : Pieces.BlackPawn;
+    },
+
     getKing(colour: Colour): Piece {
         return colour == Colours.white ? Pieces.WhiteKing : Pieces.BlackKing;
     },

@@ -51,7 +51,7 @@ export const MoveGenerator: IMoveGenerator = {
         return moveList;
     },
 
-    async generatePseudoLegalMoves(boardPosition: BoardPosition, colourToMove: Colour, moveList: Array<IMove>) {
+    async generatePseudoLegalMoves(boardPosition: BoardPosition, colourToMove: Colour, moveList: Array<IMove>, enPassant: SquareIndex | null) {
         /*
         * When all data is reached, and we have to use some generator [KingMoveGenerator etc.] to generate moves
         * We're adding it to the 'taskList' which is list of Promises.
@@ -81,7 +81,7 @@ export const MoveGenerator: IMoveGenerator = {
             const posY = Coords.toY(squareIndex);
 
             if (Piece.isPawn(piece)) {
-                execTask(() => PawnMoveGenerator.generatePawnMoves(boardPosition, piece, squareIndex, posX, posY, pieceColour, moveList));
+                execTask(() => PawnMoveGenerator.generatePawnMoves(boardPosition, piece, squareIndex, posX, posY, pieceColour, moveList, enPassant));
             } else if (Piece.isQueen(piece)) {
                 execTask(() => QueenMoveGenerator.generateQueenMoves(boardPosition, piece, pieceColour, squareIndex, posX, posY, moveList));
             } else if (Piece.isBishop(piece)) {
