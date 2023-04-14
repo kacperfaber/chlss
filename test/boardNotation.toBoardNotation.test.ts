@@ -1,4 +1,5 @@
 import {BoardNotation} from "../src/boardNotation";
+import {SquareIndex} from "../src/square";
 
 const TestData = [
     {index: 0, expected: 'a8'},
@@ -24,6 +25,9 @@ describe('boardNotation.ts', function () {
             expect(actual).toBe('h1');
         });
 
-        TestData.forEach(({index, expected}) => test(`for '${index}' returns: '${expected}'`));
+        TestData.forEach(({index, expected}) => test(`for '${index}' returns: '${expected}'`, function () {
+            const a = BoardNotation.toBoardNotation(index as SquareIndex);
+            expect(a).toBe(expected);
+        }));
     });
 });

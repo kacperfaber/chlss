@@ -11,14 +11,14 @@ describe('pawnMoveGenerator.ts', function () {
             const board = await BoardPosition.createEmpty();
             board[48] = Pieces.WhitePawn;
 
-            await PawnMoveGenerator.generatePawnMoves(board, Pieces.WhitePawn, 48 as SquareIndex, 0, 6, Colours.white, []);
+            await PawnMoveGenerator.generatePawnMoves(board, Pieces.WhitePawn, 48 as SquareIndex, 0, 6, Colours.white, [], null);
         });
 
         test(`returns 2 move length when pawn can move ahead`, async function() {
             const board = await BoardPosition.createEmpty();
             board[48] = Pieces.WhitePawn;
             const moveList: Array<IMove> = [];
-            await PawnMoveGenerator.generatePawnMoves(board, Pieces.WhitePawn, 48 as SquareIndex, 0, 6, Colours.white, moveList);
+            await PawnMoveGenerator.generatePawnMoves(board, Pieces.WhitePawn, 48 as SquareIndex, 0, 6, Colours.white, moveList, null);
             expect(moveList.length).toBe(2);
         });
 
@@ -26,7 +26,7 @@ describe('pawnMoveGenerator.ts', function () {
             const board = await BoardPosition.createEmpty();
             board[40] = Pieces.WhitePawn;
             const moveList: Array<IMove> = [];
-            await PawnMoveGenerator.generatePawnMoves(board, Pieces.WhitePawn, 40 as SquareIndex, 0, 5, Colours.white, moveList);
+            await PawnMoveGenerator.generatePawnMoves(board, Pieces.WhitePawn, 40 as SquareIndex, 0, 5, Colours.white, moveList, null);
             expect(moveList.length).toBe(1);
         });
 
@@ -35,7 +35,7 @@ describe('pawnMoveGenerator.ts', function () {
             board[40] = Pieces.WhitePawn;
             board[32] = Pieces.BlackQueen;
             const moveList: Array<IMove> = [];
-            await PawnMoveGenerator.generatePawnMoves(board, Pieces.WhitePawn, 40 as SquareIndex, 0, 5, Colours.white, moveList);
+            await PawnMoveGenerator.generatePawnMoves(board, Pieces.WhitePawn, 40 as SquareIndex, 0, 5, Colours.white, moveList, null);
             expect(moveList.length).toBe(0);
         });
 
@@ -44,7 +44,7 @@ describe('pawnMoveGenerator.ts', function () {
             board[48] = Pieces.WhitePawn;
             board[49-8] = Pieces.BlackPawn;
             const moveList: Array<IMove> = [];
-            await PawnMoveGenerator.generatePawnMoves(board, Pieces.WhitePawn, 48 as SquareIndex, 0, 6, Colours.white, moveList);
+            await PawnMoveGenerator.generatePawnMoves(board, Pieces.WhitePawn, 48 as SquareIndex, 0, 6, Colours.white, moveList, null);
             expect(moveList.length).toBe(3);
         });
 
@@ -54,7 +54,7 @@ describe('pawnMoveGenerator.ts', function () {
             board[50-8] = Pieces.BlackPawn;
             board[48-8] = Pieces.BlackPawn;
             const moveList: Array<IMove> = [];
-            await PawnMoveGenerator.generatePawnMoves(board, Pieces.WhitePawn, 48 as SquareIndex, 1, 6, Colours.white, moveList);
+            await PawnMoveGenerator.generatePawnMoves(board, Pieces.WhitePawn, 48 as SquareIndex, 1, 6, Colours.white, moveList, null);
             expect(moveList.length).toBe(4);
         });
     });

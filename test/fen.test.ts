@@ -22,7 +22,7 @@ describe('fen.ts', function () {
                 position: await BoardPosition.createDefault(),
                 fullMoveCounter: 0,
                 halfMoveNumber: 0,
-                enPassant: "e4",
+                enPassant: null,
                 toMove: Colours.white,
                 castling: {
                     black: {
@@ -48,7 +48,7 @@ describe('fen.ts', function () {
                 position: pose,
                 fullMoveCounter: 0,
                 halfMoveNumber: 0,
-                enPassant: "e4",
+                enPassant: null,
                 toMove: Colours.white,
                 castling: {
                     black: {
@@ -62,7 +62,7 @@ describe('fen.ts', function () {
                 }
             }
 
-            expect(await FEN.writeFEN(board)).toBe("Q7/8/8/8/8/8/8/7Q w KQkq e4 0 0");
+            expect(await FEN.writeFEN(board)).toBe("Q7/8/8/8/8/8/8/7Q w KQkq - 0 0");
         });
     });
 });
