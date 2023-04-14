@@ -1,12 +1,13 @@
 import {BoardPosition} from "./boardPosition";
 import {Colour, Colours} from "./colour";
 import {Castling} from "./castling";
+import {SquareIndex} from "./square";
 
 export interface IBoard {
     position: BoardPosition;
     toMove: Colour;
     castling: Castling;
-    enPassant: string | null;
+    enPassant: SquareIndex | null;
     fullMoveCounter: number;
     halfMoveNumber: number;
 }

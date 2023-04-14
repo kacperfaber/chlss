@@ -6,6 +6,7 @@ import Pieces from "./pieces";
 import {SquareIndex} from "./square";
 import {Castling} from "./castling";
 import {Colour, Colours} from "./colour";
+import {BoardNotation} from "./boardNotation";
 
 interface IForsythEdwardsNotation {
     writeFEN(board: IBoard): Promise<string>;
@@ -94,8 +95,8 @@ function writeColour(stringBuilder: StringBuilder, colour: Colour): void {
     stringBuilder.append(colour == Colours.white ? "w" : "b");
 }
 
-function writeEnPassant(stringBuilder: StringBuilder, enPassant: string | null): void {
-    stringBuilder.append(enPassant ?? "-");
+function writeEnPassant(stringBuilder: StringBuilder, enPassant: SquareIndex | null): void {
+    stringBuilder.append(enPassant == null ? "-" : BoardNotation.toBoardNotation(enPassant));
 }
 
 
@@ -117,8 +118,8 @@ function parseCastlingData(castling: string): Castling {
     }
 }
 
-function parseEnPassant(enPassant: string): string | null {
-    return enPassant == "-" ? null : enPassant;
+function parseEnPassant(enPassant: string): SquareIndex | null {
+    return enPassant == "-" ? null : BoardNotation.fromBoardNotation(enPassant);
 }
 
 function parseFullMoveCounter(fullMoveCounter: string): number {

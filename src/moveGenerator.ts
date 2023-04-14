@@ -14,19 +14,19 @@ import {KingMoveGenerator} from "./kingMoveGenerator";
 import {CastlingMoveGenerator} from "./castlingMoveGenerator";
 
 interface IMoveGenerator {
-    generatePseudoLegalMoves(boardPosition: BoardPosition, colourToMove: Colour, moveList: Array<IMove>): Promise<void>;
+    generatePseudoLegalMoves(boardPosition: BoardPosition, colourToMove: Colour, moveList: Array<IMove>, enPassant: SquareIndex | null): Promise<void>;
     generateLegalMoves(board: IBoard, colourToMove: Colour): Promise<Array<IMove>>;
-    filterIllegalMoves(moveList: Array<IMove>, colourToMove: Colour, boardPosition: BoardPosition): Promise<void>;
+    filterIllegalMoves(moveList: Array<IMove>, colourToMove: Colour, boardPosition: BoardPosition, enPassant: SquareIndex | null): Promise<void>;
 }
 
 export const MoveGenerator: IMoveGenerator = {
-    async filterIllegalMoves(moveList: Array<IMove>, colourToMove: Colour, boardPosition: BoardPosition): Promise<void> {
+    async filterIllegalMoves(moveList: Array<IMove>, colourToMove: Colour, boardPosition: BoardPosition, enPassant: SquareIndex | null): Promise<void> {
         for (const iMove of [...moveList].reverse()) {
             const position = await BoardPosition.copyAsync(boardPosition);
             await BoardPosition.makeMoveAsync(position, iMove);
 
             const enemyMoves: Array<IMove> = [];
-            await MoveGenerator.generatePseudoLegalMoves(position, Colours.inverseColour(colourToMove), enemyMoves);
+            await MoveGenerator.generatePseudoLegalMoves(position, Colours.inverseColour(colourToMove), enemyMoves, enPassant);
 
             const ourKingPiece = Piece.getKing(colourToMove);
 
@@ -42,11 +42,11 @@ export const MoveGenerator: IMoveGenerator = {
 
     async generateLegalMoves(board: IBoard, colourToMove: Colour) {
         const moveList: Array<IMove> = [];
-        await this.generatePseudoLegalMoves(board.position, colourToMove, moveList);
+        await this.generatePseudoLegalMoves(board.position, colourToMove, moveList, board.enPassant);
 
         await CastlingMoveGenerator.generateCastlingMoves(board, colourToMove, moveList);
 
-        await this.filterIllegalMoves(moveList, colourToMove, board.position);
+        await this.filterIllegalMoves(moveList, colourToMove, board.position, board.enPassant);
 
         return moveList;
     },
