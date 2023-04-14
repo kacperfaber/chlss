@@ -24,6 +24,8 @@ interface IPawnMoveGenerator {
     addOneMoveIfOneSquareAheadIsEmpty(piece: Piece, index: SquareIndex, targetIndex: SquareIndex, moveList: Array<IMove>): void;
 
     tryAddEnPassant(piece: Piece, colour: Colour, index: SquareIndex, enPassant: SquareIndex | null, yDir: number, posX: number, posY: number, moveList: Array<IMove>): void;
+
+    trySetEnPassantWhenMovesTwoSquare(colour: Colour, boardPosition: BoardPosition, posX: number, posY: number, targetY: number, yDir: number, setEnPassant: (enPassant: SquareIndex | null) => void): Promise<void>;
 }
 
 export const PawnMoveGenerator: IPawnMoveGenerator = {
@@ -70,7 +72,7 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
         const targetY = posY + (yDir * 2);
         const targetIndex = Coords.toSquareIndex(posX, targetY);
         if (this.validateYPositionToMoveTwoSquare(posY, colour) && await BoardPosition.isSquareEmpty(boardPosition, targetIndex)) {
-            this.addMove(piece, index, targetIndex, Pieces.Empty, moveList)
+            this.addMove(piece, index, targetIndex, Pieces.Empty, moveList);
         }
     },
 
@@ -105,5 +107,32 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
             piece: piece,
             targetPiece: Piece.getPawn(Colours.inverseColour(colour))
         });
+    },
+
+    async trySetEnPassantWhenMovesTwoSquare(colour: Colour, boardPosition: BoardPosition, posX: number, posY: number, targetY: number, yDir: number, setEnPassant: (enPassant: SquareIndex | null) => void): Promise<void> {
+        async function isEnemyPawnStands(posX: number, targetY: number, boardPosition: BoardPosition, colour: Colour): Promise<boolean> {
+            if (await BoardPosition.isInBoard(posX + 1, targetY)) {
+                const sqIndex = Coords.toSquareIndex(posX + 1, targetY);
+                const piece = await BoardPosition.getPieceOrNull(boardPosition, sqIndex);
+                if (piece == Piece.getPawn(Colours.inverseColour(colour)))
+                    return true;
+            } else if (await BoardPosition.isInBoard(posX - 1, targetY)) {
+                const sqIndex = Coords.toSquareIndex(posX - 1, targetY);
+                const piece = await BoardPosition.getPieceOrNull(boardPosition, sqIndex);
+                if (piece == Piece.getPawn(Colours.inverseColour(colour)))
+                    return true;
+            }
+            return false;
+        }
+
+        if (!await isEnemyPawnStands(posX, targetY, boardPosition, colour)) return;
+
+        async function getEnPassantSquare(posX: number, targetY: number, yDir: number): Promise<SquareIndex> {
+            return Coords.toSquareIndex(posX, targetY - yDir);
+        }
+
+        const enPassantSquare = await getEnPassantSquare(posX, targetY, yDir);
+
+        setEnPassant(enPassantSquare);
     }
 };
