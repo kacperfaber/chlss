@@ -26,9 +26,9 @@ export interface IMoveMaker {
 
     modifyFullMoveNumber(board: IBoard, move: IMove, colour: Colour): Promise<void>;
 
-    modifyHalfMoveNumber(board: IBoard, move: IMove, colour: Colour): Promise<void>;
+    modifyHalfMoveNumber(board: IBoard, move: IMove, colour: Colour, isCastling: boolean, isEnPassant: boolean): Promise<void>;
 
-    isAttack(board: IBoard, move: IMove, colour: Colour): Promise<boolean>;
+    isAttack(board: IBoard, move: IMove, colour: Colour, isCastling: boolean, isEnPassant: boolean): Promise<boolean>;
 
     makeNormalMoveOnBoard(boardPosition: BoardPosition, move: IMove): Promise<void>;
 
@@ -45,9 +45,8 @@ export const MoveMaker: IMoveMaker = {
     },
 
 
-    async isAttack(board: IBoard, move: IMove, colour: Colour): Promise<boolean> {
-        // TODO: How to do this with en passant and castlings?
-        return false;
+    async isAttack(board: IBoard, move: IMove, colour: Colour, isCastling: boolean, isEnPassant: boolean): Promise<boolean> {
+        return move.targetPiece != Pieces.Empty && !isCastling && !isEnPassant;
     },
 
     async modifyFullMoveNumber(board: IBoard, move: IMove, colour: Colour): Promise<void> {
@@ -56,14 +55,14 @@ export const MoveMaker: IMoveMaker = {
         }
     },
 
-    async modifyHalfMoveNumber(board: IBoard, move: IMove, colour: Colour): Promise<void> {
+    async modifyHalfMoveNumber(board: IBoard, move: IMove, colour: Colour, isCastling: boolean, isEnPassant: boolean): Promise<void> {
         function reset() {
             board.halfMoveNumber = 0;
         }
 
         const inc = () => board.halfMoveNumber = board.halfMoveNumber + 1;
 
-        if (Piece.isPawn(move.piece) || await this.isAttack(board, move, colour)) {
+        if (Piece.isPawn(move.piece) || await this.isAttack(board, move, colour, isCastling, isEnPassant)) {
             reset();
             return;
         }
@@ -188,7 +187,7 @@ export const MoveMaker: IMoveMaker = {
         await Promise.all([
             this.modifyFullMoveNumber(board, move, colour),
             this.tryDisableCastling(board, move, isCastling),
-            this.modifyHalfMoveNumber(board, move, colour),
+            this.modifyHalfMoveNumber(board, move, colour, isCastling, enPassant != null),
             this.trySetEnPassant(board, move),
             this.updateColourToMove(board, move, colour)
         ]);
