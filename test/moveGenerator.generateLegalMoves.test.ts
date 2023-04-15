@@ -70,6 +70,9 @@ const Tests: Array<Test> = [
     {fen: "2q5/8/8/8/8/8/K7/8 w - - 0 1", colour: Colours.white, expectedMoveLength: 5},
     {fen: "1q6/8/8/8/8/4r3/K7/4r3 w - - 0 1", colour: Colours.white, expectedMoveLength: 0},
     {fen: "1q6/8/8/8/8/r7/K7/4r3 w - - 0 1", colour: Colours.white, expectedMoveLength: 1},
+    {fen: "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1", colour: Colours.white, expectedMoveLength: 26},
+    {fen: "r3k2r/8/8/8/8/8/8/R3K2R b KQkq - 0 1", colour: Colours.black, expectedMoveLength: 26},
+    {fen: "RR6/8/8/8/8/8/8/8 w - - 0 1", colour: Colours.white, expectedMoveLength: 20}
 ];
 
 describe('moveGenerator.ts', function () {

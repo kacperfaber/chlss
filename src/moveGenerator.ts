@@ -44,9 +44,9 @@ export const MoveGenerator: IMoveGenerator = {
         const moveList: Array<IMove> = [];
         await this.generatePseudoLegalMoves(board.position, colourToMove, moveList, board.enPassant);
 
-        await CastlingMoveGenerator.generateCastlingMoves(board, colourToMove, moveList);
-
         await this.filterIllegalMoves(moveList, colourToMove, board.position, board.enPassant);
+
+        await CastlingMoveGenerator.generateCastlingMoves(board, colourToMove, moveList);
 
         return moveList;
     },
@@ -62,7 +62,7 @@ export const MoveGenerator: IMoveGenerator = {
             taskList.push(act());
         }
 
-        for (let index = 0; index < 63; index++) {
+        for (let index = 0; index < 64; index++) {
             const squareIndex = index as SquareIndex;
             const piece = await BoardPosition.getPieceOrNull(boardPosition, squareIndex);
 
