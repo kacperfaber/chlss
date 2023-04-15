@@ -83,12 +83,15 @@ function writeText(stringBuilder: StringBuilder, text: string): void {
 }
 
 function writeCastling(stringBuilder: StringBuilder, castling: Castling) {
-    if (!(castling.white.kingSide && castling.white.queenSide && castling.black.kingSide && castling.black.queenSide))
+    if (!castling.white.kingSide && !castling.white.queenSide && !castling.black.kingSide && !castling.black.queenSide) {
         stringBuilder.append("-");
+        return;
+    }
+
     if (castling.white.kingSide) stringBuilder.append("K");
     if (castling.white.queenSide) stringBuilder.append("Q");
     if (castling.black.kingSide) stringBuilder.append("k");
-    if (castling.white.queenSide) stringBuilder.append("q");
+    if (castling.black.queenSide) stringBuilder.append("q");
 }
 
 function writeColour(stringBuilder: StringBuilder, colour: Colour): void {
