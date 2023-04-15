@@ -10,7 +10,8 @@ describe('boardPosition.ts', function () {
                 from: 0 as SquareIndex,
                 to: 8 as SquareIndex,
                 piece: Pieces.WhiteKing,
-                targetPiece: Pieces.Empty
+                targetPiece: Pieces.Empty,
+                setEnPassant: null
             };
 
             const board = await BoardPosition.createEmpty();
@@ -24,7 +25,8 @@ describe('boardPosition.ts', function () {
                 from: 0 as SquareIndex,
                 to: 8 as SquareIndex,
                 piece: Pieces.WhiteKing,
-                targetPiece: Pieces.Empty
+                targetPiece: Pieces.Empty,
+                setEnPassant: null
             };
 
             const board = await BoardPosition.createEmpty();
@@ -40,7 +42,8 @@ describe('boardPosition.ts', function () {
                 from: 0 as SquareIndex,
                 to: 8 as SquareIndex,
                 piece: Pieces.WhiteKing,
-                targetPiece: Pieces.Empty
+                targetPiece: Pieces.Empty,
+                setEnPassant: null
             };
 
             const board = await BoardPosition.createEmpty();

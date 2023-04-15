@@ -24,7 +24,8 @@ export const OffsetMoveGenerator = {
                 from: index,
                 to: Coords.toSquareIndex(tX, tY),
                 piece: piece,
-                targetPiece: targetPiece
+                targetPiece: targetPiece,
+                setEnPassant: null
             });
         }
 

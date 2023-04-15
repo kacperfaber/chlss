@@ -25,7 +25,9 @@ interface IPawnMoveGenerator {
 
     tryAddEnPassant(piece: Piece, colour: Colour, index: SquareIndex, enPassant: SquareIndex | null, yDir: number, posX: number, posY: number, moveList: Array<IMove>): void;
 
-    trySetEnPassantWhenMovesTwoSquare(colour: Colour, boardPosition: BoardPosition, posX: number, posY: number, targetY: number, yDir: number, setEnPassant: (enPassant: SquareIndex | null) => void): Promise<void>;
+    trySetEnPassantWhenMovesTwoSquare(colour: Colour, boardPosition: BoardPosition, posX: number, posY: number, targetY: number, yDir: number): Promise<SquareIndex | null>;
+
+    addMoveWithOptionalSetEnPassant(piece: Piece, from: SquareIndex, target: SquareIndex, targetPiece: Piece, moveList: Array<IMove>, setEnPassant: SquareIndex | null): Promise<void>;
 }
 
 export const PawnMoveGenerator: IPawnMoveGenerator = {
@@ -64,7 +66,18 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
             from: from,
             to: target,
             piece: piece,
-            targetPiece: targetPiece
+            targetPiece: targetPiece,
+            setEnPassant: null
+        });
+    },
+
+    async addMoveWithOptionalSetEnPassant(piece: Piece, from: SquareIndex, target: SquareIndex, targetPiece: Piece, moveList: Array<IMove>, setEnPassant: SquareIndex | null): Promise<void> {
+        moveList.push({
+            from: from,
+            to: target,
+            piece: piece,
+            targetPiece: targetPiece,
+            setEnPassant: setEnPassant
         });
     },
 
@@ -72,7 +85,8 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
         const targetY = posY + (yDir * 2);
         const targetIndex = Coords.toSquareIndex(posX, targetY);
         if (this.validateYPositionToMoveTwoSquare(posY, colour) && await BoardPosition.isSquareEmpty(boardPosition, targetIndex)) {
-            this.addMove(piece, index, targetIndex, Pieces.Empty, moveList);
+            const setEnPassant = await this.trySetEnPassantWhenMovesTwoSquare(colour, boardPosition, posX, posY, targetY, yDir);
+            await this.addMoveWithOptionalSetEnPassant(piece, index, targetIndex, Pieces.Empty, moveList, setEnPassant);
         }
     },
 
@@ -105,11 +119,12 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
             from: index,
             to: Coords.toSquareIndex(enPassantX, enPassantY),
             piece: piece,
-            targetPiece: Piece.getPawn(Colours.inverseColour(colour))
+            targetPiece: Piece.getPawn(Colours.inverseColour(colour)),
+            setEnPassant: null
         });
     },
 
-    async trySetEnPassantWhenMovesTwoSquare(colour: Colour, boardPosition: BoardPosition, posX: number, posY: number, targetY: number, yDir: number, setEnPassant: (enPassant: SquareIndex | null) => void): Promise<void> {
+    async trySetEnPassantWhenMovesTwoSquare(colour: Colour, boardPosition: BoardPosition, posX: number, posY: number, targetY: number, yDir: number): Promise<SquareIndex | null> {
         async function isEnemyPawnStands(posX: number, targetY: number, boardPosition: BoardPosition, colour: Colour): Promise<boolean> {
             if (await BoardPosition.isInBoard(posX + 1, targetY)) {
                 const sqIndex = Coords.toSquareIndex(posX + 1, targetY);
@@ -125,14 +140,12 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
             return false;
         }
 
-        if (!await isEnemyPawnStands(posX, targetY, boardPosition, colour)) return;
+        if (!await isEnemyPawnStands(posX, targetY, boardPosition, colour)) return null;
 
         async function getEnPassantSquare(posX: number, targetY: number, yDir: number): Promise<SquareIndex> {
             return Coords.toSquareIndex(posX, targetY - yDir);
         }
 
-        const enPassantSquare = await getEnPassantSquare(posX, targetY, yDir);
-
-        setEnPassant(enPassantSquare);
+        return await getEnPassantSquare(posX, targetY, yDir);
     }
 };

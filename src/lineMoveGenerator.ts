@@ -52,7 +52,8 @@ export const LineMoveGenerator: ILineMoveGenerator = {
                     from: index,
                     to: Coords.toSquareIndex(posX, posY),
                     piece: piece,
-                    targetPiece: targetPiece
+                    targetPiece: targetPiece,
+                    setEnPassant: null
                 }
             );
 
