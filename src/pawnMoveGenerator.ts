@@ -119,7 +119,7 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
             from: index,
             to: Coords.toSquareIndex(enPassantX, enPassantY),
             piece: piece,
-            targetPiece: Piece.getPawn(Colours.inverseColour(colour)),
+            targetPiece: Pieces.Empty,
             setEnPassant: null
         });
     },

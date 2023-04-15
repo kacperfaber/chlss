@@ -5,7 +5,8 @@ import {Piece} from "./piece";
 /*
 Move implementation:
 
-1. Castling - TODO:
+1. Castling - 'from' and 'piece' targets king, 'targetPiece' and 'to' targets our rook.
+Castling Move is legal. It means I'm not creating a undo castle because I don't test it.
 
 2. En Passant:
 'targetPiece' is set to enemy pawn, but the 'to' square is empty. Then we have to calculate the pawn
