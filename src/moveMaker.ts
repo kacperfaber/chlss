@@ -37,9 +37,108 @@ export interface IMoveMaker {
     tryDisableCastling(board: IBoard, move: IMove, isCastling: boolean): Promise<void>;
 
     updateColourToMove(board: IBoard, move: IMove, colour: Colour): Promise<void>;
+
+    makeMoveOnBoard(boardPosition: BoardPosition, move: IMove): Promise<void>;
+
+    undoCastleMove(boardPosition: BoardPosition, move: IMove): Promise<void>;
+
+    undoEnPassantMove(boardPosition: BoardPosition, move: IMove): Promise<void>;
+
+    undoNormalMove(boardPosition: BoardPosition, move: IMove): Promise<void>;
+
+    undoMoveOnBoard(boardPosition: BoardPosition, move: IMove): Promise<void>;
 }
 
 export const MoveMaker: IMoveMaker = {
+    async undoEnPassantMove(boardPosition: BoardPosition, move: IMove): Promise<void> {
+        const fromY = Coords.toY(move.from);
+        const targetX = Coords.toX(move.to);
+        const colour = await Piece.getColour(move.piece);
+        if (colour==null) throw new Error("Move.Piece can't be null.");
+
+        function getEnemyPawnSquare(): SquareIndex {
+            return Coords.toSquareIndex(targetX, fromY);
+        }
+
+        const pawnToAdd = Piece.getPawn(await Colours.inverseColour(colour));
+
+        await BoardPosition.setPiece(boardPosition, getEnemyPawnSquare(), pawnToAdd);
+        await BoardPosition.setPiece(boardPosition, move.from, move.piece);
+        await BoardPosition.setEmpty(boardPosition, move.to);
+    },
+
+    async undoNormalMove(boardPosition: BoardPosition, move: IMove): Promise<void> {
+        await BoardPosition.setPiece(boardPosition, move.from, move.piece);
+        await BoardPosition.setPiece(boardPosition, move.to, move.targetPiece);
+    },
+
+    async makeMoveOnBoard(boardPosition: BoardPosition, move: IMove): Promise<void> {
+        if (await this.isCastlingMove(move)) {
+            await this.makeCastle(boardPosition, move);
+            return;
+        }
+
+        const fromX = Coords.toX(move.from);
+        const targetX = Coords.toX(move.to);
+
+        if (await this.isEnPassant(move)) {
+            await this.makeEnPassant(boardPosition, move, fromX, targetX);
+            return;
+        }
+
+        await this.makeNormalMoveOnBoard(boardPosition, move);
+    },
+
+    async undoCastleMove(boardPosition: BoardPosition, move: IMove) {
+        function setEmptyAll(...n: Array<number>) {
+            n.forEach(t => BoardPosition.setEmpty(boardPosition, t as SquareIndex));
+        }
+
+        function place(n: number, piece: Piece) {
+            BoardPosition.setPiece(boardPosition, n as SquareIndex, piece);
+        }
+
+        if (move.from == 60 as SquareIndex) {
+            if (move.to == 63 as SquareIndex) {
+                setEmptyAll(61, 62);
+                place(60, Pieces.WhiteKing);
+                place(63, Pieces.WhiteRook);
+            } else if (move.to == 56 as SquareIndex) {
+                setEmptyAll(58, 59);
+                place(60, Pieces.WhiteKing);
+                place(56, Pieces.WhiteRook);
+            }
+        }
+
+        else if (move.from == 4 as SquareIndex) {
+            if (move.to == 0 as SquareIndex) {
+                setEmptyAll(5, 6);
+                place(4, Pieces.BlackKing);
+                place(7, Pieces.BlackRook);
+            }
+
+            else if (move.to == 7 as SquareIndex) {
+                setEmptyAll(2, 3);
+                place(4, Pieces.BlackKing);
+                place(0, Pieces.BlackRook);
+            }
+        }
+    },
+
+    async undoMoveOnBoard(boardPosition: BoardPosition, move: IMove): Promise<void> {
+        if (await this.isCastlingMove(move)) {
+            await this.undoCastleMove(boardPosition, move);
+            return;
+        }
+
+        else if (await this.isEnPassant(move)) {
+            await this.undoEnPassantMove(boardPosition, move);
+            return;
+        }
+
+        await this.undoNormalMove(boardPosition, move);
+    },
+
     async updateColourToMove(board: IBoard, move: IMove, colour: Colour): Promise<void> {
         board.toMove = Colours.inverseColour(colour);
     },
