@@ -1,4 +1,4 @@
-import path from "path";
+const path = require('path');
 
 // TODO: There's an error with the import. I can't use import/from instead of require.
 
