@@ -268,6 +268,8 @@ export const MoveMaker: IMoveMaker = {
     async makeMoveAsync(board: IBoard, move: IMove): Promise<void> {
         const boardPosition = board.position;
 
+        // TODO: I'm getting an error move.piece is empty... [I don't know where]
+
         const colour = await Piece.getColour(move.piece);
         if (colour == null) throw new Error("Move.Piece can't be null.");
 

@@ -63,4 +63,43 @@ describe('moveMaker', function () {
         await MoveMaker.undoMoveOnBoard(board.position, move)
         expect(await FEN.writeFEN(board)).toBe(fen);
     });
+
+    test(`king white castling`, async function() {
+        const board = await fromFEN("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1");
+        const moves = await MoveGenerator.generateLegalMoves(board, Colours.white);
+        const move = moves.find(m => m.from == 60 as SquareIndex && m.to == 63 as SquareIndex) !!;
+        await MoveMaker.makeMoveAsync(board, move);
+        expect(await FEN.writeFEN(board)).toBe("r3k2r/8/8/8/8/8/8/R4RK1 b kq - 1 1");
+    });
+
+    test(`queen white castling`, async function() {
+        const board = await fromFEN("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1");
+        const moves = await MoveGenerator.generateLegalMoves(board, Colours.white);
+        const move = moves.find(m => m.from == 60 as SquareIndex && m.to == 56 as SquareIndex) !!;
+        await MoveMaker.makeMoveAsync(board, move);
+        expect(await FEN.writeFEN(board)).toBe("r3k2r/8/8/8/8/8/8/2KR3R b kq - 1 1");
+    });
+
+    test(`king black castling`, async function() {
+        const board = await fromFEN("r3k2r/8/8/8/8/8/8/R3K2R b KQkq - 0 1");
+        const moves = await MoveGenerator.generateLegalMoves(board, Colours.black);
+        const move = moves.find(m => m.from == 4 as SquareIndex && m.to == 7 as SquareIndex) !!;
+        await MoveMaker.makeMoveAsync(board, move);
+        expect(await FEN.writeFEN(board)).toBe("r4rk1/8/8/8/8/8/8/R3K2R w KQ - 1 2");
+    });
+
+    /*
+
+    TODO: When I was testing with wrong position I was getting an error from MoveMaker.makeMoveAsync() - piece can't be undefined.
+        something like that. I don't know why?
+
+     */
+
+    test(`queen black castling`, async function() {
+        const board = await fromFEN("r3k2r/8/8/8/8/8/8/R3K2R b KQkq - 0 1");
+        const moves = await MoveGenerator.generateLegalMoves(board, Colours.black);
+        const move = moves.find(m => m.from == 4 as SquareIndex && m.to == 0 as SquareIndex) !!;
+        await MoveMaker.makeMoveAsync(board, move);
+        expect(await FEN.writeFEN(board)).toBe("2kr3r/8/8/8/8/8/8/R3K2R w KQ - 1 2");
+    });
 });
