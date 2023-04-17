@@ -60,6 +60,14 @@ interface IPiece {
 
     getPawn(colour: Colour): Piece;
 
+    getRook(colour: Colour): Piece;
+
+    getQueen(colour: Colour): Piece;
+
+    getKnight(colour: Colour): Piece;
+
+    getBishop(colour: Colour): Piece;
+
     getBishopSquareColour(i: SquareIndex): Colour;
 
     getBishopSquareColourByCoords(x: number, y: number): Colour;
@@ -153,6 +161,21 @@ export const Piece: IPiece = {
         return ((y + 1) % 2) - ((x + 1) % 2) == 0 ? Colours.white : Colours.black;
     },
 
+    getBishop(colour: Colour): Piece {
+        return colour == Colours.white ? Pieces.WhiteBishop : Pieces.BlackBishop;
+    },
+
+    getQueen(colour: Colour): Piece {
+        return colour == Colours.white ? Pieces.WhiteQueen : Pieces.BlackQueen;
+    },
+
+    getRook(colour: Colour): Piece {
+        return colour == Colours.white ? Pieces.WhiteRook : Pieces.BlackRook;
+    },
+
+    getKnight(colour: Colour): Piece {
+        return colour == Colours.white ? Pieces.WhiteKing : Pieces.BlackKnight;
+    },
 
     allWhite: [
         Pieces.WhiteRook,
