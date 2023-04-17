@@ -5,6 +5,8 @@ import {Piece} from "./piece";
 import {BoardPosition} from "./boardPosition";
 import {SquareIndex} from "./square";
 
+// TODO: Make it prettier...
+
 export const Terminations = {
     // win / lose
 
