@@ -1,5 +1,7 @@
 import Pieces from "./pieces";
 import {Colour, Colours} from "./colour";
+import {SquareIndex} from "./square";
+import {Coords} from "./coords";
 
 export type Piece =
     typeof Pieces.BlackKing |
@@ -17,27 +19,50 @@ export type Piece =
     typeof Pieces.Empty;
 
 interface IPiece {
-    getColour(piece: Piece): Promise<Colour | null>;
-    isWhite(piece: Piece): Promise<boolean>;
-    isBlack(piece: Piece): Promise<boolean>;
-    isEmpty(piece: Piece): Promise<boolean>;
-    isColour(piece: Piece, colour: Colour): Promise<boolean>;
-    compareColour(colour1: Colour, colour2: Colour): Promise<boolean>;
-    isEnemy(piece: Piece, colour: Colour): Promise<boolean>;
     allWhite: Array<Piece>;
     allBlack: Array<Piece>;
+
+    getColour(piece: Piece): Promise<Colour | null>;
+
+    isWhite(piece: Piece): Promise<boolean>;
+
+    isBlack(piece: Piece): Promise<boolean>;
+
+    isEmpty(piece: Piece): Promise<boolean>;
+
+    isColour(piece: Piece, colour: Colour): Promise<boolean>;
+
+    compareColour(colour1: Colour, colour2: Colour): Promise<boolean>;
+
     isEnemy(piece: Piece, colour: Colour): Promise<boolean>;
+
+    isEnemy(piece: Piece, colour: Colour): Promise<boolean>;
+
     isEnemyOrEmpty(piece: Piece, colour: Colour): Promise<boolean>;
+
     isEnemyOrNull(piece: Piece, colour: Colour): Promise<boolean>;
+
     isRook(piece: Piece): boolean;
+
     isPawn(piece: Piece): boolean;
+
     isQueen(piece: Piece): boolean;
+
     isBishop(piece: Piece): boolean;
+
     isKnight(piece: Piece): boolean;
+
     isKing(piece: Piece): boolean;
-    isColourEnemyOrNull(tColour: Colour | null, colour: Colour): Promise<boolean>
+
+    isColourEnemyOrNull(tColour: Colour | null, colour: Colour): Promise<boolean>;
+
     getKing(colour: Colour): Piece;
+
     getPawn(colour: Colour): Piece;
+
+    getBishopSquareColour(i: SquareIndex): Colour;
+
+    getBishopSquareColourByCoords(x: number, y: number): Colour;
 }
 
 export const Piece: IPiece = {
@@ -72,8 +97,8 @@ export const Piece: IPiece = {
     },
 
     async isColourEnemyOrNull(tColour: Colour | null, colour: Colour): Promise<boolean> {
-        if (tColour==null) return true;
-        return ! await Piece.compareColour(tColour, colour);
+        if (tColour == null) return true;
+        return !await Piece.compareColour(tColour, colour);
     },
 
     async isWhite(piece: Piece): Promise<boolean> {
@@ -120,6 +145,14 @@ export const Piece: IPiece = {
         return piece == Pieces.WhiteQueen || piece == Pieces.BlackQueen;
     },
 
+    getBishopSquareColour(i: SquareIndex): Colour {
+        return this.getBishopSquareColourByCoords(Coords.toX(i), Coords.toY(i));
+    },
+
+    getBishopSquareColourByCoords(x: number, y: number): Colour {
+        return ((y + 1) % 2) - ((x + 1) % 2) == 0 ? Colours.white : Colours.black;
+    },
+
 
     allWhite: [
         Pieces.WhiteRook,
@@ -138,4 +171,4 @@ export const Piece: IPiece = {
         Pieces.BlackKnight,
         Pieces.BlackPawn
     ]
-}
+};

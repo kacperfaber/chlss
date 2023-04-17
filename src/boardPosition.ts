@@ -3,6 +3,7 @@ import Pieces from "./pieces";
 import {SquareIndex} from "./square";
 import {Coords} from "./coords";
 import {IMove} from "./move";
+import {Colour} from "./colour";
 
 export type BoardPosition = [
     Piece, Piece, Piece, Piece, Piece, Piece, Piece, Piece,
@@ -16,6 +17,14 @@ export type BoardPosition = [
 ];
 
 export const BoardPosition = {
+    async getAllPiecesByColour(boardPosition: BoardPosition, colour: Colour): Promise<Array<Piece>> {
+        return boardPosition.filter(async function (p: Piece) {
+            const pieceColour = await Piece.getColour(p);
+            if (pieceColour == null) return false;
+            return pieceColour == colour;
+        }) as Array<Piece>;
+    },
+
     async createEmpty(): Promise<BoardPosition> {
         return this.createEmptySynchronously();
     },
@@ -75,7 +84,6 @@ export const BoardPosition = {
     async setPiece(boardPosition: BoardPosition, square: SquareIndex, piece: Piece) {
         boardPosition[square] = piece;
     },
-
 
 
     async getPiece(boardPosition: BoardPosition, square: SquareIndex): Promise<Piece> {
