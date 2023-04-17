@@ -102,4 +102,20 @@ describe('moveMaker', function () {
         await MoveMaker.makeMoveAsync(board, move);
         expect(await FEN.writeFEN(board)).toBe("2kr3r/8/8/8/8/8/8/R3K2R w KQ - 1 2");
     });
+
+    test("en passant - scenario 1", async function() {
+        const board = await fromFEN("r1bqkbnr/ppppp1pp/n7/4Pp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3");
+        const moves = await MoveGenerator.generateLegalMoves(board, Colours.white);
+        const move = moves.find(m => m.from == 28 as SquareIndex && m.to == 21 as SquareIndex && m.targetPiece == Pieces.Empty) !!;
+        await MoveMaker.makeMoveAsync(board, move);
+        expect(await FEN.writeFEN(board)).toBe("r1bqkbnr/ppppp1pp/n4P2/8/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 3");
+    });
+
+    test("en passant - scenario 2", async function() {
+        const board = await fromFEN("k7/8/8/8/4pP2/8/8/K7 b - f3 0 1");
+        const moves = await MoveGenerator.generateLegalMoves(board, Colours.black);
+        const move = moves.find(({from, to, piece}) => piece == Pieces.BlackPawn && to == from + 9) !!;
+        await MoveMaker.makeMoveAsync(board, move);
+        expect(await FEN.writeFEN(board)).toBe("k7/8/8/8/8/5p2/8/K7 w - - 0 2");
+    });
 });

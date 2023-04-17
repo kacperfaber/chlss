@@ -216,7 +216,7 @@ export const MoveMaker: IMoveMaker = {
     async isEnPassant(move: IMove): Promise<{ fromX: number, targetX: number } | null> {
         const fromX = Coords.toX(move.from);
         const targetX = Coords.toX(move.to);
-        return ((fromX + 1 == targetX) && (fromX - 1 == targetX)) ? {fromX: fromX, targetX: targetX} : null;
+        return ((fromX + 1 == targetX) || (fromX - 1 == targetX)) ? {fromX: fromX, targetX: targetX} : null;
     },
 
     async makeEnPassant(boardPosition: BoardPosition, move: IMove, fromX: number, targetX: number): Promise<void> {
@@ -282,7 +282,7 @@ export const MoveMaker: IMoveMaker = {
             await this.disableCastling(board, move);
         } else if (enPassant != null) {
             await this.makeEnPassant(boardPosition, move, enPassant.fromX, enPassant.targetX);
-            await this.clearEnPassant(board);
+
         } else await this.makeNormalMove(board, boardPosition, move);
 
         await Promise.all([
@@ -290,7 +290,8 @@ export const MoveMaker: IMoveMaker = {
             this.tryDisableCastling(board, move, isCastling),
             this.modifyHalfMoveNumber(board, move, colour, isCastling, enPassant != null),
             this.trySetEnPassant(board, move),
-            this.updateColourToMove(board, move, colour)
+            this.updateColourToMove(board, move, colour),
+            this.clearEnPassant(board)
         ]);
 
         /*

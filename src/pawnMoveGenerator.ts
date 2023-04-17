@@ -23,7 +23,7 @@ interface IPawnMoveGenerator {
 
     addOneMoveIfOneSquareAheadIsEmpty(piece: Piece, index: SquareIndex, targetIndex: SquareIndex, moveList: Array<IMove>): void;
 
-    tryAddEnPassant(piece: Piece, colour: Colour, index: SquareIndex, enPassant: SquareIndex | null, yDir: number, posX: number, posY: number, moveList: Array<IMove>): void;
+    tryAddEnPassant(piece: Piece, colour: Colour, index: SquareIndex, enPassant: SquareIndex | null, yDir: number, posX: number, posY: number, moveList: Array<IMove>): Promise<void>;
 
     trySetEnPassantWhenMovesTwoSquare(colour: Colour, boardPosition: BoardPosition, posX: number, posY: number, targetY: number, yDir: number): Promise<SquareIndex | null>;
 
@@ -45,6 +45,7 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
         await Promise.all([
             this.addCaptureMove(boardPosition, piece, index, posX + 1, oneMoveTargetY, colour, moveList),
             this.addCaptureMove(boardPosition, piece, index, posX - 1, oneMoveTargetY, colour, moveList),
+            this.tryAddEnPassant(piece, colour,index, enPassant, yDir, posX, posY, moveList)
         ]);
     },
 
