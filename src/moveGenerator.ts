@@ -12,6 +12,7 @@ import {RookMoveGenerator} from "./rookMoveGenerator";
 import {KnightMoveGenerator} from "./knightMoveGenerator";
 import {KingMoveGenerator} from "./kingMoveGenerator";
 import {CastlingMoveGenerator} from "./castlingMoveGenerator";
+import {MoveMaker} from "./moveMaker";
 
 interface IMoveGenerator {
     generatePseudoLegalMoves(boardPosition: BoardPosition, colourToMove: Colour, moveList: Array<IMove>, enPassant: SquareIndex | null): Promise<void>;
@@ -23,7 +24,7 @@ export const MoveGenerator: IMoveGenerator = {
     async filterIllegalMoves(moveList: Array<IMove>, colourToMove: Colour, boardPosition: BoardPosition, enPassant: SquareIndex | null): Promise<void> {
         for (const iMove of [...moveList].reverse()) {
             const position = await BoardPosition.copyAsync(boardPosition);
-            await BoardPosition.makeMoveAsync(position, iMove);
+            await MoveMaker.makeMoveOnBoard(position, iMove);
 
             const enemyMoves: Array<IMove> = [];
             await MoveGenerator.generatePseudoLegalMoves(position, Colours.inverseColour(colourToMove), enemyMoves, enPassant);

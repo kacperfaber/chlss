@@ -29,20 +29,6 @@ export const BoardPosition = {
         return copy;
     },
 
-    async makeMoveAsync(boardPosition: BoardPosition, move: IMove) {
-        await BoardPosition.setPiece(boardPosition, move.to, move.piece);
-        BoardPosition.setEmpty(boardPosition, move.from);
-
-        // TODO: Missing execution of castle-move.
-    },
-
-    async undoMoveAsync(boardPosition: BoardPosition, move: IMove) {
-        await BoardPosition.setPiece(boardPosition, move.from, move.piece);
-        await BoardPosition.setPiece(boardPosition, move.to, move.targetPiece);
-
-        // TODO: Missing execution of castle-move.
-    },
-
     setEmpty(boardPosition: BoardPosition, square: number) {
         boardPosition[square] = Pieces.Empty;
     },
