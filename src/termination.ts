@@ -53,9 +53,9 @@ export const TerminationApi: ITerminationApi = {
         // TODO: There's a few things I can't implement in here [Like Resign, Timeout, Agreement etc...]
 
         if (isEmpty(legalMoves)) {
-            // TODO: Twice call of 'attacksEnemyKing' in these functions.
-            if (await this.isInMateWhenNoLegalMoves(board, enemyMoves)) return Terminations.Mate;
-            else if (await this.isInStalemateWhenNoLegalMoves(board, enemyMoves)) return Terminations.Stalemate;
+            const attacksOurKing = attacksEnemyKing(enemyMoves, board.toMove);
+            if (await this.isInMateWhenNoLegalMoves(board, attacksOurKing)) return Terminations.Mate;
+            else if (await this.isInStalemateWhenNoLegalMoves(board, attacksOurKing)) return Terminations.Stalemate;
         } else {
             if (await this.isFiftyMoveRule(board)) return Terminations.FiftyMoveRule;
 
@@ -64,12 +64,12 @@ export const TerminationApi: ITerminationApi = {
         return null;
     },
 
-    async isInMateWhenNoLegalMoves(board, enemyMoves): Promise<Colour | null> {
-        return attacksEnemyKing(enemyMoves, board.toMove) ? board.toMove : null;
+    async isInMateWhenNoLegalMoves(board, attacksOurKing): Promise<Colour | null> {
+        return attacksOurKing ? board.toMove : null;
     },
 
-    async isInStalemateWhenNoLegalMoves(board, enemyMoves): Promise<boolean> {
-        return !attacksEnemyKing(enemyMoves, board.toMove);
+    async isInStalemateWhenNoLegalMoves(board, attacksOurKing): Promise<boolean> {
+        return !attacksOurKing;
     },
 
     async isFiftyMoveRule(board: IBoard): Promise<boolean> {
@@ -129,9 +129,9 @@ export const TerminationApi: ITerminationApi = {
 export interface ITerminationApi {
     getTermination(board: IBoard, legalMoves: Array<IMove>, enemyMoves: Array<IMove>): Promise<Termination | null>;
 
-    isInMateWhenNoLegalMoves(board: IBoard, enemyMoves: Array<IMove>): Promise<Colour | null>;
+    isInMateWhenNoLegalMoves(board: IBoard, attacksOurKing: boolean): Promise<Colour | null>;
 
-    isInStalemateWhenNoLegalMoves(board: IBoard, enemyMoves: Array<IMove>): Promise<boolean>;
+    isInStalemateWhenNoLegalMoves(board: IBoard, attacksOurKing: boolean): Promise<boolean>;
 
     isFiftyMoveRule(board: IBoard): Promise<boolean>;
 
