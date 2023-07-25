@@ -1,5 +1,6 @@
 import {SquareIndex} from "./square";
 import {Piece} from "./piece";
+import Pieces from "./pieces";
 
 
 /*
@@ -29,4 +30,9 @@ export interface IMove {
     targetPiece: Piece;
     setEnPassant: SquareIndex | null;
     promotion: Figure | undefined;
+}
+
+// TODO: Delete it if it's not needed.
+export function isPromotionMove(piece: Piece, targetPosY: number): boolean {
+    return (piece == Pieces.WhitePawn && targetPosY == 0) || (piece == Pieces.BlackPawn && targetPosY == 8);
 }
