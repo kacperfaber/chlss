@@ -1,6 +1,9 @@
 import {fromFEN} from "./utils/boardUtils";
 import {MoveGenerator} from "../src/moveGenerator";
 import {Colour, Colours} from "../src/colour";
+import Pieces from "../src/pieces";
+import {MoveMaker} from "../src/moveMaker";
+import {FEN} from "../src/fen";
 
 type Test = { fen: string, colour: Colour, expectedMoveLength: number };
 
@@ -94,11 +97,16 @@ describe('moveGenerator.ts', function () {
             });
         });
 
-        test(`illegal moves`, async function () {
-            const board = await fromFEN("8/8/r7/R7/K7/8/8/8 w - - 0 1");
+        // TODO Move test below from MoveGenerator test case.
+
+        test(`promotion moves - move it from this test case`, async function () {
+            const board = await fromFEN("8/7P/8/8/8/8/1k6/6K1 w - - 0 1");
 
             const moves = await MoveGenerator.generateLegalMoves(board, Colours.white);
-            expect(moves.length).toBe(0);
+            const pawnMove = moves.find(x => x.piece == Pieces.WhitePawn)!!;
+            pawnMove.promotion = "queen";
+            await MoveMaker.makeMoveAsync(board, pawnMove);
+            expect(await FEN.writeFEN(board)).toBe("7Q/8/8/8/8/8/1k6/6K1 b - - 0 1");
         });
     });
 
