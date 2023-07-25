@@ -49,7 +49,8 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
                 to: 63 as SquareIndex,
                 piece: Pieces.WhiteKing,
                 targetPiece: Pieces.WhiteRook,
-                setEnPassant: null
+                setEnPassant: null,
+                promotion: undefined
             });
         }
 
@@ -67,7 +68,8 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
                 to: 7 as SquareIndex,
                 piece: Pieces.BlackKing,
                 targetPiece: Pieces.BlackRook,
-                setEnPassant: null
+                setEnPassant: null,
+                promotion: undefined
             });
         }
 
@@ -90,7 +92,8 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
                 to: 56 as SquareIndex,
                 piece: Pieces.WhiteKing,
                 targetPiece: Pieces.WhiteRook,
-                setEnPassant: null
+                setEnPassant: null,
+                promotion: undefined
             });
         }
 
@@ -108,7 +111,8 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
                 to: 0 as SquareIndex,
                 piece: Pieces.BlackKing,
                 targetPiece: Pieces.BlackRook,
-                setEnPassant: null
+                setEnPassant: null,
+                promotion: undefined
             });
         }
     }

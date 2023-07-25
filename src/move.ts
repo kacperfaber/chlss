@@ -20,6 +20,7 @@ We can just replace 'piece' with piece on the 'to', and set 'from' square empty.
 
  */
 
+export type Figure = "knight" | "bishop" | "queen" | "rook";
 
 export interface IMove {
     from: SquareIndex;
@@ -27,4 +28,5 @@ export interface IMove {
     piece: Piece;
     targetPiece: Piece;
     setEnPassant: SquareIndex | null;
+    promotion: Figure | undefined;
 }
