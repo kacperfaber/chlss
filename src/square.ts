@@ -63,3 +63,7 @@ export type SquareIndex =
     | 61
     | 62
     | 63;
+
+export function sq(n: number): SquareIndex {
+    return n as SquareIndex;
+}
