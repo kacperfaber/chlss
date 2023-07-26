@@ -1,11 +1,12 @@
 import {IMove} from "./move";
 import {BoardPosition} from "./boardPosition";
 import Pieces from "./pieces";
-import {SquareIndex} from "./square";
+import {sq, SquareIndex} from "./square";
 import {Piece} from "./piece";
 import {Coords} from "./coords";
 import {IBoard} from "./board";
 import {Colour, Colours} from "./colour";
+import {BoardNotation} from "./boardNotation";
 
 export interface IMoveMaker {
     isCastlingMove(move: IMove): Promise<boolean>;
@@ -54,7 +55,7 @@ export const MoveMaker: IMoveMaker = {
         const fromY = Coords.toY(move.from);
         const targetX = Coords.toX(move.to);
         const colour = await Piece.getColour(move.piece);
-        if (colour==null) throw new Error("Move.Piece can't be null.");
+        if (colour == null) throw new Error("Move.Piece can't be null.");
 
         function getEnemyPawnSquare(): SquareIndex {
             return Coords.toSquareIndex(targetX, fromY);
@@ -108,16 +109,12 @@ export const MoveMaker: IMoveMaker = {
                 place(60, Pieces.WhiteKing);
                 place(56, Pieces.WhiteRook);
             }
-        }
-
-        else if (move.from == 4 as SquareIndex) {
+        } else if (move.from == 4 as SquareIndex) {
             if (move.to == 0 as SquareIndex) {
                 setEmptyAll(5, 6);
                 place(4, Pieces.BlackKing);
                 place(7, Pieces.BlackRook);
-            }
-
-            else if (move.to == 7 as SquareIndex) {
+            } else if (move.to == 7 as SquareIndex) {
                 setEmptyAll(2, 3);
                 place(4, Pieces.BlackKing);
                 place(0, Pieces.BlackRook);
@@ -129,9 +126,7 @@ export const MoveMaker: IMoveMaker = {
         if (await this.isCastlingMove(move)) {
             await this.undoCastleMove(boardPosition, move);
             return;
-        }
-
-        else if (await this.isEnPassant(move)) {
+        } else if (await this.isEnPassant(move)) {
             await this.undoEnPassantMove(boardPosition, move);
             return;
         }
@@ -214,9 +209,29 @@ export const MoveMaker: IMoveMaker = {
     },
 
     async isEnPassant(move: IMove): Promise<{ fromX: number, targetX: number } | null> {
+        // TODO I don't know it will work when really en passant move needs to be pushed
+
         const fromX = Coords.toX(move.from);
         const targetX = Coords.toX(move.to);
-        return ((fromX + 1 == targetX) || (fromX - 1 == targetX)) ? {fromX: fromX, targetX: targetX} : null;
+        const fromY = Coords.toY(move.from);
+        const toY = Coords.toY(move.to);
+
+        const xValid = ((fromX + 1 == targetX) || (fromX - 1 == targetX));
+
+        async function yValid() {
+            const colour = await Piece.getColour(move.piece);
+            if (colour == Colours.white) {
+                return toY == fromY - 1;
+            }
+
+            else if (colour == Colours.black) {
+                return toY == fromY + 1;
+            }
+
+            throw new Error("Colour can't be null. [moveMaker isEnPassant yValid]")
+        }
+
+        return await Piece.isEmpty(move.targetPiece) && xValid && await yValid() && Piece.isPawn(move.piece) ? {fromX: fromX, targetX: targetX} : null;
     },
 
     async makeEnPassant(boardPosition: BoardPosition, move: IMove, fromX: number, targetX: number): Promise<void> {
