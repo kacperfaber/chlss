@@ -1,7 +1,7 @@
 import {IMove} from "./move";
 import {BoardPosition} from "./boardPosition";
 import {MoveMaker} from "./moveMaker";
-import {sq} from "./square";
+import {sq, SquareIndex} from "./square";
 import {BoardNotation} from "./boardNotation";
 import {Piece} from "./piece";
 
@@ -35,7 +35,13 @@ export class UCI {
         const to = BoardNotation.fromBoardNotation(toNotation);
 
         if (await this.isCastlingMoveUCI(fromNotation, toNotation, boardPosition)) {
-            return legalMoves.find(x => Piece.isKing(x.piece) && x.from == from)!!;
+
+            function validateTo(to: SquareIndex) {
+                return (toNotation == "g1" && to == 63) || (toNotation == "c1" && to == 56)
+                    || (toNotation == "g8" && to == 7) || (toNotation == "c8" && to == 0)
+            }
+
+            return legalMoves.find(x => Piece.isKing(x.piece) && x.from == from && validateTo(x.to))!!;
         }
 
         return legalMoves.find(x => x.from == from && x.to == to)!!;

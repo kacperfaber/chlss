@@ -75,87 +75,87 @@ describe('uci.ts', function () {
     //     })
     // });
 
+    const testData = {
+        normalMoves: [
+            {
+                move: "e2e4",
+                initialFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                from: 52,
+                to: 52 - 16
+            },
+            {
+                move: "e2e3",
+                initialFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                from: 52,
+                to: 52 - 8
+            },
+            {
+                move: "d2d4",
+                initialFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                from: 51,
+                to: 51 - 16
+            },
+            {
+                move: "d2d3",
+                initialFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                from: 51,
+                to: 51 - 8
+            },
+            {
+                move: "g1f3",
+                initialFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                from: 62,
+                to: 45
+            },
+            {
+                move: "g1h3",
+                initialFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                from: 62,
+                to: 47
+            },
+            {
+                move: "f1c4",
+                initialFEN: "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+                from: 61,
+                to: BoardNotation.fromBoardNotation("c4")
+            },
+            {
+                move: "f1b5",
+                initialFEN: "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+                from: 61,
+                to: BoardNotation.fromBoardNotation("b5")
+            }
+        ],
+
+        castleMoves: [
+            {
+                move: "e1g1",
+                from: 60,
+                to: 63,
+                fen: "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1"
+            },
+            {
+                move: "e1c1",
+                from: 60,
+                to: 56,
+                fen: "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1"
+            },
+            {
+                move: "e8g8",
+                from: 4,
+                to: 7,
+                fen: "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 1"
+            },
+            {
+                move: "e8c8",
+                from: 4,
+                to: 0,
+                fen: "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 1"
+            }
+        ]
+    }
+
     describe('write', function () {
-        const writeData = {
-            normalMoves: [
-                {
-                    move: "e2e4",
-                    initialFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-                    from: 52,
-                    to: 52 - 16
-                },
-                {
-                    move: "e2e3",
-                    initialFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-                    from: 52,
-                    to: 52 - 8
-                },
-                {
-                    move: "d2d4",
-                    initialFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-                    from: 51,
-                    to: 51 - 16
-                },
-                {
-                    move: "d2d3",
-                    initialFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-                    from: 51,
-                    to: 51 - 8
-                },
-                {
-                    move: "g1f3",
-                    initialFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-                    from: 62,
-                    to: 45
-                },
-                {
-                    move: "g1h3",
-                    initialFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-                    from: 62,
-                    to: 47
-                },
-                {
-                    move: "f1c4",
-                    initialFEN: "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
-                    from: 61,
-                    to: BoardNotation.fromBoardNotation("c4")
-                },
-                {
-                    move: "f1b5",
-                    initialFEN: "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
-                    from: 61,
-                    to: BoardNotation.fromBoardNotation("b5")
-                }
-            ],
-
-            castleMoves: [
-                {
-                    move: "e1g1",
-                    from: 60,
-                    to: 63,
-                    fen: "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1"
-                },
-                {
-                    move: "e1c1",
-                    from: 60,
-                    to: 56,
-                    fen: "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1"
-                },
-                {
-                    move: "e8g8",
-                    from: 4,
-                    to: 7,
-                    fen: "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 1"
-                },
-                {
-                    move: "e8c8",
-                    from: 4,
-                    to: 0,
-                    fen: "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 1"
-                }
-            ]
-        }
-
         async function testWrite(from: number, to: number, fen: string, expectedMove: string) {
             const board = new BoardObj();
             await board.fen(fen);
@@ -170,7 +170,7 @@ describe('uci.ts', function () {
         }
 
         describe("write normal moves", function () {
-            for (const {move, initialFEN, from, to} of writeData.normalMoves) {
+            for (const {move, initialFEN, from, to} of testData.normalMoves) {
                 test(`${from} -> ${to} = ${move}`, async function () {
                     await testWrite(from, to, initialFEN, move);
                 });
@@ -178,7 +178,7 @@ describe('uci.ts', function () {
         });
 
         describe('write castle', function () {
-            for (const {move, from, to, fen} of writeData.castleMoves) {
+            for (const {move, from, to, fen} of testData.castleMoves) {
                 test(`${from} -> ${to} = ${move}`, async function () {
                     await testWrite(from, to, fen, move);
                 });
@@ -193,6 +193,32 @@ describe('uci.ts', function () {
                 const move = (await board.legalMoves()).find(x => x.from == BoardNotation.fromBoardNotation("e5") && x.to == BoardNotation.fromBoardNotation("d6"))!!
                 expect(await UCI.write(move, board.pose())).toBe("e5d6");
             });
+        });
+    });
+
+    async function testParse(expFrom: number, expTo: number, fen: string, move: string) {
+        const board = new BoardObj();
+        await board.fen(fen);
+        const r = await UCI.parse(move, await board.legalMoves(), board.pose());
+        expect(r.from).toBe(expFrom as SquareIndex);
+        expect(r.to).toBe(expTo as SquareIndex);
+    }
+
+    describe('parse', function () {
+        describe('parse normal moves', function () {
+            for (const {move, from, to, initialFEN} of testData.normalMoves) {
+                test(`${from} -> ${to} = ${move}`, async function () {
+                    await testParse(from, to, initialFEN, move);
+                });
+            }
+        });
+
+        describe("parse castle moves", function () {
+            for (const {move, from, to, fen} of testData.castleMoves) {
+                test(`${from} -> ${to} = ${move}`, async function () {
+                    await testParse(from, to, fen, move);
+                });
+            }
         });
     });
 });
