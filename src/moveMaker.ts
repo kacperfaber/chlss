@@ -11,6 +11,8 @@ import {BoardNotation} from "./boardNotation";
 export interface IMoveMaker {
     isCastlingMove(move: IMove): Promise<boolean>;
 
+    makePromotionMove(boardPosition: BoardPosition, move: IMove): Promise<void>;
+
     makeCastle(boardPosition: BoardPosition, move: IMove): Promise<void>;
 
     isEnPassant(move: IMove): Promise<{ fromX: number, targetX: number } | null>;
@@ -280,6 +282,27 @@ export const MoveMaker: IMoveMaker = {
         board.enPassant = null;
     },
 
+    async makePromotionMove(boardPosition: BoardPosition, move: IMove): Promise<void> {
+        const colour = await Piece.getColour(move.piece);
+
+        function createPieceToSet(): Piece | never {
+            if (move.promotion == "knight") {
+                return colour == Colours.white ? Pieces.WhiteKnight : Pieces.BlackKnight;
+            } else if (move.promotion == "queen") {
+                return colour == Colours.white ? Pieces.WhiteQueen : Pieces.BlackQueen;
+            } else if (move.promotion == "rook") {
+                return colour == Colours.white ? Pieces.WhiteRook : Pieces.BlackRook;
+            } else if (move.promotion == "bishop") {
+                return colour == Colours.white ? Pieces.WhiteBishop : Pieces.BlackBishop;
+            }
+
+            throw new Error("MoveMaker->makePromotionMove->createPieceToSet");
+        }
+
+        await BoardPosition.setPiece(boardPosition, move.to, createPieceToSet());
+        await BoardPosition.setEmpty(boardPosition, move.from);
+    },
+
     async makeMoveAsync(board: IBoard, move: IMove): Promise<void> {
         const boardPosition = board.position;
 
@@ -295,9 +318,10 @@ export const MoveMaker: IMoveMaker = {
         if (isCastling) {
             await this.makeCastle(boardPosition, move);
             await this.disableCastling(board, move);
+        } else if (move.promotion != undefined) {
+            await this.makePromotionMove(boardPosition, move);
         } else if (enPassant != null) {
             await this.makeEnPassant(boardPosition, move, enPassant.fromX, enPassant.targetX);
-
         } else await this.makeNormalMove(board, boardPosition, move);
 
         await Promise.all([

@@ -53,7 +53,8 @@ export const LineMoveGenerator: ILineMoveGenerator = {
                     to: Coords.toSquareIndex(posX, posY),
                     piece: piece,
                     targetPiece: targetPiece,
-                    setEnPassant: null
+                    setEnPassant: null,
+                    promotion: undefined
                 }
             );
 

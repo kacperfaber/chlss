@@ -68,7 +68,8 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
             to: target,
             piece: piece,
             targetPiece: targetPiece,
-            setEnPassant: null
+            setEnPassant: null,
+            promotion: undefined
         });
     },
 
@@ -78,7 +79,8 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
             to: target,
             piece: piece,
             targetPiece: targetPiece,
-            setEnPassant: setEnPassant
+            setEnPassant: setEnPassant,
+            promotion: undefined
         });
     },
 
@@ -121,7 +123,8 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
             to: Coords.toSquareIndex(enPassantX, enPassantY),
             piece: piece,
             targetPiece: Pieces.Empty,
-            setEnPassant: null
+            setEnPassant: null,
+            promotion: undefined
         });
     },
 
