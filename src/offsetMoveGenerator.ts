@@ -26,7 +26,8 @@ export const OffsetMoveGenerator = {
                 piece: piece,
                 targetPiece: targetPiece,
                 setEnPassant: null,
-                promotion: undefined
+                promotion: undefined,
+                isPromo: false
             });
         }
 

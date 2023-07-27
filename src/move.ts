@@ -30,6 +30,7 @@ export interface IMove {
     targetPiece: Piece;
     setEnPassant: SquareIndex | null;
     promotion: Figure | undefined;
+    isPromo: boolean;
 }
 
 // TODO: Delete it if it's not needed.

@@ -50,7 +50,8 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
                 piece: Pieces.WhiteKing,
                 targetPiece: Pieces.WhiteRook,
                 setEnPassant: null,
-                promotion: undefined
+                promotion: undefined,
+                isPromo: false
             });
         }
 
@@ -69,7 +70,8 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
                 piece: Pieces.BlackKing,
                 targetPiece: Pieces.BlackRook,
                 setEnPassant: null,
-                promotion: undefined
+                promotion: undefined,
+                isPromo: false
             });
         }
 
@@ -93,7 +95,8 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
                 piece: Pieces.WhiteKing,
                 targetPiece: Pieces.WhiteRook,
                 setEnPassant: null,
-                promotion: undefined
+                promotion: undefined,
+                isPromo: false
             });
         }
 
@@ -112,7 +115,8 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
                 piece: Pieces.BlackKing,
                 targetPiece: Pieces.BlackRook,
                 setEnPassant: null,
-                promotion: undefined
+                promotion: undefined,
+                isPromo: false
             });
         }
     }

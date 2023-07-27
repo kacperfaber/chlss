@@ -54,7 +54,8 @@ export const LineMoveGenerator: ILineMoveGenerator = {
                     piece: piece,
                     targetPiece: targetPiece,
                     setEnPassant: null,
-                    promotion: undefined
+                    promotion: undefined,
+                    isPromo: false
                 }
             );
 
