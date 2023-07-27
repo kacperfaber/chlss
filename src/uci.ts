@@ -1,4 +1,4 @@
-import {IMove} from "./move";
+import {Figure, IMove} from "./move";
 import {BoardPosition} from "./boardPosition";
 import {MoveMaker} from "./moveMaker";
 import {sq, SquareIndex} from "./square";
@@ -15,9 +15,33 @@ export class UCI {
 
         // TODO what with en passant?
 
-        // TODO PROMOTION not implemented
+        function getPromotionCodeOrEmpty(figure: Figure | undefined) {
+            if (figure == undefined) {
+                return ""
+            }
 
-        return BoardNotation.toBoardNotation(move.from) + BoardNotation.toBoardNotation(move.to);
+            else if (figure == "bishop") {
+                return "b";
+            }
+
+            else if (figure == "queen") {
+                return "q";
+            }
+
+            else if (figure == "rook") {
+                return "r";
+            }
+
+            else if (figure == "knight") {
+                return "n";
+            }
+
+            throw new Error("");
+        }
+
+        const fromN = BoardNotation.toBoardNotation(move.from);
+        const toN = BoardNotation.toBoardNotation(move.to);
+        return `${fromN}${toN}${getPromotionCodeOrEmpty(move.promotion)}`
     }
 
     static async parse(move: string, legalMoves: IMove[], boardPosition: BoardPosition): Promise<IMove | never> {
@@ -31,8 +55,25 @@ export class UCI {
         const toNotation = result[2];
         const promotionString = result[3];
 
+        function promotionToFigureOrUndefined(promotion: string): Figure | undefined {
+            if (promotion == "") {
+                return undefined;
+            }
+
+            else if (promotion == "q") return "queen";
+
+            else if (promotion == "r") return "rook";
+
+            else if (promotion == "b") return "bishop";
+
+            else if (promotion == "n") return "knight";
+
+            throw new Error("");
+        }
+
         const from = BoardNotation.fromBoardNotation(fromNotation);
         const to = BoardNotation.fromBoardNotation(toNotation);
+        const figure = promotionToFigureOrUndefined(promotionString);
 
         if (await this.isCastlingMoveUCI(fromNotation, toNotation, boardPosition)) {
 
@@ -44,7 +85,9 @@ export class UCI {
             return legalMoves.find(x => Piece.isKing(x.piece) && x.from == from && validateTo(x.to))!!;
         }
 
-        return legalMoves.find(x => x.from == from && x.to == to)!!;
+        let pickedMove = legalMoves.find(x => x.from == from && x.to == to)!!;
+        pickedMove.promotion = figure;
+        return pickedMove;
     }
 
     private static async isCastlingMoveUCI(from: string, to: string, boardPosition: BoardPosition): Promise<boolean> {

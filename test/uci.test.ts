@@ -127,6 +127,70 @@ describe('uci.ts', function () {
             }
         ],
 
+        promotionMoves: [
+            {
+                move: "a7a8q",
+                from: 8,
+                to: 0,
+                fen: "7k/P7/8/8/8/8/8/7K w - - 0 1",
+                expectedFen: "Q6k/8/8/8/8/8/8/7K b - - 0 1"
+            },
+            {
+                move: "a7a8b",
+                from: 8,
+                to: 0,
+                fen: "7k/P7/8/8/8/8/8/7K w - - 0 1",
+                expectedFen: "B6k/8/8/8/8/8/8/7K b - - 0 1"
+            },
+            {
+                move: "a7a8n",
+                from: 8,
+                to: 0,
+                fen: "7k/P7/8/8/8/8/8/7K w - - 0 1",
+                expectedFen: "N6k/8/8/8/8/8/8/7K b - - 0 1"
+            },
+            {
+                move: "a7a8r",
+                from: 8,
+                to: 0,
+                fen: "7k/P7/8/8/8/8/8/7K w - - 0 1",
+                expectedFen: "R6k/8/8/8/8/8/8/7K b - - 0 1"
+            },
+
+
+
+
+            {
+                move: "h2h1q",
+                from: 55,
+                to: 63,
+                fen: "k7/8/8/8/8/8/K6p/8 b - - 0 1",
+                expectedFen: "k7/8/8/8/8/8/K7/7q w - - 0 2"
+            },
+            {
+                move: "h2h1b",
+                from: 55,
+                to: 63,
+                fen: "k7/8/8/8/8/8/K6p/8 b - - 0 1",
+                expectedFen: "k7/8/8/8/8/8/K7/7b w - - 0 2"
+            },
+            {
+                move: "h2h1n",
+                from: 55,
+                to: 63,
+                fen: "k7/8/8/8/8/8/K6p/8 b - - 0 1",
+                expectedFen: "k7/8/8/8/8/8/K7/7n w - - 0 2"
+            },
+            {
+                move: "h2h1r",
+                from: 55,
+                to: 63,
+                fen: "k7/8/8/8/8/8/K6p/8 b - - 0 1",
+                expectedFen: "k7/8/8/8/8/8/K7/7r w - - 0 2"
+            },
+
+        ],
+
         castleMoves: [
             {
                 move: "e1g1",
@@ -194,6 +258,10 @@ describe('uci.ts', function () {
                 expect(await UCI.write(move, board.pose())).toBe("e5d6");
             });
         });
+
+        describe("write promotion moves", async function() {
+            // TODO: TEST
+        });
     });
 
     async function testParse(expFrom: number, expTo: number, fen: string, move: string) {
@@ -217,6 +285,22 @@ describe('uci.ts', function () {
             for (const {move, from, to, fen} of testData.castleMoves) {
                 test(`${from} -> ${to} = ${move}`, async function () {
                     await testParse(from, to, fen, move);
+                });
+            }
+        });
+
+        describe("parse promotion moves", function() {
+            for (const {move, from, to, fen, expectedFen} of testData.promotionMoves) {
+                test(`${move} makes FEN: ${expectedFen}`, async function() {
+                    const board = new BoardObj();
+                    await board.fen(fen);
+                    let legalMoves = await board.legalMoves();
+                    const r = await UCI.parse(move, legalMoves, board.pose());
+                    expect(r.from).toBe(from as SquareIndex);
+                    expect(r.to).toBe(to as SquareIndex);
+
+                    await board.push(r);
+                    expect(await board.fen()).toBe(expectedFen);
                 });
             }
         });
