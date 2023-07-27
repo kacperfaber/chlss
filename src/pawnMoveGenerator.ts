@@ -6,6 +6,11 @@ import {Colour, Colours} from "./colour";
 import {Coords} from "./coords";
 import Pieces from "./pieces";
 
+function isLastSquare(pawnColour: Colour, sq: SquareIndex) {
+    const y = Coords.toY(sq);
+    return (pawnColour == Colours.white && y == 0) || (pawnColour == Colours.black && y == 7);
+}
+
 interface IPawnMoveGenerator {
     generatePawnMoves(boardPosition: BoardPosition, piece: Piece, index: SquareIndex, posX: number, posY: number, colour: Colour, moveList: Array<IMove>, enPassant: SquareIndex | null): Promise<void>;
 
@@ -70,7 +75,7 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
             targetPiece: targetPiece,
             setEnPassant: null,
             promotion: undefined,
-            isPromo: false
+            isPromo: isLastSquare(Piece.getColourSynchronously(piece) !!, target)
         });
     },
 

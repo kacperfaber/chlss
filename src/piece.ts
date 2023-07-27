@@ -38,6 +38,7 @@ interface IPiece {
     isColourEnemyOrNull(tColour: Colour | null, colour: Colour): Promise<boolean>
     getKing(colour: Colour): Piece;
     getPawn(colour: Colour): Piece;
+    getColourSynchronously(piece: Piece): Colour | null;
 }
 
 export const Piece: IPiece = {
@@ -137,5 +138,11 @@ export const Piece: IPiece = {
         Pieces.BlackBishop,
         Pieces.BlackKnight,
         Pieces.BlackPawn
-    ]
+    ],
+
+    getColourSynchronously(piece: Piece): Colour | null {
+        if (this.allWhite.includes(piece)) return Colours.white;
+        if (this.allBlack.includes(piece)) return Colours.black;
+        return null;
+    }
 }
