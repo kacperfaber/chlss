@@ -286,6 +286,10 @@ export const MoveMaker: IMoveMaker = {
         const colour = await Piece.getColour(move.piece);
 
         function createPieceToSet(): Piece | never {
+            if (move.promotion == undefined) {
+                throw new Error("Need to specify move.promotion when you're pushing the promotion move.");
+            }
+
             if (move.promotion == "knight") {
                 return colour == Colours.white ? Pieces.WhiteKnight : Pieces.BlackKnight;
             } else if (move.promotion == "queen") {
