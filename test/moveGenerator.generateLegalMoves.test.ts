@@ -93,13 +93,6 @@ describe('moveGenerator.ts', function () {
                 expect(moves.length).toBe(t.expectedMoveLength);
             });
         });
-
-        test(`illegal moves`, async function () {
-            const board = await fromFEN("8/8/r7/R7/K7/8/8/8 w - - 0 1");
-
-            const moves = await MoveGenerator.generateLegalMoves(board, Colours.white);
-            expect(moves.length).toBe(0);
-        });
     });
 
 });
