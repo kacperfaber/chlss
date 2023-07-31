@@ -1,6 +1,8 @@
 import chess
 import random
 import argparse
+import json
+
 
 class App:
     def __init__(self, output, repeat, move_in_case, starting_fen: str):
@@ -10,10 +12,20 @@ class App:
         self.starting_fen = starting_fen
         self.results = []
 
+    def __construct_result(self):
+        return {"startingFen": self.starting_fen, "tests": self.results}
+
+    def __write_output(self):
+        text = json.dumps(self.__construct_result())
+        with open(self.output, mode="w+") as file:
+            file.seek(0)
+            file.write(text)
+
     def run(self):
         for i in range(self.repeat):
             print(f"{i + 1} / {self.repeat}")
             self.results.append(self.__exec())
+        self.__write_output()
 
     # noinspection PyMethodMayBeStatic
     def __get_all_uci(self, board: chess.Board) -> [str]:
@@ -42,7 +54,7 @@ class App:
                 break
             last_fen = fen_or_none
 
-        return {'moves': moves, 'fen': last_fen, 'starting_fen': self.starting_fen}
+        return {'moves': moves, 'fen': last_fen}
 
 
 if __name__ == '__main__':
