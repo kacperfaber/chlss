@@ -2,6 +2,7 @@ import chess
 import random
 import argparse
 import json
+import sys
 
 
 class App:
@@ -23,7 +24,7 @@ class App:
 
     def run(self):
         for i in range(self.repeat):
-            print(f"{i + 1} / {self.repeat}")
+            print(f"{i} of {self.repeat}", end='\r')
             self.results.append(self.__exec())
         self.__write_output()
 
@@ -71,4 +72,5 @@ if __name__ == '__main__':
 
     App(args.output, args.repeat, args.move_in_case, args.starting_fen).run()
 
-    print("OK")
+    sys.stdout.flush()
+    print("OK\t\t\t\t\t")
