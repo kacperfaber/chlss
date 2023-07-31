@@ -1,5 +1,8 @@
+import sys
+
 import chess
 import random
+import argparse
 
 
 def get_all_uci(board) -> [str]:
@@ -31,10 +34,18 @@ def exec(starting_fen):
     return {'moves': moves, 'final_fen': last_fen, 'starting_fen': starting_fen}
 
 
+class App:
+    def __init__(self, output, repeat, move_in_case, starting_fen):
+        print("App's running...")
+
+
 if __name__ == '__main__':
-    results = []
+    parser = argparse.ArgumentParser(description="python CLI to generate JSON test data, for testing 'github.com/kacperfaber/chlss-ts'")
+    parser.add_argument("--output", type=str, required=True)
+    parser.add_argument("--repeat", type=int, required=True)
+    parser.add_argument("--move-in-case", type=int, required=True)
+    parser.add_argument("--starting-fen", type=str, default="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
-    for i in range(50):
-        results.append(exec("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"))
+    args = parser.parse_args()
 
-    print("OK")
+    App(args.output, args.repeat, args.move_in_case, args.starting_fen)
