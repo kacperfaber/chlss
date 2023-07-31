@@ -5,6 +5,8 @@ import {MoveGenerator} from "./moveGenerator";
 import {MoveMaker} from "./moveMaker";
 import {BoardPosition} from "./boardPosition";
 import {UCI} from "./uci";
+import {Termination, TerminationApi} from "./termination";
+import {Colours} from "./colour";
 
 export class BoardObj {
     private board = Board.createEmpty();
@@ -31,5 +33,14 @@ export class BoardObj {
 
     async push(move: IMove): Promise<void> {
         return await MoveMaker.makeMoveAsync(this.board, move);
+    }
+
+    private async getEnemyMoves(): Promise<Array<IMove>> {
+        return await MoveGenerator.generateLegalMoves(this.board, Colours.inverseColour(this.board.toMove));
+    }
+
+    async getTermination(): Promise<Termination | null> {
+        const legalMoves = await this.legalMoves();
+        return await TerminationApi.getTermination(this.board, legalMoves, await this.getEnemyMoves())
     }
 }
