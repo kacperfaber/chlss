@@ -2,6 +2,8 @@ import {UCI} from "../src/uci";
 import {BoardObj} from "../src/boardObj";
 import {SquareIndex} from "../src/square";
 import {BoardNotation} from "../src/boardNotation";
+import {Piece} from "../src/piece";
+import {Figure} from "../src/move";
 
 describe('uci.ts', function () {
     // describe('write', function () {
@@ -133,28 +135,32 @@ describe('uci.ts', function () {
                 from: 8,
                 to: 0,
                 fen: "7k/P7/8/8/8/8/8/7K w - - 0 1",
-                expectedFen: "Q6k/8/8/8/8/8/8/7K b - - 0 1"
+                expectedFen: "Q6k/8/8/8/8/8/8/7K b - - 0 1",
+                promotionTo: "Q"
             },
             {
                 move: "a7a8b",
                 from: 8,
                 to: 0,
                 fen: "7k/P7/8/8/8/8/8/7K w - - 0 1",
-                expectedFen: "B6k/8/8/8/8/8/8/7K b - - 0 1"
+                expectedFen: "B6k/8/8/8/8/8/8/7K b - - 0 1",
+                promotionTo: "B"
             },
             {
                 move: "a7a8n",
                 from: 8,
                 to: 0,
                 fen: "7k/P7/8/8/8/8/8/7K w - - 0 1",
-                expectedFen: "N6k/8/8/8/8/8/8/7K b - - 0 1"
+                expectedFen: "N6k/8/8/8/8/8/8/7K b - - 0 1",
+                promotionTo: "N"
             },
             {
                 move: "a7a8r",
                 from: 8,
                 to: 0,
                 fen: "7k/P7/8/8/8/8/8/7K w - - 0 1",
-                expectedFen: "R6k/8/8/8/8/8/8/7K b - - 0 1"
+                expectedFen: "R6k/8/8/8/8/8/8/7K b - - 0 1",
+                promotionTo: "R"
             },
 
 
@@ -165,28 +171,32 @@ describe('uci.ts', function () {
                 from: 55,
                 to: 63,
                 fen: "k7/8/8/8/8/8/K6p/8 b - - 0 1",
-                expectedFen: "k7/8/8/8/8/8/K7/7q w - - 0 2"
+                expectedFen: "k7/8/8/8/8/8/K7/7q w - - 0 2",
+                promotionTo: "q"
             },
             {
                 move: "h2h1b",
                 from: 55,
                 to: 63,
                 fen: "k7/8/8/8/8/8/K6p/8 b - - 0 1",
-                expectedFen: "k7/8/8/8/8/8/K7/7b w - - 0 2"
+                expectedFen: "k7/8/8/8/8/8/K7/7b w - - 0 2",
+                promotionTo: "b"
             },
             {
                 move: "h2h1n",
                 from: 55,
                 to: 63,
                 fen: "k7/8/8/8/8/8/K6p/8 b - - 0 1",
-                expectedFen: "k7/8/8/8/8/8/K7/7n w - - 0 2"
+                expectedFen: "k7/8/8/8/8/8/K7/7n w - - 0 2",
+                promotionTo: "n"
             },
             {
                 move: "h2h1r",
                 from: 55,
                 to: 63,
                 fen: "k7/8/8/8/8/8/K6p/8 b - - 0 1",
-                expectedFen: "k7/8/8/8/8/8/K7/7r w - - 0 2"
+                expectedFen: "k7/8/8/8/8/8/K7/7r w - - 0 2",
+                promotionTo: "r"
             },
 
         ],
@@ -259,8 +269,35 @@ describe('uci.ts', function () {
             });
         });
 
-        describe("write promotion moves", async function() {
-            // TODO: TEST
+        function toFigure(promotion: string): Figure {
+            promotion = promotion.toLowerCase();
+
+            if (promotion == "") {
+                throw new Error("promotion can't be empty");
+            }
+
+            else if (promotion == "q") return "queen";
+
+            else if (promotion == "r") return "rook";
+
+            else if (promotion == "b") return "bishop";
+
+            else if (promotion == "n") return "knight";
+
+            throw new Error("");
+        }
+
+        describe("write promotion moves", function() {
+            for (const {move, fen, expectedFen, to, from, promotionTo} of testData.promotionMoves) {
+                test(`${from} -> ${to} promo to ${promotionTo}`, async function() {
+                    const board = new BoardObj();
+                    await board.fen(fen);
+                    const legalMoves = await board.legalMoves();
+                    const legalMove = legalMoves.find(x => x.from == from as SquareIndex && x.to == to as SquareIndex)!!;
+                    legalMove.promotion = toFigure(promotionTo);
+                    expect(await UCI.write(legalMove, board.pose())).toBe(move);
+                });
+            }
         });
     });
 
