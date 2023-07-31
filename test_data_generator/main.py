@@ -1,46 +1,55 @@
-import sys
-
 import chess
 import random
 import argparse
 
-
-def get_all_uci(board) -> [str]:
-    arr = []
-    for m in board.legal_moves:
-        arr.append(m.uci())
-    return arr
-
-
-def push_random_move(board: chess.Board, moves: [str]):
-    legal_moves = get_all_uci(board)
-    random_index = random.randint(0, len(legal_moves)) - 1
-    if len(legal_moves) == 0:
-        return None
-    picked_move = legal_moves[random_index]
-    board.push_uci(picked_move)
-    moves.append(picked_move)
-    return board.fen()
-
-
-def exec(starting_fen):
-    b = chess.Board(starting_fen)
-    moves = []
-    last_fen = None
-
-    for i in range(50):
-        last_fen = push_random_move(b, moves)
-
-    return {'moves': moves, 'final_fen': last_fen, 'starting_fen': starting_fen}
-
-
 class App:
-    def __init__(self, output, repeat, move_in_case, starting_fen):
-        print("App's running...")
+    def __init__(self, output, repeat, move_in_case, starting_fen: str):
+        self.output = output
+        self.repeat = repeat
+        self.move_in_case = move_in_case
+        self.starting_fen = starting_fen
+        self.results = []
+
+    def run(self):
+        for i in range(self.repeat):
+            print(f"{i + 1} / {self.repeat}")
+            self.results.append(self.__exec())
+
+    # noinspection PyMethodMayBeStatic
+    def __get_all_uci(self, board: chess.Board) -> [str]:
+        return [move.uci() for move in board.legal_moves]
+
+    def __push_random_move(self, board: chess.Board, moves: [str]):
+        legal_moves = self.__get_all_uci(board)
+        random_index = random.randint(0, len(legal_moves)) - 1
+
+        if len(legal_moves) == 0:
+            return None
+
+        picked_move = legal_moves[random_index]
+        board.push_uci(picked_move)
+        moves.append(picked_move)
+        return board.fen()
+
+    def __exec(self):
+        b = chess.Board(self.starting_fen)
+        moves = []
+        last_fen = None
+
+        for i in range(self.move_in_case):
+            fen_or_none = self.__push_random_move(b, moves)
+            if fen_or_none is None:
+                break
+            last_fen = fen_or_none
+
+        return {'moves': moves, 'fen': last_fen, 'starting_fen': self.starting_fen}
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="python CLI to generate JSON test data, for testing 'github.com/kacperfaber/chlss-ts'")
+    parser = argparse.ArgumentParser(
+        description="python CLI to generate JSON test data, for testing 'github.com/kacperfaber/chlss-ts'"
+    )
+
     parser.add_argument("--output", type=str, required=True)
     parser.add_argument("--repeat", type=int, required=True)
     parser.add_argument("--move-in-case", type=int, required=True)
@@ -48,4 +57,6 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    App(args.output, args.repeat, args.move_in_case, args.starting_fen)
+    App(args.output, args.repeat, args.move_in_case, args.starting_fen).run()
+
+    print("OK")
