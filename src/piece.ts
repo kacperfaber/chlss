@@ -1,5 +1,7 @@
 import Pieces from "./pieces";
 import {Colour, Colours} from "./colour";
+import {SquareIndex} from "./square";
+import {Coords} from "./coords";
 
 export type Piece =
     typeof Pieces.BlackKing |
@@ -39,6 +41,18 @@ interface IPiece {
     getKing(colour: Colour): Piece;
     getPawn(colour: Colour): Piece;
     getColourSynchronously(piece: Piece): Colour | null;
+
+    getRook(colour: Colour): Piece;
+
+    getQueen(colour: Colour): Piece;
+
+    getKnight(colour: Colour): Piece;
+
+    getBishop(colour: Colour): Piece;
+
+    getBishopSquareColour(i: SquareIndex): Colour;
+
+    getBishopSquareColourByCoords(x: number, y: number): Colour;
 }
 
 export const Piece: IPiece = {
@@ -73,8 +87,8 @@ export const Piece: IPiece = {
     },
 
     async isColourEnemyOrNull(tColour: Colour | null, colour: Colour): Promise<boolean> {
-        if (tColour==null) return true;
-        return ! await Piece.compareColour(tColour, colour);
+        if (tColour == null) return true;
+        return !await Piece.compareColour(tColour, colour);
     },
 
     async isWhite(piece: Piece): Promise<boolean> {
@@ -121,6 +135,29 @@ export const Piece: IPiece = {
         return piece == Pieces.WhiteQueen || piece == Pieces.BlackQueen;
     },
 
+    getBishopSquareColour(i: SquareIndex): Colour {
+        return this.getBishopSquareColourByCoords(Coords.toX(i), Coords.toY(i));
+    },
+
+    getBishopSquareColourByCoords(x: number, y: number): Colour {
+        return ((y + 1) % 2) - ((x + 1) % 2) == 0 ? Colours.white : Colours.black;
+    },
+
+    getBishop(colour: Colour): Piece {
+        return colour == Colours.white ? Pieces.WhiteBishop : Pieces.BlackBishop;
+    },
+
+    getQueen(colour: Colour): Piece {
+        return colour == Colours.white ? Pieces.WhiteQueen : Pieces.BlackQueen;
+    },
+
+    getRook(colour: Colour): Piece {
+        return colour == Colours.white ? Pieces.WhiteRook : Pieces.BlackRook;
+    },
+
+    getKnight(colour: Colour): Piece {
+        return colour == Colours.white ? Pieces.WhiteKing : Pieces.BlackKnight;
+    },
 
     allWhite: [
         Pieces.WhiteRook,
