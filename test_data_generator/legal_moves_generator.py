@@ -2,7 +2,7 @@ import argparse
 import chess
 import random
 import json
-
+import os
 
 class App:
     def __init__(self, repeat, output, random_position_moves):
@@ -30,6 +30,9 @@ class App:
         return {'fen': fen, 'legalMoves': legal_moves, 'legalMovesCount': len(legal_moves), 'id': iteration}
 
     def __write_results(self, results):
+        dirname = os.path.dirname(self.output)
+        if not os.path.exists(dirname):
+                os.makedirs(dirname)
         with open(self.output, "w+") as file:
             file.write(json.dumps(results))
 

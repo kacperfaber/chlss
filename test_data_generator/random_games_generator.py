@@ -3,7 +3,7 @@ import random
 import argparse
 import json
 import sys
-
+import os
 
 class App:
     def __init__(self, output, repeat, move_in_case, starting_fen: str):
@@ -17,6 +17,9 @@ class App:
         return {"startingFen": self.starting_fen, "tests": self.results}
 
     def __write_output(self):
+        dirname = os.path.dirname(self.output)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
         text = json.dumps(self.__construct_result())
         with open(self.output, mode="w+") as file:
             file.seek(0)
