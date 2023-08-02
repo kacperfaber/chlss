@@ -257,6 +257,14 @@ export const MoveMaker: IMoveMaker = {
             if (move.from == 56 as SquareIndex) board.castling.white.queenSide = false;
             if (move.from == 63 as SquareIndex) board.castling.white.kingSide = false;
         }
+
+        /* When the rook is captured, we also need to disable castling related with this rook. */
+        else if (Piece.isRook(move.targetPiece)) {
+            if (move.to == 0 as SquareIndex) board.castling.black.queenSide = false;
+            if (move.to == 7 as SquareIndex) board.castling.black.kingSide = false;
+            if (move.to == 56 as SquareIndex) board.castling.white.queenSide = false;
+            if (move.to == 63 as SquareIndex) board.castling.white.kingSide = false;
+        }
     },
 
     async makeNormalMoveOnBoard(boardPosition: BoardPosition, move: IMove): Promise<void> {
