@@ -114,11 +114,11 @@ export const BoardPosition = {
     },
 
     async isSquaresNotUnderAttack(enemyColour: Colour, moveList: Array<IMove>, boardPosition: BoardPosition, ...squareIndexes: Array<SquareIndex>): Promise<boolean> {
-        moveList.forEach(function (move: IMove) {
+        for (const move of moveList) {
             for (let squareIndex of squareIndexes) {
                 if (squareIndex == move.to) return false;
             }
-        });
+        }
 
         async function isEnemyPawnLookingAt(enemyColour: Colour, square: SquareIndex): Promise<boolean> {
             const yDiff: number = enemyColour == Colours.white ? 1 : -1;
