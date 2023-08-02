@@ -143,7 +143,9 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
                 const piece = await BoardPosition.getPieceOrNull(boardPosition, sqIndex);
                 if (piece == Piece.getPawn(Colours.inverseColour(colour)))
                     return true;
-            } else if (await BoardPosition.isInBoard(posX - 1, targetY)) {
+            }
+
+            if (await BoardPosition.isInBoard(posX - 1, targetY)) {
                 const sqIndex = Coords.toSquareIndex(posX - 1, targetY);
                 const piece = await BoardPosition.getPieceOrNull(boardPosition, sqIndex);
                 if (piece == Piece.getPawn(Colours.inverseColour(colour)))
