@@ -211,8 +211,6 @@ export const MoveMaker: IMoveMaker = {
     },
 
     async isEnPassant(move: IMove): Promise<{ fromX: number, targetX: number } | null> {
-        // TODO I don't know it will work when really en passant move needs to be pushed
-
         const fromX = Coords.toX(move.from);
         const targetX = Coords.toX(move.to);
         const fromY = Coords.toY(move.from);
@@ -344,15 +342,6 @@ export const MoveMaker: IMoveMaker = {
             this.trySetEnPassant(board, move),
             this.updateColourToMove(board, move, colour),
         ]);
-
-        /*
-        TODO: Here I don't have many things like modify board state.
-        - counters
-        - 'setEnPassant' moves.
-        - mates, pats...
-        - castlings
-
-         */
     },
 
     async trySetEnPassant(board: IBoard, move: IMove): Promise<void> {

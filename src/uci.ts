@@ -13,8 +13,6 @@ export class UCI {
             return this.writeCastle(move);
         }
 
-        // TODO what with en passant?
-
         function getPromotionCodeOrEmpty(figure: Figure | undefined) {
             if (figure == undefined) {
                 return ""
