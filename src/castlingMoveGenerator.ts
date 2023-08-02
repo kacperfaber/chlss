@@ -41,7 +41,7 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
             const enemyMoves: Array<IMove> = [];
             await MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves, null);
 
-            if (!(await BoardPosition.isSquaresNotUnderAttack(enemyMoves, 60 as SquareIndex, 62 as SquareIndex, 61 as SquareIndex)))
+            if (!(await BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 60 as SquareIndex, 62 as SquareIndex, 61 as SquareIndex)))
                 return;
 
             moveList.push({
@@ -53,19 +53,13 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
                 promotion: undefined,
                 isPromo: false
             });
-        }
-
-        else if (colour == Colours.black) {
+        } else if (colour == Colours.black) {
             if (!(await BoardPosition.isSquaresEmpty(board.position, 5 as SquareIndex, 6 as SquareIndex))) return;
 
             const enemyMoves: Array<IMove> = [];
             await MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves, null);
 
-            // TODO: To perform a castling, squares where the king is going through must be not under attack
-            //  but pawn-capture move is only generated, when pawn has piece to attack.
-            //  actually we can perform under pawn attack.
-
-            if (!(await BoardPosition.isSquaresNotUnderAttack(enemyMoves, 5 as SquareIndex, 6 as SquareIndex, 4 as SquareIndex)))
+            if (!(await BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 5 as SquareIndex, 6 as SquareIndex, 4 as SquareIndex)))
                 return;
 
             moveList.push({
@@ -90,7 +84,7 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
             const enemyMoves: Array<IMove> = [];
             await MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves, null);
 
-            if (!(await BoardPosition.isSquaresNotUnderAttack(enemyMoves, 59 as SquareIndex, 58 as SquareIndex, 57 as SquareIndex, 60 as SquareIndex)))
+            if (!(await BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 59 as SquareIndex, 58 as SquareIndex, 57 as SquareIndex, 60 as SquareIndex)))
                 return;
 
             moveList.push({
@@ -102,15 +96,13 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
                 promotion: undefined,
                 isPromo: false
             });
-        }
-
-        else if (colour == Colours.black) {
+        } else if (colour == Colours.black) {
             if (!(await BoardPosition.isSquaresEmpty(board.position, 1 as SquareIndex, 2 as SquareIndex, 3 as SquareIndex))) return;
 
             const enemyMoves: Array<IMove> = [];
             await MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves, null);
 
-            if (!(await BoardPosition.isSquaresNotUnderAttack(enemyMoves, 1 as SquareIndex, 2 as SquareIndex, 3 as SquareIndex, 4 as SquareIndex)))
+            if (!(await BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 1 as SquareIndex, 2 as SquareIndex, 3 as SquareIndex, 4 as SquareIndex)))
                 return;
 
             moveList.push({

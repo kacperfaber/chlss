@@ -3,7 +3,7 @@ import Pieces from "./pieces";
 import {SquareIndex} from "./square";
 import {Coords} from "./coords";
 import {IMove} from "./move";
-import {Colour} from "./colour";
+import {Colour, Colours} from "./colour";
 
 export type BoardPosition = [
     Piece, Piece, Piece, Piece, Piece, Piece, Piece, Piece,
@@ -113,12 +113,40 @@ export const BoardPosition = {
         }).length > 0;
     },
 
-    async isSquaresNotUnderAttack(moveList: Array<IMove>, ...squareIndexes: Array<SquareIndex>): Promise<boolean> {
+    async isSquaresNotUnderAttack(enemyColour: Colour, moveList: Array<IMove>, boardPosition: BoardPosition, ...squareIndexes: Array<SquareIndex>): Promise<boolean> {
         moveList.forEach(function (move: IMove) {
             for (let squareIndex of squareIndexes) {
                 if (squareIndex == move.to) return false;
             }
         });
+
+        async function isEnemyPawnLookingAt(enemyColour: Colour, square: SquareIndex): Promise<boolean> {
+            const yDiff: number = enemyColour == Colours.white ? 1 : -1;
+            const x1 = Coords.toX(square) + 1;
+            const x2 = Coords.toX(square) - 1;
+            const y = Coords.toY(square) + yDiff;
+
+            const _x1 = await BoardPosition.getPieceByCoords(boardPosition, x1, y);
+            const _x2 = await BoardPosition.getPieceByCoords(boardPosition, x2, y);
+
+            function isEnemyPawn(piece: Piece): boolean {
+                return Piece.isPawn(piece) && Piece.getColourSynchronously(piece) == enemyColour;
+            }
+
+            if (await BoardPosition.isInBoard(x1, y)) {
+                if (isEnemyPawn(await BoardPosition.getPieceByCoords(boardPosition, x1, y))) return true;
+            }
+
+            if (await BoardPosition.isInBoard(x2, y)) {
+                if (isEnemyPawn(await BoardPosition.getPieceByCoords(boardPosition, x2, y))) return true;
+            }
+
+            return false;
+        }
+
+        for (const squareIndex of squareIndexes) {
+            if (await isEnemyPawnLookingAt(enemyColour, squareIndex)) return false;
+        }
 
         return true;
     }
