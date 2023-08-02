@@ -6,3 +6,6 @@ node_modules/
 *.swp
 *.un~
 *.*~
+
+# integration_tests/data
+/integration_tests/data/
