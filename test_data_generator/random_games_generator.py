@@ -55,12 +55,12 @@ class App:
                 break
             last_fen = fen_or_none
 
-        return {'moves': moves, 'fen': last_fen}
+        return {'id': random.randint(0, 100000), 'moves': moves, 'fen': last_fen}
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description="python CLI to generate JSON test data, for testing 'github.com/kacperfaber/chlss-ts'"
+        description="python CLI to generate JSON random games data - for testing 'github.com/kacperfaber/chlss-ts'"
     )
 
     parser.add_argument("--output", type=str, required=True)
