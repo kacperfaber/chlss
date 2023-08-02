@@ -329,12 +329,12 @@ export const MoveMaker: IMoveMaker = {
         } else await this.makeNormalMove(board, boardPosition, move);
 
         await Promise.all([
+            this.clearEnPassant(board),
             this.modifyFullMoveNumber(board, move, colour),
             this.tryDisableCastling(board, move, isCastling),
             this.modifyHalfMoveNumber(board, move, colour, isCastling, enPassant != null),
             this.trySetEnPassant(board, move),
             this.updateColourToMove(board, move, colour),
-            this.clearEnPassant(board)
         ]);
 
         /*
