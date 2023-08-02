@@ -61,6 +61,10 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
             const enemyMoves: Array<IMove> = [];
             await MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves, null);
 
+            // TODO: To perform a castling, squares where the king is going through must be not under attack
+            //  but pawn-capture move is only generated, when pawn has piece to attack.
+            //  actually we can perform under pawn attack.
+
             if (!(await BoardPosition.isSquaresNotUnderAttack(enemyMoves, 5 as SquareIndex, 6 as SquareIndex, 4 as SquareIndex)))
                 return;
 
