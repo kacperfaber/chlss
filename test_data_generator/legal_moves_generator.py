@@ -14,6 +14,8 @@ class App:
         board = chess.Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
         for i in range(self.random_position_moves):
             legal_uci_moves = self.__get_legal_uci_moves(board)
+            if len(legal_uci_moves) == 0:
+                return board
             move = legal_uci_moves[random.randint(0, len(legal_uci_moves) - 1)]
             board.push_uci(move)
         return board
@@ -25,7 +27,7 @@ class App:
         board = self.__create_random_board()
         fen = board.fen()
         legal_moves = self.__get_legal_uci_moves(board)
-        return {'fen': fen, 'legal_moves': legal_moves, 'id': iteration}
+        return {'fen': fen, 'legalMoves': legal_moves, 'legalMovesCount': len(legal_moves), 'id': iteration}
 
     def __write_results(self, results):
         with open(self.output, "w+") as file:
