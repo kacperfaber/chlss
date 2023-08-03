@@ -36,7 +36,7 @@
     "ts-jest": "^29.1.1",
     "typescript": "^5.0.3"
   },
-  "files": ["dist/"],
+  "files": ["dist/", "LICENSE"],
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js"
 }
