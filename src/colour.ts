@@ -3,6 +3,7 @@ export type Colour = "white" | "black";
 interface IColours {
     white: Colour;
     black: Colour;
+
     inverseColour(colour: Colour): Colour;
 }
 

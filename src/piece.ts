@@ -20,25 +20,44 @@ export type Piece =
 
 interface IPiece {
     getColour(piece: Piece): Colour | null;
+
     isWhite(piece: Piece): boolean;
+
     isBlack(piece: Piece): boolean;
+
     isEmpty(piece: Piece): boolean;
+
     isColour(piece: Piece, colour: Colour): boolean;
+
     compareColour(colour1: Colour, colour2: Colour): boolean;
+
     isEnemy(piece: Piece, colour: Colour): boolean;
+
     allWhite: Array<Piece>;
     allBlack: Array<Piece>;
+
     isEnemy(piece: Piece, colour: Colour): boolean;
+
     isEnemyOrEmpty(piece: Piece, colour: Colour): boolean;
+
     isEnemyOrNull(piece: Piece, colour: Colour): boolean;
+
     isRook(piece: Piece): boolean;
+
     isPawn(piece: Piece): boolean;
+
     isQueen(piece: Piece): boolean;
+
     isBishop(piece: Piece): boolean;
+
     isKnight(piece: Piece): boolean;
+
     isKing(piece: Piece): boolean;
+
     isColourEnemyOrNull(tColour: Colour | null, colour: Colour): boolean
+
     getKing(colour: Colour): Piece;
+
     getPawn(colour: Colour): Piece;
 
     getRook(colour: Colour): Piece;
@@ -63,50 +82,50 @@ export const Piece: IPiece = {
         return colour == Colours.white ? Pieces.WhiteKing : Pieces.BlackKing;
     },
 
-     isEnemyOrNull(piece: Piece | null, colour: Colour): boolean {
+    isEnemyOrNull(piece: Piece | null, colour: Colour): boolean {
         if (piece == null) return true;
-        const pieceColour = ( Piece.getColour(piece))!!;
-        return !( Piece.compareColour(pieceColour, colour));
+        const pieceColour = (Piece.getColour(piece))!!;
+        return !(Piece.compareColour(pieceColour, colour));
     },
 
-     getColour(piece: Piece): Colour | null {
+    getColour(piece: Piece): Colour | null {
         if (this.allWhite.includes(piece)) return Colours.white;
         if (this.allBlack.includes(piece)) return Colours.black;
         return null;
     },
 
-     isEnemy(piece: Piece, colour: Colour): boolean {
-        const pieceColour =  this.getColour(piece);
+    isEnemy(piece: Piece, colour: Colour): boolean {
+        const pieceColour = this.getColour(piece);
         return pieceColour == Colours.inverseColour(colour);
     },
 
-     isEnemyOrEmpty(piece: Piece, colour: Colour): boolean {
-        if ( Piece.isEmpty(piece)) return true;
-        return  this.isEnemy(piece, colour);
+    isEnemyOrEmpty(piece: Piece, colour: Colour): boolean {
+        if (Piece.isEmpty(piece)) return true;
+        return this.isEnemy(piece, colour);
     },
 
-     isColourEnemyOrNull(tColour: Colour | null, colour: Colour): boolean {
+    isColourEnemyOrNull(tColour: Colour | null, colour: Colour): boolean {
         if (tColour == null) return true;
-        return ! Piece.compareColour(tColour, colour);
+        return !Piece.compareColour(tColour, colour);
     },
 
-     isWhite(piece: Piece): boolean {
+    isWhite(piece: Piece): boolean {
         return this.allWhite.includes(piece);
     },
 
-     isBlack(piece: Piece): boolean {
+    isBlack(piece: Piece): boolean {
         return this.allBlack.includes(piece);
     },
 
-     isEmpty(piece: Piece): boolean {
+    isEmpty(piece: Piece): boolean {
         return piece == Pieces.Empty;
     },
 
-     isColour(piece: Piece, colour: Colour): boolean {
-        return  this.getColour(piece) == colour;
+    isColour(piece: Piece, colour: Colour): boolean {
+        return this.getColour(piece) == colour;
     },
 
-     compareColour(colour1: Colour, colour2: Colour): boolean {
+    compareColour(colour1: Colour, colour2: Colour): boolean {
         return colour1 == colour2;
     },
 

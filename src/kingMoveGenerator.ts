@@ -7,6 +7,7 @@ import {MoveOffset, OffsetMoveGenerator} from "./offsetMoveGenerator";
 
 interface IKingMoveGenerator {
     offsets: Array<MoveOffset>;
+
     generateKingMoves(boardPosition: BoardPosition, index: SquareIndex, piece: Piece, colour: Colour, posX: number, posY: number, moveList: Array<IMove>): void
 }
 
@@ -22,7 +23,7 @@ export const KingMoveGenerator: IKingMoveGenerator = {
         {x: 1, y: -1},
     ],
 
-     generateKingMoves(boardPosition: BoardPosition, index: SquareIndex,  piece: Piece, colour: Colour, posX: number, posY: number, moveList: Array<IMove>): void {
-         OffsetMoveGenerator.generateOffsets(boardPosition, piece, colour, index, posX, posY, this.offsets, moveList);
+    generateKingMoves(boardPosition: BoardPosition, index: SquareIndex, piece: Piece, colour: Colour, posX: number, posY: number, moveList: Array<IMove>): void {
+        OffsetMoveGenerator.generateOffsets(boardPosition, piece, colour, index, posX, posY, this.offsets, moveList);
     }
 }

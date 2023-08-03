@@ -32,18 +32,18 @@ const BishopOffsets: Array<Offsets> = [
 type Offsets = { x: number, y: number };
 
 export const LineMoveGenerator: ILineMoveGenerator = {
-     generateMoves(boardPosition: BoardPosition, piece: Piece, index: SquareIndex, posX: number, posY: number, offsetX: number, offsetY: number, colour: Colour, moveList: Array<IMove>) {
+    generateMoves(boardPosition: BoardPosition, piece: Piece, index: SquareIndex, posX: number, posY: number, offsetX: number, offsetY: number, colour: Colour, moveList: Array<IMove>) {
         while (true) {
             posX = posX + offsetX;
             posY = posY + offsetY;
 
-            if (! BoardPosition.isInBoard(posX, posY)) {
+            if (!BoardPosition.isInBoard(posX, posY)) {
                 break;
             }
 
-            let targetPiece =  BoardPosition.getPieceByCoords(boardPosition, posX, posY);
+            let targetPiece = BoardPosition.getPieceByCoords(boardPosition, posX, posY);
 
-            if (!( Piece.isEnemyOrEmpty(targetPiece, colour))) {
+            if (!(Piece.isEnemyOrEmpty(targetPiece, colour))) {
                 break;
             }
 
@@ -59,21 +59,21 @@ export const LineMoveGenerator: ILineMoveGenerator = {
                 }
             );
 
-            if (! Piece.isEmpty(targetPiece)) break;
+            if (!Piece.isEmpty(targetPiece)) break;
         }
     },
 
-     generateUsingOffsets(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, offsets: Array<Offsets>, moveList: Array<IMove>) {
-         offsets.map( function (offset: Offsets) {
-             LineMoveGenerator.generateMoves(boardPosition, piece, index, posX, posY, offset.x, offset.y, colour, moveList)
-         })
+    generateUsingOffsets(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, offsets: Array<Offsets>, moveList: Array<IMove>) {
+        offsets.map(function (offset: Offsets) {
+            LineMoveGenerator.generateMoves(boardPosition, piece, index, posX, posY, offset.x, offset.y, colour, moveList)
+        })
     },
 
-     generateBishopLikeMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>) {
-         this.generateUsingOffsets(boardPosition, piece, colour, index, posX, posY, BishopOffsets, moveList);
+    generateBishopLikeMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>) {
+        this.generateUsingOffsets(boardPosition, piece, colour, index, posX, posY, BishopOffsets, moveList);
     },
 
-     generateRookLikeMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>) {
-         this.generateUsingOffsets(boardPosition, piece, colour, index, posX, posY, RookOffsets, moveList);
+    generateRookLikeMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>) {
+        this.generateUsingOffsets(boardPosition, piece, colour, index, posX, posY, RookOffsets, moveList);
     }
 }

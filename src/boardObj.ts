@@ -11,9 +11,9 @@ import {Colours} from "./colour";
 export class BoardObj {
     private board = Board.createEmpty();
 
-     fen(setFen: string | undefined = undefined): string {
+    fen(setFen: string | undefined = undefined): string {
         if (!setFen) return FEN.writeFEN(this.board);
-         FEN.loadFEN(setFen, this.board);
+        FEN.loadFEN(setFen, this.board);
         return setFen;
     }
 
@@ -21,26 +21,26 @@ export class BoardObj {
         return this.board.position;
     }
 
-     pushUci(uci: string): void {
-        const legalMoves =  this.legalMoves();
-        const move =  UCI.parse(uci, legalMoves, this.board.position);
-         this.push(move);
+    pushUci(uci: string): void {
+        const legalMoves = this.legalMoves();
+        const move = UCI.parse(uci, legalMoves, this.board.position);
+        this.push(move);
     }
 
-     legalMoves(): Array<IMove> {
-        return  MoveGenerator.generateLegalMoves(this.board, this.board.toMove);
+    legalMoves(): Array<IMove> {
+        return MoveGenerator.generateLegalMoves(this.board, this.board.toMove);
     }
 
-     push(move: IMove): void {
-        return  MoveMaker.makeMove(this.board, move);
+    push(move: IMove): void {
+        return MoveMaker.makeMove(this.board, move);
     }
 
-    private  getEnemyMoves(): Array<IMove> {
-        return  MoveGenerator.generateLegalMoves(this.board, Colours.inverseColour(this.board.toMove));
+    private getEnemyMoves(): Array<IMove> {
+        return MoveGenerator.generateLegalMoves(this.board, Colours.inverseColour(this.board.toMove));
     }
 
-     getTermination(): Termination | null {
-        const legalMoves =  this.legalMoves();
-        return  TerminationApi.getTermination(this.board, legalMoves,  this.getEnemyMoves())
+    getTermination(): Termination | null {
+        const legalMoves = this.legalMoves();
+        return TerminationApi.getTermination(this.board, legalMoves, this.getEnemyMoves())
     }
 }

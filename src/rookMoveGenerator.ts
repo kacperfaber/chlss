@@ -10,7 +10,7 @@ interface IRookMoveGenerator {
 }
 
 export const RookMoveGenerator: IRookMoveGenerator = {
-     generateRookMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>) {
-         LineMoveGenerator.generateRookLikeMoves(boardPosition, piece, colour, index, posX, posY, moveList);
+    generateRookMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>) {
+        LineMoveGenerator.generateRookLikeMoves(boardPosition, piece, colour, index, posX, posY, moveList);
     }
 }

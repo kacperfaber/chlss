@@ -10,11 +10,13 @@ import {BoardNotation} from "./boardNotation";
 
 interface IForsythEdwardsNotation {
     writeFEN(board: IBoard): string;
+
     loadFEN(fen: string, board: IBoard): void;
+
     regExp: RegExp;
 }
 
- function writeFENPosition(boardPosition: BoardPosition): string {
+function writeFENPosition(boardPosition: BoardPosition): string {
 
     const stringBuilder = new StringBuilder();
 
@@ -58,13 +60,13 @@ interface IForsythEdwardsNotation {
     }
 
     for (let index = 0; index < 64; index++) {
-        const piece =  BoardPosition.getPiece(boardPosition, index as SquareIndex);
+        const piece = BoardPosition.getPiece(boardPosition, index as SquareIndex);
 
         if ((index) % 8 == 0 && index != 0 && index != 63) {
             writeSeparator();
         }
 
-        if ( Piece.isEmpty(piece)) {
+        if (Piece.isEmpty(piece)) {
             writeEmpty();
         } else stringBuilder.append(pieceToFenValue(piece));
 
@@ -133,12 +135,12 @@ function parseHalfMoveCounter(halfMoveCounter: string): number {
     return parseInt(halfMoveCounter);
 }
 
-function isDigit(str: string): number | null{
+function isDigit(str: string): number | null {
     const number = parseInt(str);
     return isNaN(number) ? null : number;
 }
 
- function parseFENPosition(position: string, boardPosition: BoardPosition): void {
+function parseFENPosition(position: string, boardPosition: BoardPosition): void {
     let index = 0;
 
     function fenValueToPiece(fenValue: string): Piece {
@@ -178,16 +180,14 @@ function isDigit(str: string): number | null{
         const digit = isDigit(char);
 
         if (digit != null) {
-            for (let eX = 0; eX<digit; eX++) {
+            for (let eX = 0; eX < digit; eX++) {
                 const square = index + eX;
                 BoardPosition.setEmpty(boardPosition, square);
             }
             index += digit;
-        }
-
-        else {
+        } else {
             let piece = fenValueToPiece(char);
-             BoardPosition.setPiece(boardPosition, index as SquareIndex, piece);
+            BoardPosition.setPiece(boardPosition, index as SquareIndex, piece);
 
             index += 1;
         }
@@ -200,15 +200,16 @@ function parseColourToMove(colourStr: string): Colour {
             return Colours.white;
         case "b":
             return Colours.black;
-        default: throw new Error("invalid fen");
+        default:
+            throw new Error("invalid fen");
     }
 }
 
 export const FEN: IForsythEdwardsNotation = {
-     writeFEN(board: IBoard): string {
+    writeFEN(board: IBoard): string {
         const stringBuilder = new StringBuilder();
 
-        writeText(stringBuilder,  writeFENPosition(board.position));
+        writeText(stringBuilder, writeFENPosition(board.position));
 
         writeSpace(stringBuilder);
 
@@ -235,10 +236,10 @@ export const FEN: IForsythEdwardsNotation = {
 
     regExp: new RegExp(/([rnbqkRQNBKPp12345678/]+) ([wb]) ([KQkq-]+) (.+) (\d+) (\d+)/),
 
-     loadFEN(fen: string, board: IBoard): void {
+    loadFEN(fen: string, board: IBoard): void {
         const match = this.regExp.exec(fen);
         if (match == null) throw new Error("invalid fen");
-         parseFENPosition(match[1], board.position);
+        parseFENPosition(match[1], board.position);
         board.toMove = parseColourToMove(match[2]);
         board.castling = parseCastlingData(match[3]);
         board.enPassant = parseEnPassant(match[4]);

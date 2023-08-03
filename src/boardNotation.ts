@@ -14,6 +14,7 @@ export const BoardNotation = {
         function error() {
             throw new Error("'fromBoardNotation' parsing error.");
         }
+
         const x = BoardNotationChars.indexOf(boardNotation[0]);
         if (x === -1) error();
         const y = parseInt(boardNotation[1]) - 1;
