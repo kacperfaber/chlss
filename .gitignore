@@ -9,3 +9,7 @@ node_modules/
 
 # integration_tests/data
 /integration_tests/data/
+
+
+# npm pack
+*.tgz
