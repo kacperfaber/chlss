@@ -18,8 +18,7 @@ describe("integration_tests", function () {
     describe("random-games", function () {
         for (const {moves, fen, id} of randomGamesData.tests) {
             test(`${id}: expected: ${fen}`, async function () {
-                const board = new BoardObj();
-                board.fen(randomGamesData.startingFen);
+                const board = new BoardObj(randomGamesData.startingFen);
 
                 for (const move of moves) {
                     board.pushUci(move);
@@ -68,8 +67,7 @@ describe("integration_tests", function () {
 
         for (const {legalMoves, legalMovesCount, id, fen} of legalMovesData) {
             test(`${id}: ${fen} - expected ${legalMovesCount} legal moves`, async function () {
-                const board = new BoardObj();
-                board.fen(fen);
+                const board = new BoardObj(fen);
 
                 const result = board.legalMoves()
                 const resultUci = await convertToUciMoves(result);

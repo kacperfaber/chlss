@@ -11,6 +11,12 @@ import {Colours} from "./colour";
 export class BoardObj {
     private board = Board.createEmpty();
 
+    constructor(fen: string | undefined = undefined) {
+        if (fen) {
+            this.fen(fen);
+        }
+    }
+
     fen(setFen: string | undefined = undefined): string {
         if (!setFen) return FEN.writeFEN(this.board);
         FEN.loadFEN(setFen, this.board);
@@ -29,6 +35,10 @@ export class BoardObj {
 
     legalMoves(): Array<IMove> {
         return MoveGenerator.generateLegalMoves(this.board, this.board.toMove);
+    }
+
+    legalMovesUci(): Array<string> {
+        return this.legalMoves().map(move => UCI.write(move));
     }
 
     push(move: IMove): void {
