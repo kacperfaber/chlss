@@ -47,11 +47,9 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
             this.addOneMoveIfOneSquareAheadIsEmpty(piece, index, Coords.toSquareIndex(posX, oneMoveTargetY), moveList);
         }
 
-         Promise.all([
-            this.addCaptureMove(boardPosition, piece, index, posX + 1, oneMoveTargetY, colour, moveList),
-            this.addCaptureMove(boardPosition, piece, index, posX - 1, oneMoveTargetY, colour, moveList),
-            this.tryAddEnPassant(piece, colour,index, enPassant, yDir, posX, posY, moveList)
-        ]);
+         this.addCaptureMove(boardPosition, piece, index, posX + 1, oneMoveTargetY, colour, moveList);
+             this.addCaptureMove(boardPosition, piece, index, posX - 1, oneMoveTargetY, colour, moveList);
+             this.tryAddEnPassant(piece, colour,index, enPassant, yDir, posX, posY, moveList);
     },
 
      addCaptureMove(boardPosition: BoardPosition, piece: Piece, index: SquareIndex, posX: number, posY: number, colour: Colour, moveList: Array<IMove>) {
@@ -75,7 +73,7 @@ export const PawnMoveGenerator: IPawnMoveGenerator = {
             targetPiece: targetPiece,
             setEnPassant: null,
             promotion: undefined,
-            isPromo: isLastSquare(Piece.getColourSynchronously(piece) !!, target)
+            isPromo: isLastSquare(Piece.getColour(piece) !!, target)
         });
     },
 

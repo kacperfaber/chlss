@@ -57,12 +57,6 @@ export const MoveGenerator: IMoveGenerator = {
         * When all data is reached, and we have to use some generator [KingMoveGenerator etc.] to generate moves
         * We're adding it to the 'taskList' which is list of Promises.
         *  */
-        const taskList: Array<void> = [];
-
-        function execTask(act: () => void) {
-            taskList.push(act());
-        }
-
         for (let index = 0; index < 64; index++) {
             const squareIndex = index as SquareIndex;
             const piece =  BoardPosition.getPieceOrNull(boardPosition, squareIndex);
@@ -82,20 +76,18 @@ export const MoveGenerator: IMoveGenerator = {
             const posY = Coords.toY(squareIndex);
 
             if (Piece.isPawn(piece)) {
-                execTask(() => PawnMoveGenerator.generatePawnMoves(boardPosition, piece, squareIndex, posX, posY, pieceColour, moveList, enPassant));
+                PawnMoveGenerator.generatePawnMoves(boardPosition, piece, squareIndex, posX, posY, pieceColour, moveList, enPassant);
             } else if (Piece.isQueen(piece)) {
-                execTask(() => QueenMoveGenerator.generateQueenMoves(boardPosition, piece, pieceColour, squareIndex, posX, posY, moveList));
+                QueenMoveGenerator.generateQueenMoves(boardPosition, piece, pieceColour, squareIndex, posX, posY, moveList);
             } else if (Piece.isBishop(piece)) {
-                execTask(() => BishopMoveGenerator.generateBishopMoves(boardPosition, piece, pieceColour, squareIndex, posX, posY, moveList));
+                BishopMoveGenerator.generateBishopMoves(boardPosition, piece, pieceColour, squareIndex, posX, posY, moveList);
             } else if (Piece.isRook(piece)) {
-                execTask(() => RookMoveGenerator.generateRookMoves(boardPosition, piece, pieceColour, squareIndex, posX, posY, moveList));
+                RookMoveGenerator.generateRookMoves(boardPosition, piece, pieceColour, squareIndex, posX, posY, moveList);
             } else if (Piece.isKnight(piece)) {
-                execTask(() => KnightMoveGenerator.generateKnightMoves(boardPosition, piece, pieceColour, squareIndex, posX, posY, moveList));
+                KnightMoveGenerator.generateKnightMoves(boardPosition, piece, pieceColour, squareIndex, posX, posY, moveList);
             } else if (Piece.isKing(piece)) {
-                execTask(() => KingMoveGenerator.generateKingMoves(boardPosition, squareIndex, piece, pieceColour, posX, posY, moveList));
+                KingMoveGenerator.generateKingMoves(boardPosition, squareIndex, piece, pieceColour, posX, posY, moveList);
             }
         }
-
-         Promise.all(taskList);
     }
 };

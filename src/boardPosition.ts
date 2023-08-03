@@ -26,7 +26,11 @@ export const BoardPosition = {
     },
 
      createEmpty(): BoardPosition {
-        return this.createEmptySynchronously();
+         let boardArray = new Array<Piece>();
+         for (let x = 0; x < 64; x++) {
+             boardArray.push(Pieces.Empty);
+         }
+         return boardArray as BoardPosition;
     },
 
      copyAsync(boardPosition: BoardPosition): BoardPosition {
@@ -42,28 +46,16 @@ export const BoardPosition = {
         boardPosition[square] = Pieces.Empty;
     },
 
-    createEmptySynchronously(): BoardPosition {
-        let boardArray = new Array<Piece>();
-        for (let x = 0; x < 64; x++) {
-            boardArray.push(Pieces.Empty);
-        }
-        return boardArray as BoardPosition;
-    },
-
      createDefault(): BoardPosition {
-        return this.createDefaultSynchronously();
-    },
-
-    createDefaultSynchronously(): BoardPosition {
-        return [Pieces.BlackRook, Pieces.BlackKnight, Pieces.BlackBishop, Pieces.BlackQueen, Pieces.BlackKing, Pieces.BlackBishop, Pieces.BlackKnight, Pieces.BlackRook,
-            Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn,
-            Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty,
-            Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty,
-            Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty,
-            Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty,
-            Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn,
-            Pieces.WhiteRook, Pieces.WhiteKnight, Pieces.WhiteBishop, Pieces.WhiteQueen, Pieces.WhiteKing, Pieces.WhiteBishop, Pieces.WhiteKnight, Pieces.WhiteRook
-        ];
+         return [Pieces.BlackRook, Pieces.BlackKnight, Pieces.BlackBishop, Pieces.BlackQueen, Pieces.BlackKing, Pieces.BlackBishop, Pieces.BlackKnight, Pieces.BlackRook,
+             Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn, Pieces.BlackPawn,
+             Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty,
+             Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty,
+             Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty,
+             Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty, Pieces.Empty,
+             Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn, Pieces.WhitePawn,
+             Pieces.WhiteRook, Pieces.WhiteKnight, Pieces.WhiteBishop, Pieces.WhiteQueen, Pieces.WhiteKing, Pieces.WhiteBishop, Pieces.WhiteKnight, Pieces.WhiteRook
+         ];
     },
 
      isEmpty(boardPosition: BoardPosition, x: number, y: number): boolean {
@@ -130,7 +122,7 @@ export const BoardPosition = {
             const _x2 =  BoardPosition.getPieceByCoords(boardPosition, x2, y);
 
             function isEnemyPawn(piece: Piece): boolean {
-                return Piece.isPawn(piece) && Piece.getColourSynchronously(piece) == enemyColour;
+                return Piece.isPawn(piece) && Piece.getColour(piece) == enemyColour;
             }
 
             if ( BoardPosition.isInBoard(x1, y)) {

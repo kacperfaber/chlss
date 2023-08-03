@@ -30,7 +30,7 @@ export const Board = {
                 }
             },
             toMove: Colours.white,
-            position: BoardPosition.createEmptySynchronously()
+            position: BoardPosition.createEmpty()
         }
     },
 
@@ -41,18 +41,7 @@ export const Board = {
             enPassant: null,
             castling: Castling.createDefault(),
             toMove: Colours.white,
-            position: BoardPosition.createDefaultSynchronously()
-        }
-    },
-
-     createDefaultAsync(): IBoard {
-        return {
-            fullMoveCounter: 1,
-            halfMoveNumber: 0,
-            enPassant: null,
-            castling: Castling.createDefault(),
-            toMove: Colours.white,
-            position:  BoardPosition.createDefault()
+            position: BoardPosition.createDefault()
         }
     }
 }

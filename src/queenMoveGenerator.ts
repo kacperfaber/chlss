@@ -10,10 +10,8 @@ interface IQueenMoveGenerator {
 }
 
 export const QueenMoveGenerator: IQueenMoveGenerator = {
-     generateQueenMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): void {
-         Promise.all([
-            LineMoveGenerator.generateRookLikeMoves(boardPosition, piece, colour, index, posX, posY, moveList),
-            LineMoveGenerator.generateBishopLikeMoves(boardPosition, piece, colour, index, posX, posY, moveList)
-        ]);
+    generateQueenMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): void {
+        LineMoveGenerator.generateRookLikeMoves(boardPosition, piece, colour, index, posX, posY, moveList);
+        LineMoveGenerator.generateBishopLikeMoves(boardPosition, piece, colour, index, posX, posY, moveList);
     }
 }

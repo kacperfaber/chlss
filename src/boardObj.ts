@@ -32,7 +32,7 @@ export class BoardObj {
     }
 
      push(move: IMove): void {
-        return  MoveMaker.makeMoveAsync(this.board, move);
+        return  MoveMaker.makeMove(this.board, move);
     }
 
     private  getEnemyMoves(): Array<IMove> {

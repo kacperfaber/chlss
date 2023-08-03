@@ -64,9 +64,9 @@ export const LineMoveGenerator: ILineMoveGenerator = {
     },
 
      generateUsingOffsets(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, offsets: Array<Offsets>, moveList: Array<IMove>) {
-         Promise.all(offsets.map( function (offset: Offsets) {
+         offsets.map( function (offset: Offsets) {
              LineMoveGenerator.generateMoves(boardPosition, piece, index, posX, posY, offset.x, offset.y, colour, moveList)
-        }));
+         })
     },
 
      generateBishopLikeMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>) {
