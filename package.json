@@ -1,6 +1,6 @@
 {
   "name": "chlss-ts",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,9 +11,26 @@
     "generate-empty-legal-moves": "test_data_generator\\legal_moves_generator.py --output integration_tests\\data\\legal_moves.json --repeat 0 --random-position-moves 0",
     "generate-empty-random-games": "test_data_generator\\random_games_generator.py --output integration_tests\\data\\random_games.json --repeat 0 --move-in-case 0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "chess",
+    "chlss",
+    "chlss-ts",
+    "chlss.ts",
+    "chessgame",
+    "chess-game",
+    "chess-ts",
+    "game",
+    "chessground",
+    "board",
+    "chess-engine",
+    "engine",
+    "chess-computer",
+    "chess-move",
+    "uci",
+    "chess-uci"
+  ],
+  "author": "Kacper Faber",
+  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.5.0",
     "jest": "^29.5.0",
