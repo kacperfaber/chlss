@@ -7,7 +7,6 @@ import legalMovesData from "./data/legal_moves.json";
 import {BoardObj} from "../src/boardObj";
 import {UCI} from "../src/uci";
 import {IMove} from "../src/move";
-import {BoardPosition} from "../src/boardPosition";
 
 describe("integration_tests", function () {
     /**
@@ -38,28 +37,28 @@ describe("integration_tests", function () {
      * generate-legal-moves: Generates file with 500 cases, 75 move made position.
      */
     describe("legal-moves", function () {
-        async function convertToUciMoves(moves: Array<IMove>, pose: BoardPosition): Promise<Array<string>> {
+        async function convertToUciMoves(moves: Array<IMove>): Promise<Array<string>> {
             const r: Array<string> = [];
 
             for (const move of moves) {
                 if (move.isPromo) {
                     move.promotion = "knight";
-                    r.push(UCI.write(move, pose));
+                    r.push(UCI.write(move));
 
                     move.promotion = "rook";
-                    r.push(UCI.write(move, pose));
+                    r.push(UCI.write(move));
 
                     move.promotion = "queen";
-                    r.push(UCI.write(move, pose));
+                    r.push(UCI.write(move));
 
                     move.promotion = "bishop";
-                    r.push(UCI.write(move, pose));
+                    r.push(UCI.write(move));
 
                     // TODO: After all we should set move.promotion to value as we got it.
                 }
 
                 else {
-                    const uci = UCI.write(move, pose);
+                    const uci = UCI.write(move);
                     r.push(uci);
                 }
             }
@@ -73,7 +72,7 @@ describe("integration_tests", function () {
                 board.fen(fen);
 
                 const result = board.legalMoves()
-                const resultUci = await convertToUciMoves(result, board.pose());
+                const resultUci = await convertToUciMoves(result);
 
                 for (const legalMove of legalMoves) {
                     const res = resultUci.some(x => x == legalMove);

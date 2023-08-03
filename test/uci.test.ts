@@ -240,7 +240,7 @@ describe('uci.ts', function () {
                 throw new Error(`Test: In legal moves move [from -> to] ${from} -> ${to} is not found.`);
             }
 
-            expect( UCI.write(movePicked, board.pose())).toBe(expectedMove);
+            expect( UCI.write(movePicked)).toBe(expectedMove);
         }
 
         describe("write normal moves", function () {
@@ -265,7 +265,7 @@ describe('uci.ts', function () {
                 const board = new BoardObj();
                  board.fen(fen);
                 const move = ( board.legalMoves()).find(x => x.from == BoardNotation.fromBoardNotation("e5") && x.to == BoardNotation.fromBoardNotation("d6"))!!
-                expect( UCI.write(move, board.pose())).toBe("e5d6");
+                expect( UCI.write(move)).toBe("e5d6");
             });
         });
 
@@ -295,7 +295,7 @@ describe('uci.ts', function () {
                     const legalMoves =  board.legalMoves();
                     const legalMove = legalMoves.find(x => x.from == from as SquareIndex && x.to == to as SquareIndex)!!;
                     legalMove.promotion = toFigure(promotionTo);
-                    expect( UCI.write(legalMove, board.pose())).toBe(move);
+                    expect( UCI.write(legalMove)).toBe(move);
                 });
             }
         });

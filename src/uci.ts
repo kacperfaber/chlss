@@ -8,7 +8,7 @@ import {Piece} from "./piece";
 export class UCI {
     static regex = /^([abcdefgh][1-8])([abcdefgh][1-8])([qrbn]?)$/;
 
-    static write(move: IMove, boardPose: BoardPosition) {
+    static write(move: IMove) {
         if (MoveMaker.isCastlingMove(move)) {
             return this.writeCastle(move);
         }
