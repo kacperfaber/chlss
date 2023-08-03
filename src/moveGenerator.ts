@@ -23,6 +23,7 @@ interface IMoveGenerator {
 export const MoveGenerator: IMoveGenerator = {
      filterIllegalMoves(moveList: Array<IMove>, colourToMove: Colour, boardPosition: BoardPosition, enPassant: SquareIndex | null): void {
         for (const iMove of [...moveList].reverse()) {
+            // TODO: Instead of copy boardPosition, try to undo move.
             const position =  BoardPosition.copyAsync(boardPosition);
              MoveMaker.makeMoveOnBoard(position, iMove);
 
