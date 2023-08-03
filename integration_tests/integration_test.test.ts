@@ -20,13 +20,13 @@ describe("integration_tests", function () {
         for (const {moves, fen, id} of randomGamesData.tests) {
             test(`${id}: expected: ${fen}`, async function () {
                 const board = new BoardObj();
-                await board.fen(randomGamesData.startingFen);
+                board.fen(randomGamesData.startingFen);
 
                 for (const move of moves) {
-                    await board.pushUci(move);
+                    board.pushUci(move);
                 }
 
-                expect(await board.fen()).toBe(fen);
+                expect(board.fen()).toBe(fen);
             });
         }
     });
@@ -44,22 +44,22 @@ describe("integration_tests", function () {
             for (const move of moves) {
                 if (move.isPromo) {
                     move.promotion = "knight";
-                    r.push(await UCI.write(move, pose));
+                    r.push(UCI.write(move, pose));
 
                     move.promotion = "rook";
-                    r.push(await UCI.write(move, pose));
+                    r.push(UCI.write(move, pose));
 
                     move.promotion = "queen";
-                    r.push(await UCI.write(move, pose));
+                    r.push(UCI.write(move, pose));
 
                     move.promotion = "bishop";
-                    r.push(await UCI.write(move, pose));
+                    r.push(UCI.write(move, pose));
 
                     // TODO: After all we should set move.promotion to value as we got it.
                 }
 
                 else {
-                    const uci = await UCI.write(move, pose);
+                    const uci = UCI.write(move, pose);
                     r.push(uci);
                 }
             }
@@ -70,9 +70,9 @@ describe("integration_tests", function () {
         for (const {legalMoves, legalMovesCount, id, fen} of legalMovesData) {
             test(`${id}: ${fen} - expected ${legalMovesCount} legal moves`, async function () {
                 const board = new BoardObj();
-                await board.fen(fen);
+                board.fen(fen);
 
-                const result = await board.legalMoves()
+                const result = board.legalMoves()
                 const resultUci = await convertToUciMoves(result, board.pose());
 
                 for (const legalMove of legalMoves) {
