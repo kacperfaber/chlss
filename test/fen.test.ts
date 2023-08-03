@@ -10,16 +10,16 @@ import Pieces from "../src/pieces";
 
 describe('fen.ts', function () {
     describe('loadFEN', function () {
-        test(`does not throw`, async function () {
+        test(`does not throw`,  function () {
             const board = Board.createEmpty();
-            await FEN.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", board);
+             FEN.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", board);
         });
     });
 
     describe('writeFEN', function () {
-        test(`does not throw `, async function () {
+        test(`does not throw `,  function () {
             const board: IBoard ={
-                position: await BoardPosition.createDefault(),
+                position:  BoardPosition.createDefault(),
                 fullMoveCounter: 0,
                 halfMoveNumber: 0,
                 enPassant: null,
@@ -36,13 +36,13 @@ describe('fen.ts', function () {
                 }
             }
 
-            await FEN.writeFEN(board);
+             FEN.writeFEN(board);
         });
 
-        test(`expected FEN - test 2`, async function () {
-            const pose = await BoardPosition.createEmpty();
-            await BoardPosition.setPiece(pose, 63 as SquareIndex, Pieces.WhiteQueen)
-            await BoardPosition.setPiece(pose, 0 as SquareIndex, Pieces.WhiteQueen)
+        test(`expected FEN - test 2`,  function () {
+            const pose =  BoardPosition.createEmpty();
+             BoardPosition.setPiece(pose, 63 as SquareIndex, Pieces.WhiteQueen)
+             BoardPosition.setPiece(pose, 0 as SquareIndex, Pieces.WhiteQueen)
 
             const board: IBoard ={
                 position: pose,
@@ -62,7 +62,7 @@ describe('fen.ts', function () {
                 }
             }
 
-            expect(await FEN.writeFEN(board)).toBe("Q7/8/8/8/8/8/8/7Q w KQkq - 0 0");
+            expect( FEN.writeFEN(board)).toBe("Q7/8/8/8/8/8/8/7Q w KQkq - 0 0");
         });
     });
 });

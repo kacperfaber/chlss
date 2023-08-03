@@ -45,14 +45,14 @@ export const Board = {
         }
     },
 
-    async createDefaultAsync(): Promise<IBoard> {
+     createDefaultAsync(): IBoard {
         return {
             fullMoveCounter: 1,
             halfMoveNumber: 0,
             enPassant: null,
             castling: Castling.createDefault(),
             toMove: Colours.white,
-            position: await BoardPosition.createDefault()
+            position:  BoardPosition.createDefault()
         }
     }
 }

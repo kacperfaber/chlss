@@ -8,8 +8,8 @@ import {Piece} from "./piece";
 export class UCI {
     static regex = /^([abcdefgh][1-8])([abcdefgh][1-8])([qrbn]?)$/;
 
-    static async write(move: IMove, boardPose: BoardPosition) {
-        if (await MoveMaker.isCastlingMove(move)) {
+    static  write(move: IMove, boardPose: BoardPosition) {
+        if ( MoveMaker.isCastlingMove(move)) {
             return this.writeCastle(move);
         }
 
@@ -42,7 +42,7 @@ export class UCI {
         return `${fromN}${toN}${getPromotionCodeOrEmpty(move.promotion)}`
     }
 
-    static async parse(move: string, legalMoves: IMove[], boardPosition: BoardPosition): Promise<IMove | never> {
+    static  parse(move: string, legalMoves: IMove[], boardPosition: BoardPosition): IMove | never {
         const result = UCI.regex.exec(move);
 
         if (result == null) {
@@ -73,7 +73,7 @@ export class UCI {
         const to = BoardNotation.fromBoardNotation(toNotation);
         const figure = promotionToFigureOrUndefined(promotionString);
 
-        if (await this.isCastlingMoveUCI(fromNotation, toNotation, boardPosition)) {
+        if ( this.isCastlingMoveUCI(fromNotation, toNotation, boardPosition)) {
 
             function validateTo(to: SquareIndex) {
                 return (toNotation == "g1" && to == 63) || (toNotation == "c1" && to == 56)
@@ -88,8 +88,8 @@ export class UCI {
         return pickedMove;
     }
 
-    private static async isCastlingMoveUCI(from: string, to: string, boardPosition: BoardPosition): Promise<boolean> {
-        const piece = await BoardPosition.getPiece(boardPosition, BoardNotation.fromBoardNotation(from));
+    private static  isCastlingMoveUCI(from: string, to: string, boardPosition: BoardPosition): boolean {
+        const piece =  BoardPosition.getPiece(boardPosition, BoardNotation.fromBoardNotation(from));
         return Piece.isKing(piece) && (
             (from == "e8" && to == "c8") ||
             (from == "e1" && to == "c1") ||

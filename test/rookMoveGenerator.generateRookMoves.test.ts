@@ -8,18 +8,18 @@ import {Piece} from "../src/piece";
 
 describe('rookMoveGenerator', function () {
     describe('generateRookMoves', function () {
-        test(`does not throw`, async function () {
+        test(`does not throw`,  function () {
             const moveList: Array<IMove> = [];
-            await RookMoveGenerator.generateRookMoves(await boardOf({
+             RookMoveGenerator.generateRookMoves( boardOf({
                 x: 0,
                 y: 0,
                 piece: Pieces.WhiteRook
             }), Pieces.WhiteRook, Colours.white, 0, 0, 0, moveList);
         });
 
-        test(`returns expected move length - from position to border - scenario 1`, async function () {
+        test(`returns expected move length - from position to border - scenario 1`,  function () {
             const moveList: Array<IMove> = [];
-            await RookMoveGenerator.generateRookMoves(await boardOf({
+             RookMoveGenerator.generateRookMoves( boardOf({
                 x: 0,
                 y: 0,
                 piece: Pieces.WhiteRook
@@ -27,8 +27,8 @@ describe('rookMoveGenerator', function () {
             expect(moveList.length).toBe(14);
         });
 
-        test(`returns expected move length - from position to friendly piece - scenario 2`, async function () {
-            const board = await boardOf(
+        test(`returns expected move length - from position to friendly piece - scenario 2`,  function () {
+            const board =  boardOf(
                 {x: 0, y: 0, piece: Pieces.WhiteRook},
                 {x: 1, y: 0, piece: Pieces.WhiteRook},
                 {x: 0, y: 1, piece: Pieces.WhiteRook}
@@ -36,14 +36,14 @@ describe('rookMoveGenerator', function () {
 
             const moveList: Array<IMove> = [];
 
-            await RookMoveGenerator.generateRookMoves(board,
+             RookMoveGenerator.generateRookMoves(board,
                 Pieces.WhiteRook, Colours.white, 0, 0, 0, moveList);
 
             expect(moveList.length).toBe(0);
         });
 
-        test(`returns expected move length - from position to friendly piece - scenario 1`, async function () {
-            const board = await boardOf(
+        test(`returns expected move length - from position to friendly piece - scenario 1`,  function () {
+            const board =  boardOf(
                 {x: 0, y: 0, piece: Pieces.WhiteRook},
                 {x: 2, y: 0, piece: Pieces.WhiteRook},
                 {x: 0, y: 2, piece: Pieces.WhiteRook},
@@ -51,14 +51,14 @@ describe('rookMoveGenerator', function () {
 
             const moveList: Array<IMove> = [];
 
-            await RookMoveGenerator.generateRookMoves(board,
+             RookMoveGenerator.generateRookMoves(board,
                 Pieces.WhiteRook, Colours.white, 0, 0, 0, moveList);
 
             expect(moveList.length).toBe(2);
         });
 
-        test(`returns expected move length - from position to friendly piece - scenario 3`, async function () {
-            const board = await boardOf(
+        test(`returns expected move length - from position to friendly piece - scenario 3`,  function () {
+            const board =  boardOf(
                 {x: 2, y: 2, piece: Pieces.WhiteRook},
                 {x: 4, y: 2, piece: Pieces.WhiteRook},
                 {x: 2, y: 4, piece: Pieces.WhiteRook},
@@ -66,15 +66,15 @@ describe('rookMoveGenerator', function () {
 
             const moveList: Array<IMove> = [];
 
-            await RookMoveGenerator.generateRookMoves(board,
+             RookMoveGenerator.generateRookMoves(board,
                 Pieces.WhiteRook, Colours.white, 18 as SquareIndex, 2, 2, moveList);
 
             expect(moveList.length).toBe(6);
         });
 
-        test(`returns expected move length - from position to border - scenario 2`, async function () {
+        test(`returns expected move length - from position to border - scenario 2`,  function () {
             const moveList: Array<IMove> = [];
-            await RookMoveGenerator.generateRookMoves(await boardOf({
+             RookMoveGenerator.generateRookMoves( boardOf({
                 x: 3,
                 y: 3,
                 piece: Pieces.WhiteRook
@@ -82,69 +82,69 @@ describe('rookMoveGenerator', function () {
             expect(moveList.length).toBe(14);
         });
 
-        test(`returns expected move length - from position to enemy - scenario 1`, async function () {
+        test(`returns expected move length - from position to enemy - scenario 1`,  function () {
             const moveList: Array<IMove> = [];
-            const boardPosition = await boardOf(
+            const boardPosition =  boardOf(
                 {x: 0, y: 0, piece: Pieces.WhiteRook},
                 {x: 1, y: 0, piece: Pieces.BlackQueen}
             );
-            await RookMoveGenerator.generateRookMoves(boardPosition, Pieces.WhiteRook, Colours.white, 0, 0, 0, moveList);
+             RookMoveGenerator.generateRookMoves(boardPosition, Pieces.WhiteRook, Colours.white, 0, 0, 0, moveList);
             expect(moveList.length).toBe(8);
         });
 
-        test(`returns expected move length - from position to enemy - scenario 2`, async function () {
+        test(`returns expected move length - from position to enemy - scenario 2`,  function () {
             const moveList: Array<IMove> = [];
-            const boardPosition = await boardOf(
+            const boardPosition =  boardOf(
                 {x: 0, y: 0, piece: Pieces.WhiteRook},
                 {x: 1, y: 0, piece: Pieces.BlackQueen},
                 {x: 0, y: 1, piece: Pieces.BlackQueen}
             );
-            await RookMoveGenerator.generateRookMoves(boardPosition, Pieces.WhiteRook, Colours.white, 0, 0, 0, moveList);
+             RookMoveGenerator.generateRookMoves(boardPosition, Pieces.WhiteRook, Colours.white, 0, 0, 0, moveList);
             expect(moveList.length).toBe(2);
         });
 
-        test(`returns expected move length - from position to enemy - scenario 3`, async function () {
+        test(`returns expected move length - from position to enemy - scenario 3`,  function () {
             const moveList: Array<IMove> = [];
-            const boardPosition = await boardOf(
+            const boardPosition =  boardOf(
                 {x: 1, y: 1, piece: Pieces.WhiteRook},
                 {x: 1, y: 0, piece: Pieces.BlackQueen},
                 {x: 0, y: 1, piece: Pieces.BlackQueen},
                 {x: 2, y: 1, piece: Pieces.BlackQueen},
                 {x: 1, y: 2, piece: Pieces.BlackQueen}
             );
-            await RookMoveGenerator.generateRookMoves(boardPosition, Pieces.WhiteRook, Colours.white, 9, 1, 1, moveList);
+             RookMoveGenerator.generateRookMoves(boardPosition, Pieces.WhiteRook, Colours.white, 9, 1, 1, moveList);
             expect(moveList.length).toBe(4);
         });
 
-        test(`returns expected move with targetPiece - scenario 1`, async function () {
+        test(`returns expected move with targetPiece - scenario 1`,  function () {
             const moveList: Array<IMove> = [];
-            const boardPosition = await boardOf(
+            const boardPosition =  boardOf(
                 {x: 1, y: 1, piece: Pieces.WhiteRook},
                 {x: 1, y: 2, piece: Pieces.BlackQueen}
             );
-            await RookMoveGenerator.generateRookMoves(boardPosition, Pieces.WhiteRook, Colours.white, 9, 1, 1, moveList);
+             RookMoveGenerator.generateRookMoves(boardPosition, Pieces.WhiteRook, Colours.white, 9, 1, 1, moveList);
             const has = moveList.some((m) => m.targetPiece == Pieces.BlackQueen);
             expect(has).toBe(true);
         });
 
-        test(`returns expected move with targetPiece - scenario 2`, async function () {
+        test(`returns expected move with targetPiece - scenario 2`,  function () {
             const moveList: Array<IMove> = [];
-            const boardPosition = await boardOf(
+            const boardPosition =  boardOf(
                 {x: 1, y: 1, piece: Pieces.WhiteRook},
                 {x: 2, y: 1, piece: Pieces.BlackQueen}
             );
-            await RookMoveGenerator.generateRookMoves(boardPosition, Pieces.WhiteRook, Colours.white, 9, 1, 1, moveList);
+             RookMoveGenerator.generateRookMoves(boardPosition, Pieces.WhiteRook, Colours.white, 9, 1, 1, moveList);
             const has = moveList.some((m) => m.targetPiece == Pieces.BlackQueen);
             expect(has).toBe(true);
         });
 
-        test(`returns expected move with targetPiece - scenario 3`, async function () {
+        test(`returns expected move with targetPiece - scenario 3`,  function () {
             const moveList: Array<IMove> = [];
-            const boardPosition = await boardOf(
+            const boardPosition =  boardOf(
                 {x: 1, y: 1, piece: Pieces.WhiteRook},
                 {x: 5, y: 1, piece: Pieces.BlackQueen}
             );
-            await RookMoveGenerator.generateRookMoves(boardPosition, Pieces.WhiteRook, Colours.white, 9, 1, 1, moveList);
+             RookMoveGenerator.generateRookMoves(boardPosition, Pieces.WhiteRook, Colours.white, 9, 1, 1, moveList);
             const has = moveList.some((m) => m.targetPiece == Pieces.BlackQueen);
             expect(has).toBe(true);
         });

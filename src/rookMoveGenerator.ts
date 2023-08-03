@@ -6,11 +6,11 @@ import {LineMoveGenerator} from "./lineMoveGenerator";
 import {Colour} from "./colour";
 
 interface IRookMoveGenerator {
-    generateRookMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): Promise<void>;
+    generateRookMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): void;
 }
 
 export const RookMoveGenerator: IRookMoveGenerator = {
-    async generateRookMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>) {
-        await LineMoveGenerator.generateRookLikeMoves(boardPosition, piece, colour, index, posX, posY, moveList);
+     generateRookMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>) {
+         LineMoveGenerator.generateRookLikeMoves(boardPosition, piece, colour, index, posX, posY, moveList);
     }
 }

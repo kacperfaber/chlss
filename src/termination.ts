@@ -47,36 +47,36 @@ function attacksEnemyKing(moves: Array<IMove>, ourColour: Colour) {
 }
 
 export const TerminationApi: ITerminationApi = {
-    async getTermination(board: IBoard, legalMoves: Array<IMove>, enemyMoves: Array<IMove>): Promise<Termination | null> {
+     getTermination(board: IBoard, legalMoves: Array<IMove>, enemyMoves: Array<IMove>): Termination | null {
         // TODO: To implement repetition I need a Move History.
 
         // TODO: There's a few things I can't implement in here [Like Resign, Timeout, Agreement etc...]
 
         if (isEmpty(legalMoves)) {
             const attacksOurKing = attacksEnemyKing(enemyMoves, board.toMove);
-            if (await this.isInMateWhenNoLegalMoves(board, attacksOurKing)) return Terminations.Mate;
-            else if (await this.isInStalemateWhenNoLegalMoves(board, attacksOurKing)) return Terminations.Stalemate;
+            if ( this.isInMateWhenNoLegalMoves(board, attacksOurKing)) return Terminations.Mate;
+            else if ( this.isInStalemateWhenNoLegalMoves(board, attacksOurKing)) return Terminations.Stalemate;
         } else {
-            if (await this.isFiftyMoveRule(board)) return Terminations.FiftyMoveRule;
+            if ( this.isFiftyMoveRule(board)) return Terminations.FiftyMoveRule;
 
-            else if (await this.isInsufficientMaterial(board)) return Terminations.InsufficientMaterial;
+            else if ( this.isInsufficientMaterial(board)) return Terminations.InsufficientMaterial;
         }
         return null;
     },
 
-    async isInMateWhenNoLegalMoves(board, attacksOurKing): Promise<Colour | null> {
+     isInMateWhenNoLegalMoves(board, attacksOurKing): Colour | null {
         return attacksOurKing ? board.toMove : null;
     },
 
-    async isInStalemateWhenNoLegalMoves(board, attacksOurKing): Promise<boolean> {
+     isInStalemateWhenNoLegalMoves(board, attacksOurKing): boolean {
         return !attacksOurKing;
     },
 
-    async isFiftyMoveRule(board: IBoard): Promise<boolean> {
+     isFiftyMoveRule(board: IBoard): boolean {
         return board.halfMoveNumber >= 50;
     },
 
-    async isInsufficientMaterial(board: IBoard): Promise<boolean> {
+     isInsufficientMaterial(board: IBoard): boolean {
 
         function countKnights(knight: Piece, pieces: Array<Piece>): number {
             return pieces.filter(p => p == knight).length;
@@ -89,7 +89,7 @@ export const TerminationApi: ITerminationApi = {
                 countKnights(Piece.getKnight(colour), pieces) >= 2;
         }
 
-        async function bishopsEnough(pieces: Array<Piece>): Promise<boolean> {
+         function bishopsEnough(pieces: Array<Piece>): boolean {
             // {Piece-Colour}{Bishop-Square-Colour}
             let whiteWhite = 0;
             let whiteBlack = 0;
@@ -100,7 +100,7 @@ export const TerminationApi: ITerminationApi = {
                 const piece = pieces[i];
                 if (!Piece.isBishop(piece)) continue;
 
-                const pieceColour = (await Piece.getColour(piece)) !!;
+                const pieceColour = ( Piece.getColour(piece)) !!;
                 const sqColour = Piece.getBishopSquareColour(i as SquareIndex);
 
                 if (pieceColour == Colours.white) {
@@ -114,26 +114,26 @@ export const TerminationApi: ITerminationApi = {
             return ((whiteWhite > 0) ? 1 : 0) + ((whiteBlack > 0) ? 1 : 0) >= 2 || ((blackBlack > 0) ? 1 : 0) + ((blackWhite > 0) ? 1 : 0) >= 2;
         }
 
-        const whiteEnough = isPiecesEnough(Colours.white, await BoardPosition.getAllPiecesByColour(board.position, Colours.white));
-        const blackEnough = isPiecesEnough(Colours.black, await BoardPosition.getAllPiecesByColour(board.position, Colours.black));
+        const whiteEnough = isPiecesEnough(Colours.white,  BoardPosition.getAllPiecesByColour(board.position, Colours.white));
+        const blackEnough = isPiecesEnough(Colours.black,  BoardPosition.getAllPiecesByColour(board.position, Colours.black));
 
         if (whiteEnough || blackEnough) {
             return false;
         }
 
-        return !await bishopsEnough(board.position);
+        return ! bishopsEnough(board.position);
     }
 };
 
 
 export interface ITerminationApi {
-    getTermination(board: IBoard, legalMoves: Array<IMove>, enemyMoves: Array<IMove>): Promise<Termination | null>;
+    getTermination(board: IBoard, legalMoves: Array<IMove>, enemyMoves: Array<IMove>): Termination | null;
 
-    isInMateWhenNoLegalMoves(board: IBoard, attacksOurKing: boolean): Promise<Colour | null>;
+    isInMateWhenNoLegalMoves(board: IBoard, attacksOurKing: boolean): Colour | null;
 
-    isInStalemateWhenNoLegalMoves(board: IBoard, attacksOurKing: boolean): Promise<boolean>;
+    isInStalemateWhenNoLegalMoves(board: IBoard, attacksOurKing: boolean): boolean;
 
-    isFiftyMoveRule(board: IBoard): Promise<boolean>;
+    isFiftyMoveRule(board: IBoard): boolean;
 
-    isInsufficientMaterial(board: IBoard): Promise<boolean>;
+    isInsufficientMaterial(board: IBoard): boolean;
 }

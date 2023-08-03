@@ -7,24 +7,24 @@ import {Figure} from "../src/move";
 
 describe('uci.ts', function () {
     // describe('write', function () {
-    //     // test("does not throw", async function () {
+    //     // test("does not throw",  function () {
     //     //     const board = new BoardObj();
-    //     //     await board.fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+    //     //      board.fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     //     //
     //     //     const moves = ["e2e4", "e7e5", "g1f3", "f7f5", "b1c3", "f5e4", "c3e4", "d8h4"];
     //     //
     //     //     var i = 0;
     //     //
     //     //     for (const move of moves) {
-    //     //         const legalMoves = await board.legalMoves();
-    //     //         const imove = await UCI.parse(move, legalMoves, board.pose())
-    //     //         await board.push(imove);
+    //     //         const legalMoves =  board.legalMoves();
+    //     //         const imove =  UCI.parse(move, legalMoves, board.pose())
+    //     //          board.push(imove);
     //     //         i++;
-    //     //         console.log(i.toString() + await board.fen());
+    //     //         console.log(i.toString() +  board.fen());
     //     //     }
     //     //
     //     //     // rnb1kbnr/pppp2pp/8/4p3/4N2q/5N2/PPPP1PPP/R1BQKB1R w KQkq - 1 5
-    //     //     expect(await board.fen()).toBe("rnb1kbnr/pppp2pp/8/4p3/4N2q/5N2/PPPP1PPP/R1BQKB1R w KQkq - 1 5");
+    //     //     expect( board.fen()).toBe("rnb1kbnr/pppp2pp/8/4p3/4N2q/5N2/PPPP1PPP/R1BQKB1R w KQkq - 1 5");
     //     // });
     //
     //     const data = [
@@ -34,18 +34,18 @@ describe('uci.ts', function () {
     //         {move: "g8f6", fen: "rnbqkb1r/pppp1ppp/5n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3"},
     //     ]
     //
-    //     test("test many moves", async function () {
+    //     test("test many moves",  function () {
     //         const board = new BoardObj();
-    //         await board.fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+    //          board.fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     //
     //         for (const item of data) {
-    //             await board.pushUci(item.move);
-    //             expect(await board.fen()).toBe(item.fen);
+    //              board.pushUci(item.move);
+    //             expect( board.fen()).toBe(item.fen);
     //             console.log(`move ${item.move}`);
     //         }
     //     });
     //
-    //     test("test does not throw by steps", async function() {
+    //     test("test does not throw by steps",  function() {
     //     //     ["e2e4", "e7e5", "g1f3", "f7f5", "b1c3", "f5e4", "c3e4", "d8h4"];
     //
     //         const t = [
@@ -59,20 +59,20 @@ describe('uci.ts', function () {
     //             {m: "d8h4", f: "rnb1kbnr/pppp2pp/8/4p3/4N2q/5N2/PPPP1PPP/R1BQKB1R w KQkq - 1 5"} ]
     //
     //         const board = new BoardObj();
-    //         await board.fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+    //          board.fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     //
     //         for (const {m, f} of t) {
-    //             await board.pushUci(m);
-    //             expect(await board.fen()).toBe(f);
+    //              board.pushUci(m);
+    //             expect( board.fen()).toBe(f);
     //             console.log(`after ${m} position should be ${f}`);
     //         }
     //     });
     //
-    //     test("jebac disa kurwe", async function() {
+    //     test("jebac disa kurwe",  function() {
     //         const board = new BoardObj();
-    //         await board.fen("rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2");
-    //         await board.pushUci("g1f3");
-    //         const fen = await board.fen();
+    //          board.fen("rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2");
+    //          board.pushUci("g1f3");
+    //         const fen =  board.fen();
     //
     //     })
     // });
@@ -230,42 +230,42 @@ describe('uci.ts', function () {
     }
 
     describe('write', function () {
-        async function testWrite(from: number, to: number, fen: string, expectedMove: string) {
+         function testWrite(from: number, to: number, fen: string, expectedMove: string) {
             const board = new BoardObj();
-            await board.fen(fen);
-            const legalMoves = await board.legalMoves();
+             board.fen(fen);
+            const legalMoves =  board.legalMoves();
             const movePicked = legalMoves.find(x => x.from == from as SquareIndex && x.to == to as SquareIndex);
 
             if (movePicked == undefined) {
                 throw new Error(`Test: In legal moves move [from -> to] ${from} -> ${to} is not found.`);
             }
 
-            expect(await UCI.write(movePicked, board.pose())).toBe(expectedMove);
+            expect( UCI.write(movePicked, board.pose())).toBe(expectedMove);
         }
 
         describe("write normal moves", function () {
             for (const {move, initialFEN, from, to} of testData.normalMoves) {
-                test(`${from} -> ${to} = ${move}`, async function () {
-                    await testWrite(from, to, initialFEN, move);
+                test(`${from} -> ${to} = ${move}`,  function () {
+                     testWrite(from, to, initialFEN, move);
                 });
             }
         });
 
         describe('write castle', function () {
             for (const {move, from, to, fen} of testData.castleMoves) {
-                test(`${from} -> ${to} = ${move}`, async function () {
-                    await testWrite(from, to, fen, move);
+                test(`${from} -> ${to} = ${move}`,  function () {
+                     testWrite(from, to, fen, move);
                 });
             }
         });
 
         describe("write en passant", function () {
-            test("en passant - scenario 1", async function () {
+            test("en passant - scenario 1",  function () {
                 const fen = "rnbqkbnr/1pp1pppp/p7/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 3";
                 const board = new BoardObj();
-                await board.fen(fen);
-                const move = (await board.legalMoves()).find(x => x.from == BoardNotation.fromBoardNotation("e5") && x.to == BoardNotation.fromBoardNotation("d6"))!!
-                expect(await UCI.write(move, board.pose())).toBe("e5d6");
+                 board.fen(fen);
+                const move = ( board.legalMoves()).find(x => x.from == BoardNotation.fromBoardNotation("e5") && x.to == BoardNotation.fromBoardNotation("d6"))!!
+                expect( UCI.write(move, board.pose())).toBe("e5d6");
             });
         });
 
@@ -289,22 +289,22 @@ describe('uci.ts', function () {
 
         describe("write promotion moves", function() {
             for (const {move, fen, expectedFen, to, from, promotionTo} of testData.promotionMoves) {
-                test(`${from} -> ${to} promo to ${promotionTo}`, async function() {
+                test(`${from} -> ${to} promo to ${promotionTo}`,  function() {
                     const board = new BoardObj();
-                    await board.fen(fen);
-                    const legalMoves = await board.legalMoves();
+                     board.fen(fen);
+                    const legalMoves =  board.legalMoves();
                     const legalMove = legalMoves.find(x => x.from == from as SquareIndex && x.to == to as SquareIndex)!!;
                     legalMove.promotion = toFigure(promotionTo);
-                    expect(await UCI.write(legalMove, board.pose())).toBe(move);
+                    expect( UCI.write(legalMove, board.pose())).toBe(move);
                 });
             }
         });
     });
 
-    async function testParse(expFrom: number, expTo: number, fen: string, move: string) {
+     function testParse(expFrom: number, expTo: number, fen: string, move: string) {
         const board = new BoardObj();
-        await board.fen(fen);
-        const r = await UCI.parse(move, await board.legalMoves(), board.pose());
+         board.fen(fen);
+        const r =  UCI.parse(move,  board.legalMoves(), board.pose());
         expect(r.from).toBe(expFrom as SquareIndex);
         expect(r.to).toBe(expTo as SquareIndex);
     }
@@ -312,32 +312,32 @@ describe('uci.ts', function () {
     describe('parse', function () {
         describe('parse normal moves', function () {
             for (const {move, from, to, initialFEN} of testData.normalMoves) {
-                test(`${from} -> ${to} = ${move}`, async function () {
-                    await testParse(from, to, initialFEN, move);
+                test(`${from} -> ${to} = ${move}`,  function () {
+                     testParse(from, to, initialFEN, move);
                 });
             }
         });
 
         describe("parse castle moves", function () {
             for (const {move, from, to, fen} of testData.castleMoves) {
-                test(`${from} -> ${to} = ${move}`, async function () {
-                    await testParse(from, to, fen, move);
+                test(`${from} -> ${to} = ${move}`,  function () {
+                     testParse(from, to, fen, move);
                 });
             }
         });
 
         describe("parse promotion moves", function() {
             for (const {move, from, to, fen, expectedFen} of testData.promotionMoves) {
-                test(`${move} makes FEN: ${expectedFen}`, async function() {
+                test(`${move} makes FEN: ${expectedFen}`,  function() {
                     const board = new BoardObj();
-                    await board.fen(fen);
-                    let legalMoves = await board.legalMoves();
-                    const r = await UCI.parse(move, legalMoves, board.pose());
+                     board.fen(fen);
+                    let legalMoves =  board.legalMoves();
+                    const r =  UCI.parse(move, legalMoves, board.pose());
                     expect(r.from).toBe(from as SquareIndex);
                     expect(r.to).toBe(to as SquareIndex);
 
-                    await board.push(r);
-                    expect(await board.fen()).toBe(expectedFen);
+                     board.push(r);
+                    expect( board.fen()).toBe(expectedFen);
                 });
             }
         });

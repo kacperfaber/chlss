@@ -11,9 +11,9 @@ import {Colours} from "./colour";
 export class BoardObj {
     private board = Board.createEmpty();
 
-    async fen(setFen: string | undefined = undefined): Promise<string> {
+     fen(setFen: string | undefined = undefined): string {
         if (!setFen) return FEN.writeFEN(this.board);
-        await FEN.loadFEN(setFen, this.board);
+         FEN.loadFEN(setFen, this.board);
         return setFen;
     }
 
@@ -21,26 +21,26 @@ export class BoardObj {
         return this.board.position;
     }
 
-    async pushUci(uci: string): Promise<void> {
-        const legalMoves = await this.legalMoves();
-        const move = await UCI.parse(uci, legalMoves, this.board.position);
-        await this.push(move);
+     pushUci(uci: string): void {
+        const legalMoves =  this.legalMoves();
+        const move =  UCI.parse(uci, legalMoves, this.board.position);
+         this.push(move);
     }
 
-    async legalMoves(): Promise<Array<IMove>> {
-        return await MoveGenerator.generateLegalMoves(this.board, this.board.toMove);
+     legalMoves(): Array<IMove> {
+        return  MoveGenerator.generateLegalMoves(this.board, this.board.toMove);
     }
 
-    async push(move: IMove): Promise<void> {
-        return await MoveMaker.makeMoveAsync(this.board, move);
+     push(move: IMove): void {
+        return  MoveMaker.makeMoveAsync(this.board, move);
     }
 
-    private async getEnemyMoves(): Promise<Array<IMove>> {
-        return await MoveGenerator.generateLegalMoves(this.board, Colours.inverseColour(this.board.toMove));
+    private  getEnemyMoves(): Array<IMove> {
+        return  MoveGenerator.generateLegalMoves(this.board, Colours.inverseColour(this.board.toMove));
     }
 
-    async getTermination(): Promise<Termination | null> {
-        const legalMoves = await this.legalMoves();
-        return await TerminationApi.getTermination(this.board, legalMoves, await this.getEnemyMoves())
+     getTermination(): Termination | null {
+        const legalMoves =  this.legalMoves();
+        return  TerminationApi.getTermination(this.board, legalMoves,  this.getEnemyMoves())
     }
 }

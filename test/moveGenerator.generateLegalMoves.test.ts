@@ -79,17 +79,17 @@ describe('moveGenerator.ts', function () {
 
     describe('generateLegalMoves', function () {
 
-        test(`does not throw`, async function () {
-            const board = await fromFEN("k7/8/8/8/8/8/8/K7 w - - 0 1");
+        test(`does not throw`,  function () {
+            const board =  fromFEN("k7/8/8/8/8/8/8/K7 w - - 0 1");
 
-            await MoveGenerator.generateLegalMoves(board, Colours.white);
+             MoveGenerator.generateLegalMoves(board, Colours.white);
         });
 
         Tests.forEach(function (t: Test) {
-            test(`FEN: '${t.fen}' COLOUR: '${t.colour}'`, async function () {
-                const board = await fromFEN(t.fen);
+            test(`FEN: '${t.fen}' COLOUR: '${t.colour}'`,  function () {
+                const board =  fromFEN(t.fen);
 
-                const moves = await MoveGenerator.generateLegalMoves(board, Colours.white);
+                const moves =  MoveGenerator.generateLegalMoves(board, Colours.white);
                 expect(moves.length).toBe(t.expectedMoveLength);
             });
         });

@@ -9,12 +9,12 @@ import {Colour, Colours} from "./colour";
 import {BoardNotation} from "./boardNotation";
 
 interface IForsythEdwardsNotation {
-    writeFEN(board: IBoard): Promise<string>;
-    loadFEN(fen: string, board: IBoard): Promise<void>;
+    writeFEN(board: IBoard): string;
+    loadFEN(fen: string, board: IBoard): void;
     regExp: RegExp;
 }
 
-async function writeFENPosition(boardPosition: BoardPosition): Promise<string> {
+ function writeFENPosition(boardPosition: BoardPosition): string {
 
     const stringBuilder = new StringBuilder();
 
@@ -58,13 +58,13 @@ async function writeFENPosition(boardPosition: BoardPosition): Promise<string> {
     }
 
     for (let index = 0; index < 64; index++) {
-        const piece = await BoardPosition.getPiece(boardPosition, index as SquareIndex);
+        const piece =  BoardPosition.getPiece(boardPosition, index as SquareIndex);
 
         if ((index) % 8 == 0 && index != 0 && index != 63) {
             writeSeparator();
         }
 
-        if (await Piece.isEmpty(piece)) {
+        if ( Piece.isEmpty(piece)) {
             writeEmpty();
         } else stringBuilder.append(pieceToFenValue(piece));
 
@@ -138,7 +138,7 @@ function isDigit(str: string): number | null{
     return isNaN(number) ? null : number;
 }
 
-async function parseFENPosition(position: string, boardPosition: BoardPosition): Promise<void> {
+ function parseFENPosition(position: string, boardPosition: BoardPosition): void {
     let index = 0;
 
     function fenValueToPiece(fenValue: string): Piece {
@@ -187,7 +187,7 @@ async function parseFENPosition(position: string, boardPosition: BoardPosition):
 
         else {
             let piece = fenValueToPiece(char);
-            await BoardPosition.setPiece(boardPosition, index as SquareIndex, piece);
+             BoardPosition.setPiece(boardPosition, index as SquareIndex, piece);
 
             index += 1;
         }
@@ -205,10 +205,10 @@ function parseColourToMove(colourStr: string): Colour {
 }
 
 export const FEN: IForsythEdwardsNotation = {
-    async writeFEN(board: IBoard): Promise<string> {
+     writeFEN(board: IBoard): string {
         const stringBuilder = new StringBuilder();
 
-        writeText(stringBuilder, await writeFENPosition(board.position));
+        writeText(stringBuilder,  writeFENPosition(board.position));
 
         writeSpace(stringBuilder);
 
@@ -235,10 +235,10 @@ export const FEN: IForsythEdwardsNotation = {
 
     regExp: new RegExp(/([rnbqkRQNBKPp12345678/]+) ([wb]) ([KQkq-]+) (.+) (\d+) (\d+)/),
 
-    async loadFEN(fen: string, board: IBoard): Promise<void> {
+     loadFEN(fen: string, board: IBoard): void {
         const match = this.regExp.exec(fen);
         if (match == null) throw new Error("invalid fen");
-        await parseFENPosition(match[1], board.position);
+         parseFENPosition(match[1], board.position);
         board.toMove = parseColourToMove(match[2]);
         board.castling = parseCastlingData(match[3]);
         board.enPassant = parseEnPassant(match[4]);

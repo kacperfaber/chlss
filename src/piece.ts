@@ -19,25 +19,25 @@ export type Piece =
     typeof Pieces.Empty;
 
 interface IPiece {
-    getColour(piece: Piece): Promise<Colour | null>;
-    isWhite(piece: Piece): Promise<boolean>;
-    isBlack(piece: Piece): Promise<boolean>;
-    isEmpty(piece: Piece): Promise<boolean>;
-    isColour(piece: Piece, colour: Colour): Promise<boolean>;
-    compareColour(colour1: Colour, colour2: Colour): Promise<boolean>;
-    isEnemy(piece: Piece, colour: Colour): Promise<boolean>;
+    getColour(piece: Piece): Colour | null;
+    isWhite(piece: Piece): boolean;
+    isBlack(piece: Piece): boolean;
+    isEmpty(piece: Piece): boolean;
+    isColour(piece: Piece, colour: Colour): boolean;
+    compareColour(colour1: Colour, colour2: Colour): boolean;
+    isEnemy(piece: Piece, colour: Colour): boolean;
     allWhite: Array<Piece>;
     allBlack: Array<Piece>;
-    isEnemy(piece: Piece, colour: Colour): Promise<boolean>;
-    isEnemyOrEmpty(piece: Piece, colour: Colour): Promise<boolean>;
-    isEnemyOrNull(piece: Piece, colour: Colour): Promise<boolean>;
+    isEnemy(piece: Piece, colour: Colour): boolean;
+    isEnemyOrEmpty(piece: Piece, colour: Colour): boolean;
+    isEnemyOrNull(piece: Piece, colour: Colour): boolean;
     isRook(piece: Piece): boolean;
     isPawn(piece: Piece): boolean;
     isQueen(piece: Piece): boolean;
     isBishop(piece: Piece): boolean;
     isKnight(piece: Piece): boolean;
     isKing(piece: Piece): boolean;
-    isColourEnemyOrNull(tColour: Colour | null, colour: Colour): Promise<boolean>
+    isColourEnemyOrNull(tColour: Colour | null, colour: Colour): boolean
     getKing(colour: Colour): Piece;
     getPawn(colour: Colour): Piece;
     getColourSynchronously(piece: Piece): Colour | null;
@@ -64,50 +64,50 @@ export const Piece: IPiece = {
         return colour == Colours.white ? Pieces.WhiteKing : Pieces.BlackKing;
     },
 
-    async isEnemyOrNull(piece: Piece | null, colour: Colour): Promise<boolean> {
+     isEnemyOrNull(piece: Piece | null, colour: Colour): boolean {
         if (piece == null) return true;
-        const pieceColour = (await Piece.getColour(piece))!!;
-        return !(await Piece.compareColour(pieceColour, colour));
+        const pieceColour = ( Piece.getColour(piece))!!;
+        return !( Piece.compareColour(pieceColour, colour));
     },
 
-    async getColour(piece: Piece): Promise<Colour | null> {
+     getColour(piece: Piece): Colour | null {
         if (this.allWhite.includes(piece)) return Colours.white;
         if (this.allBlack.includes(piece)) return Colours.black;
         return null;
     },
 
-    async isEnemy(piece: Piece, colour: Colour): Promise<boolean> {
-        const pieceColour = await this.getColour(piece);
+     isEnemy(piece: Piece, colour: Colour): boolean {
+        const pieceColour =  this.getColour(piece);
         return pieceColour == Colours.inverseColour(colour);
     },
 
-    async isEnemyOrEmpty(piece: Piece, colour: Colour): Promise<boolean> {
-        if (await Piece.isEmpty(piece)) return true;
-        return await this.isEnemy(piece, colour);
+     isEnemyOrEmpty(piece: Piece, colour: Colour): boolean {
+        if ( Piece.isEmpty(piece)) return true;
+        return  this.isEnemy(piece, colour);
     },
 
-    async isColourEnemyOrNull(tColour: Colour | null, colour: Colour): Promise<boolean> {
+     isColourEnemyOrNull(tColour: Colour | null, colour: Colour): boolean {
         if (tColour == null) return true;
-        return !await Piece.compareColour(tColour, colour);
+        return ! Piece.compareColour(tColour, colour);
     },
 
-    async isWhite(piece: Piece): Promise<boolean> {
+     isWhite(piece: Piece): boolean {
         return this.allWhite.includes(piece);
     },
 
-    async isBlack(piece: Piece): Promise<boolean> {
+     isBlack(piece: Piece): boolean {
         return this.allBlack.includes(piece);
     },
 
-    async isEmpty(piece: Piece): Promise<boolean> {
+     isEmpty(piece: Piece): boolean {
         return piece == Pieces.Empty;
     },
 
-    async isColour(piece: Piece, colour: Colour): Promise<boolean> {
-        return await this.getColour(piece) == colour;
+     isColour(piece: Piece, colour: Colour): boolean {
+        return  this.getColour(piece) == colour;
     },
 
-    async compareColour(colour1: Colour, colour2: Colour): Promise<boolean> {
+     compareColour(colour1: Colour, colour2: Colour): boolean {
         return colour1 == colour2;
     },
 

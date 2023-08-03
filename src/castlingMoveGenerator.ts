@@ -8,40 +8,40 @@ import {IBoard} from "./board";
 import Pieces from "./pieces";
 
 interface ICastlingMoveGenerator {
-    generateCastlingMoves(board: IBoard, colour: Colour, moveList: Array<IMove>): Promise<void>;
+    generateCastlingMoves(board: IBoard, colour: Colour, moveList: Array<IMove>): void;
 
-    getCastlingColourForColour(castling: Castling, colour: Colour): Promise<CastlingColour>;
+    getCastlingColourForColour(castling: Castling, colour: Colour): CastlingColour;
 
-    tryAddQueenSideCastling(board: IBoard, colour: Colour, castlingColour: CastlingColour, moveList: Array<IMove>): Promise<void>;
+    tryAddQueenSideCastling(board: IBoard, colour: Colour, castlingColour: CastlingColour, moveList: Array<IMove>): void;
 
-    tryAddKingSideCastling(board: IBoard, colour: Colour, castlingColour: CastlingColour, moveList: Array<IMove>): Promise<void>
+    tryAddKingSideCastling(board: IBoard, colour: Colour, castlingColour: CastlingColour, moveList: Array<IMove>): void
 }
 
 export const CastlingMoveGenerator: ICastlingMoveGenerator = {
-    async generateCastlingMoves(board: IBoard, colour: Colour, moveList: Array<IMove>): Promise<void> {
-        const castlingColour = await this.getCastlingColourForColour(board.castling, colour);
+     generateCastlingMoves(board: IBoard, colour: Colour, moveList: Array<IMove>): void {
+        const castlingColour =  this.getCastlingColourForColour(board.castling, colour);
 
-        await Promise.all([
+         Promise.all([
             this.tryAddQueenSideCastling(board, colour, castlingColour, moveList),
             this.tryAddKingSideCastling(board, colour, castlingColour, moveList),
         ]);
     },
 
-    async getCastlingColourForColour(castling: Castling, colour: Colour): Promise<CastlingColour> {
+     getCastlingColourForColour(castling: Castling, colour: Colour): CastlingColour {
         return colour == Colours.white ? castling.white : castling.black;
     },
 
-    async tryAddKingSideCastling(board: IBoard, colour: Colour, castlingColour: CastlingColour, moveList: Array<IMove>): Promise<void> {
+     tryAddKingSideCastling(board: IBoard, colour: Colour, castlingColour: CastlingColour, moveList: Array<IMove>): void {
 
         if (!castlingColour.kingSide) return;
 
         if (colour == Colours.white) {
-            if (!(await BoardPosition.isSquaresEmpty(board.position, 62 as SquareIndex, 61 as SquareIndex))) return;
+            if (!( BoardPosition.isSquaresEmpty(board.position, 62 as SquareIndex, 61 as SquareIndex))) return;
 
             const enemyMoves: Array<IMove> = [];
-            await MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves, null);
+             MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves, null);
 
-            if (!(await BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 60 as SquareIndex, 62 as SquareIndex, 61 as SquareIndex)))
+            if (!( BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 60 as SquareIndex, 62 as SquareIndex, 61 as SquareIndex)))
                 return;
 
             moveList.push({
@@ -54,12 +54,12 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
                 isPromo: false
             });
         } else if (colour == Colours.black) {
-            if (!(await BoardPosition.isSquaresEmpty(board.position, 5 as SquareIndex, 6 as SquareIndex))) return;
+            if (!( BoardPosition.isSquaresEmpty(board.position, 5 as SquareIndex, 6 as SquareIndex))) return;
 
             const enemyMoves: Array<IMove> = [];
-            await MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves, null);
+             MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves, null);
 
-            if (!(await BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 5 as SquareIndex, 6 as SquareIndex, 4 as SquareIndex)))
+            if (!( BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 5 as SquareIndex, 6 as SquareIndex, 4 as SquareIndex)))
                 return;
 
             moveList.push({
@@ -75,16 +75,16 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
 
     },
 
-    async tryAddQueenSideCastling(board: IBoard, colour: Colour, castlingColour: CastlingColour, moveList: Array<IMove>): Promise<void> {
+     tryAddQueenSideCastling(board: IBoard, colour: Colour, castlingColour: CastlingColour, moveList: Array<IMove>): void {
         if (!castlingColour.queenSide) return;
 
         if (colour == Colours.white) {
-            if (!(await BoardPosition.isSquaresEmpty(board.position, 59 as SquareIndex, 58 as SquareIndex, 57 as SquareIndex))) return;
+            if (!( BoardPosition.isSquaresEmpty(board.position, 59 as SquareIndex, 58 as SquareIndex, 57 as SquareIndex))) return;
 
             const enemyMoves: Array<IMove> = [];
-            await MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves, null);
+             MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves, null);
 
-            if (!(await BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 59 as SquareIndex, 58 as SquareIndex, 57 as SquareIndex, 60 as SquareIndex)))
+            if (!( BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 59 as SquareIndex, 58 as SquareIndex, 57 as SquareIndex, 60 as SquareIndex)))
                 return;
 
             moveList.push({
@@ -97,12 +97,12 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
                 isPromo: false
             });
         } else if (colour == Colours.black) {
-            if (!(await BoardPosition.isSquaresEmpty(board.position, 1 as SquareIndex, 2 as SquareIndex, 3 as SquareIndex))) return;
+            if (!( BoardPosition.isSquaresEmpty(board.position, 1 as SquareIndex, 2 as SquareIndex, 3 as SquareIndex))) return;
 
             const enemyMoves: Array<IMove> = [];
-            await MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves, null);
+             MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves, null);
 
-            if (!(await BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 1 as SquareIndex, 2 as SquareIndex, 3 as SquareIndex, 4 as SquareIndex)))
+            if (!( BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 1 as SquareIndex, 2 as SquareIndex, 3 as SquareIndex, 4 as SquareIndex)))
                 return;
 
             moveList.push({

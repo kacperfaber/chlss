@@ -6,12 +6,12 @@ import {IMove} from "./move";
 import {LineMoveGenerator} from "./lineMoveGenerator";
 
 interface IQueenMoveGenerator {
-    generateQueenMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): Promise<void>;
+    generateQueenMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): void;
 }
 
 export const QueenMoveGenerator: IQueenMoveGenerator = {
-    async generateQueenMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): Promise<void> {
-        await Promise.all([
+     generateQueenMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): void {
+         Promise.all([
             LineMoveGenerator.generateRookLikeMoves(boardPosition, piece, colour, index, posX, posY, moveList),
             LineMoveGenerator.generateBishopLikeMoves(boardPosition, piece, colour, index, posX, posY, moveList)
         ]);

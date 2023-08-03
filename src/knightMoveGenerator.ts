@@ -7,7 +7,7 @@ import {MoveOffset, OffsetMoveGenerator} from "./offsetMoveGenerator";
 
 interface IKnightMoveGenerator {
     offsets: Array<MoveOffset>;
-    generateKnightMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): Promise<void>;
+    generateKnightMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): void;
 }
 
 export const KnightMoveGenerator: IKnightMoveGenerator = {
@@ -22,7 +22,7 @@ export const KnightMoveGenerator: IKnightMoveGenerator = {
         {x: 2, y: 1},
     ],
 
-    async generateKnightMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): Promise<void> {
-        await OffsetMoveGenerator.generateOffsets(boardPosition, piece, colour, index, posX, posY, this.offsets, moveList);
+     generateKnightMoves(boardPosition: BoardPosition, piece: Piece, colour: Colour, index: SquareIndex, posX: number, posY: number, moveList: Array<IMove>): void {
+         OffsetMoveGenerator.generateOffsets(boardPosition, piece, colour, index, posX, posY, this.offsets, moveList);
     }
 };
