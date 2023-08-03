@@ -82,7 +82,7 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
             const enemyMoves: Array<IMove> = [];
             MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves, null);
 
-            if (!(BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 59 as SquareIndex, 58 as SquareIndex, 57 as SquareIndex, 60 as SquareIndex)))
+            if (!(BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 59 as SquareIndex, 58 as SquareIndex, 60 as SquareIndex)))
                 return;
 
             moveList.push({
@@ -95,12 +95,12 @@ export const CastlingMoveGenerator: ICastlingMoveGenerator = {
                 isPromo: false
             });
         } else if (colour == Colours.black) {
-            if (!(BoardPosition.isSquaresEmpty(board.position, 1 as SquareIndex, 2 as SquareIndex, 3 as SquareIndex))) return;
+            if (!(BoardPosition.isSquaresEmpty(board.position, 2 as SquareIndex, 3 as SquareIndex))) return;
 
             const enemyMoves: Array<IMove> = [];
             MoveGenerator.generatePseudoLegalMoves(board.position, Colours.inverseColour(colour), enemyMoves, null);
 
-            if (!(BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 1 as SquareIndex, 2 as SquareIndex, 3 as SquareIndex, 4 as SquareIndex)))
+            if (!(BoardPosition.isSquaresNotUnderAttack(Colours.inverseColour(colour), enemyMoves, board.position, 2 as SquareIndex, 3 as SquareIndex, 4 as SquareIndex)))
                 return;
 
             moveList.push({
