@@ -38,7 +38,33 @@ export class BoardObj {
     }
 
     legalMovesUci(): Array<string> {
-        return this.legalMoves().map(move => UCI.write(move));
+        const moves = this.legalMoves()
+        const r: Array<string> = [];
+
+        for (const move of moves) {
+            if (move.isPromo) {
+                move.promotion = "knight";
+                r.push(UCI.write(move));
+
+                move.promotion = "rook";
+                r.push(UCI.write(move));
+
+                move.promotion = "queen";
+                r.push(UCI.write(move));
+
+                move.promotion = "bishop";
+                r.push(UCI.write(move));
+
+                move.promotion = undefined;
+            }
+
+            else {
+                const uci = UCI.write(move);
+                r.push(uci);
+            }
+        }
+
+        return r;
     }
 
     push(move: IMove): void {

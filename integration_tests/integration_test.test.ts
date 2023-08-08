@@ -5,8 +5,6 @@ import randomGamesData from "./data/random_games.json";
 import legalMovesData from "./data/legal_moves.json";
 
 import {BoardObj} from "../src/boardObj";
-import {UCI} from "../src/uci";
-import {IMove} from "../src/move";
 
 describe("integration_tests", function () {
     /**
@@ -36,41 +34,12 @@ describe("integration_tests", function () {
      * generate-legal-moves: Generates file with 500 cases, 75 move made position.
      */
     describe("legal-moves", function () {
-        async function convertToUciMoves(moves: Array<IMove>): Promise<Array<string>> {
-            const r: Array<string> = [];
-
-            for (const move of moves) {
-                if (move.isPromo) {
-                    move.promotion = "knight";
-                    r.push(UCI.write(move));
-
-                    move.promotion = "rook";
-                    r.push(UCI.write(move));
-
-                    move.promotion = "queen";
-                    r.push(UCI.write(move));
-
-                    move.promotion = "bishop";
-                    r.push(UCI.write(move));
-
-                    // TODO: After all we should set move.promotion to value as we got it.
-                }
-
-                else {
-                    const uci = UCI.write(move);
-                    r.push(uci);
-                }
-            }
-
-            return r;
-        }
 
         for (const {legalMoves, legalMovesCount, id, fen} of legalMovesData) {
             test(`${id}: ${fen} - expected ${legalMovesCount} legal moves`, async function () {
                 const board = new BoardObj(fen);
 
-                const result = board.legalMoves()
-                const resultUci = await convertToUciMoves(result);
+                const resultUci = board.legalMovesUci();
 
                 for (const legalMove of legalMoves) {
                     const res = resultUci.some(x => x == legalMove);
