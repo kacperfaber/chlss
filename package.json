@@ -1,6 +1,6 @@
 {
   "name": "chlss",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "description": "Open-Source Chess Engine in TypeScript.",
   "scripts": {
     "test": "jest --verbose test/",
