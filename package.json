@@ -1,6 +1,6 @@
 {
   "name": "chlss",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "Open-Source Chess Engine in TypeScript.",
   "scripts": {
     "test": "jest --verbose test/",
@@ -36,7 +36,7 @@
     "ts-jest": "^29.1.1",
     "typescript": "^5.0.3"
   },
-  "files": ["dist/", "LICENSE"],
+  "files": ["dist/", "LICENSE", "README.md"],
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js"
 }
