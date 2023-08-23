@@ -6,7 +6,7 @@ import {MoveMaker} from "./moveMaker";
 import {BoardPosition} from "./boardPosition";
 import {UCI} from "./uci";
 import {Termination, TerminationApi} from "./termination";
-import {Colours} from "./colour";
+import {Colour, Colours} from "./colour";
 
 export class BoardObj {
     private board = Board.createEmpty();
@@ -78,5 +78,9 @@ export class BoardObj {
     getTermination(): Termination | null {
         const legalMoves = this.legalMoves();
         return TerminationApi.getTermination(this.board, legalMoves, this.getEnemyMoves())
+    }
+
+    getColour(): Colour {
+        return this.board.toMove;
     }
 }
