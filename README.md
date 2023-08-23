@@ -9,6 +9,8 @@ Simple chess library, well typed by **TypeScript**.
 | 1.0.0-beta.1 | 07.08.2023 | beta |
 | 1.0.0-beta.2 | 21.08.2023 | beta |
 | 1.0.0-beta.3 | 21.08.2023 | beta |
+| 1.0.0-beta.4 | 23.08.2023 | beta |
+| 1.0.0-beta.5 | 23.08.2023 | beta |
 
 ## Installation
 
