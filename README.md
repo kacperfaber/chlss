@@ -84,6 +84,15 @@ const board = new BoardObj();
 let t: Termination | undefined = board.getTermination();
 ```
 
+#### 7. Get colour to move
+
+```ts
+const board = new BoardObj();
+
+// Will return colour to move.
+const toMove: Colour = board.getColour();
+```
+
 ## Reporting an issues
 
 **chlss** is well tested using thousands of random positions, but please report any issue you will see.
