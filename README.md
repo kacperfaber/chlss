@@ -1,5 +1,11 @@
 # chlss
 
+[![Tests](https://github.com/kacperfaber/chlss/actions/workflows/main.yml/badge.svg)](https://github.com/kacperfaber/chlss/actions/workflows/main.yml)
+
+[![npm](https://github.com/kacperfaber/chlss/actions/workflows/publish.yml/badge.svg)](https://github.com/kacperfaber/chlss/actions/workflows/publish.yml)
+
+
+
 Simple chess library, well typed by **TypeScript**.
 
 ## Versions
