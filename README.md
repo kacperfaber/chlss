@@ -1,7 +1,5 @@
 # chlss
 
-[adding workflows]
-
 Simple chess library, well typed by **TypeScript**.
 
 ## Versions
