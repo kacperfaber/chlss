@@ -110,5 +110,5 @@
     "resolveJsonModule": true,
     "declaration": true
   },
-  "include": ["../test/utils/*.ts", "../chlss-ts/src/*.ts"]
+  "include": ["../test/utils/*.ts", "../src/*.ts"]
 }
