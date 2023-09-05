@@ -10,7 +10,7 @@
     "generate-empty-legal-moves": "test_data_generator\\legal_moves_generator.py --output integration_tests\\data\\legal_moves.json --repeat 0 --random-position-moves 0",
     "generate-empty-random-games": "test_data_generator\\random_games_generator.py --output integration_tests\\data\\random_games.json --repeat 0 --move-in-case 0",
 	"generate-legal-moves-linux": "python test_data_generator/legal_moves_generator.py --output integration_tests\\data\\legal_moves.json --repeat 500 --random-position-moves 75",
-    "generate-random-games-linux": "python test_data_generator/random_games_generator.py --output integration_tests\\data\\random_games.json --repeat 100 --move-in-case 50",
+    "generate-random-games-linux": "python test_data_generator/random_games_generator.py --output integration_tests\\data\\random_games.json --repeat 100 --move-in-case 50"
   },
   "keywords": [
     "chess",
