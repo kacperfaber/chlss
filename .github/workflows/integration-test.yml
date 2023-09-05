@@ -1,0 +1,27 @@
+name: Run Integration Tests
+
+on:
+  push: 
+    branches: [master, develop]
+
+jobs:
+  integration_test:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Repository
+        run: npm ci
+
+      - name: Generate legal moves
+        run: npm run generate-legal-moves
+
+      - name: Generate random games
+        run: npm run generate-random-games
+
+      - name: Run Integration Tests
+        run: npm run integration-test
+
+      
