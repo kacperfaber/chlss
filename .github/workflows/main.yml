@@ -1,0 +1,19 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [master, develop]
+
+jobs:
+  test:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Setup
+      run: npm ci
+
+    - name: Test
+      run: npm test
