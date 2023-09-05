@@ -1,7 +1,7 @@
 # chlss
 
 <div style="display: flex; justify-content: center; align-items: center;">
-  [![Tests](https://github.com/kacperfaber/chlss/actions/workflows/main.yml/badge.svg)]
+  [![tests](https://github.com/kacperfaber/chlss/actions/workflows/main.yml/badge.svg)](https://github.com/kacperfaber/chlss/actions/workflows/main.yml)
 
   [![npm](https://github.com/kacperfaber/chlss/actions/workflows/publish.yml/badge.svg)](https://github.com/kacperfaber/chlss/actions/workflows/publish.yml)
 </div>
