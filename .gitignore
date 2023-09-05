@@ -10,6 +10,11 @@ node_modules/
 # integration_tests/data
 /integration_tests/data/
 
+**/*.d.ts
+**/*.d.js
+
+test/utils/*.js
+
 
 # npm pack
 *.tgz
