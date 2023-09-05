@@ -16,10 +16,10 @@ jobs:
         run: npm ci
 
       - name: Generate legal moves
-        run: npm run generate-legal-moves
+        run: npm run generate-legal-moves-linux
 
       - name: Generate random games
-        run: npm run generate-random-games
+        run: npm run generate-random-games-linux
 
       - name: Run Integration Tests
         run: npm run integration-test
