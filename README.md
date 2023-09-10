@@ -1,4 +1,10 @@
 # chlss
+![GitHub package.json dynamic](https://img.shields.io/github/package-json/version/kacperfaber/chlss)
+[![Run Tests](https://github.com/kacperfaber/chlss/actions/workflows/main.yml/badge.svg)](https://github.com/kacperfaber/chlss/actions/workflows/main.yml)
+[![npm](https://github.com/kacperfaber/chlss/actions/workflows/publish.yml/badge.svg)](https://github.com/kacperfaber/chlss/actions/workflows/publish.yml)
+![npm](https://img.shields.io/npm/dt/chlss)
+
+
 
 Simple chess library, well typed by **TypeScript**.
 
