@@ -13,3 +13,7 @@ node_modules/
 
 # npm pack
 *.tgz
+
+# compilation
+*.d.ts
+*.js
