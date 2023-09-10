@@ -1,0 +1,23 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [master,develop]
+
+jobs:
+  integration_test:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup project
+        run: npm ci
+
+      - run: chmod +x setup_integration_tests.sh
+
+      - name: Generate random games data
+        run: bash ./setup_integration_tests.sh
+
+      - name: Run integration tests
+        run: npm run integration-test
