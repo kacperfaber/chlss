@@ -1,11 +1,12 @@
 name: Publish to npm
 
 on:
-  push:
-    branches: [master]
+  pull_request_review:
+    types: [submitted]
 
 jobs:
   publish:
+    if: github.event.review.state == 'approved'
     runs-on: self-hosted
 
     steps:
